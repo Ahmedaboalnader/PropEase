@@ -14,13 +14,15 @@ WORKDIR /src
 
 # نسخ ملفات المشروع الضرورية فقط
 COPY *.sln .
-RUN mkdir -p app  # تأكد من وجود المجلد قبل النسخ
-COPY RealEstateAPI/*.csproj ./app/
+RUN mkdir -p RealEstateAPI  # تأكد من وجود المجلد قبل النسخ
+COPY RealEstateAPI/*.csproj ./RealEstateAPI/
 
 # استعادة الحزم
+WORKDIR /src/RealEstateAPI
 RUN dotnet restore
 
 # نسخ باقي الملفات
+WORKDIR /src
 COPY . .
 
 # تثبيت أداة EF CLI مرة واحدة فقط
@@ -31,7 +33,7 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet build -c ${BUILD_CONFIGURATION} -o /app/build
 
 # تحديث قاعدة البيانات (مؤقتًا معطل)
-# WORKDIR /src/app
+# WORKDIR /src/RealEstateAPI
 # RUN dotnet ef database update --no-build
 
 #================================
