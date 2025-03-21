@@ -10,6 +10,9 @@ VOLUME ["/root/.aspnet/DataProtection-Keys"]
 ENV ASPNETCORE_DATAPROTECTION__PATH="/app/DataProtection-Keys"
 RUN mkdir -p /app/DataProtection-Keys
 
+# ضبط المنفذ الصحيح داخل الحاوية
+ENV ASPNETCORE_URLS=http://+:7186
+
 #================================
 # Stage Two --> Build
 #================================
