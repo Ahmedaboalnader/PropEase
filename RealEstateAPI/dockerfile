@@ -4,7 +4,11 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 7186
-ENV ASPNETCORE_URLS=http://+:7186
+
+# حل مشكلة Data Protection
+VOLUME ["/root/.aspnet/DataProtection-Keys"]
+ENV ASPNETCORE_DATAPROTECTION__PATH="/app/DataProtection-Keys"
+RUN mkdir -p /app/DataProtection-Keys
 
 #================================
 # Stage Two --> Build
