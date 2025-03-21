@@ -5,7 +5,7 @@ FROM node:16.17.0-alpine AS builder
 WORKDIR /app
 
 # نسخ ملفات الباكج أولًا لتقليل إعادة بناء الكاش عند تحديث الكود
-COPY package.json package-lock.json ./
+COPY package*.json  .
 RUN npm install
 
 # نسخ باقي المشروع وبناؤه
