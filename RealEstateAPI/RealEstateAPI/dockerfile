@@ -17,7 +17,7 @@ COPY . .
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet build -c ${BUILD_CONFIGURATION} -o /app/build
-RUN dotnet ef database update
+#RUN dotnet ef database update
 
 #================================
 # Stage Three --> Publish
@@ -32,5 +32,5 @@ RUN dotnet publish -c ${BUILD_CONFIGURATION} -o /app/publish /p:UseAppHost=false
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT [ "dotnet", "RealEstateAPI.dll" ]
+#ENTRYPOINT [ "dotnet", "RealEstateAPI.dll" ]
 #================================
