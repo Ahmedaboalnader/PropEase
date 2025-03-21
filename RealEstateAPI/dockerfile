@@ -6,7 +6,7 @@ WORKDIR /app
 EXPOSE 7186
 
 #================================
-# Stage Two --> Build & Update DB
+# Stage Two --> Build
 #================================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -29,9 +29,9 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 # بناء المشروع
 RUN dotnet build -c ${BUILD_CONFIGURATION} -o /app/build
 
-# تحديث قاعدة البيانات (في نفس المسار)
-WORKDIR /src/app
-RUN dotnet ef database update --no-build
+# تحديث قاعدة البيانات (مؤقتًا معطل)
+# WORKDIR /src/app
+# RUN dotnet ef database update --no-build
 
 #================================
 # Stage Three --> Publish
@@ -47,4 +47,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "app.dll"]
+ENTRYPOINT ["dotnet", "RealEstateAPI.dll"]
