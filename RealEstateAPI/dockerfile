@@ -14,7 +14,8 @@ WORKDIR /src
 
 # نسخ ملفات المشروع الضرورية فقط
 COPY *.sln .
-COPY app/*.csproj ./app/
+RUN mkdir -p app  # تأكد من وجود المجلد قبل النسخ
+COPY RealEstateAPI/*.csproj ./app/
 
 # استعادة الحزم
 RUN dotnet restore
