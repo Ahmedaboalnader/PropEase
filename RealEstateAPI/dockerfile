@@ -1,62 +1,20 @@
-#================================
-# Stage One --> Runtime image
-#================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 7186
-
-# حل مشكلة Data Protection
-VOLUME ["/root/.aspnet/DataProtection-Keys"]
-ENV ASPNETCORE_DATAPROTECTION__PATH="/app/DataProtection-Keys"
-RUN mkdir -p /app/DataProtection-Keys
-
-# ضبط المنفذ الصحيح داخل الحاوية
-ENV ASPNETCORE_URLS=http://+:7186
-
-#================================
-# Stage Two --> Build
-#================================
+# استخدم صورة الـ SDK للبناء
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
+WORKDIR /app
 
-# نسخ ملفات المشروع الضرورية فقط
-COPY *.sln .
-RUN mkdir -p RealEstateAPI  # تأكد من وجود المجلد قبل النسخ
-COPY RealEstateAPI/*.csproj ./RealEstateAPI/
-
-# استعادة الحزم
-WORKDIR /src/RealEstateAPI
-RUN dotnet restore
-
-# نسخ باقي الملفات
-WORKDIR /src
+# نسخ كل الملفات
 COPY . .
 
-# تثبيت أداة EF CLI مرة واحدة فقط
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
+# استعادة الحزم
+RUN dotnet restore RealEstateAPI/RealEstateAPI.csproj
 
-# بناء المشروع
-RUN dotnet build -c ${BUILD_CONFIGURATION} -o /app/build
+# بناء التطبيق
+RUN dotnet publish RealEstateAPI/RealEstateAPI.csproj -c Release -o /build --no-restore
 
-# تحديث قاعدة البيانات (مؤقتًا معطل)
-# WORKDIR /src/RealEstateAPI
-# RUN dotnet ef database update --no-build
-
-#================================
-# Stage Three --> Publish
-#================================
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish -c ${BUILD_CONFIGURATION} -o /app/publish /p:UseAppHost=false
-
-#================================
-# Stage Four --> Go Online
-#================================
-FROM base AS final
+# إنشاء مرحلة التشغيل
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /build/ .
 
+# تشغيل التطبيق
 ENTRYPOINT ["dotnet", "RealEstateAPI.dll"]
-#======
