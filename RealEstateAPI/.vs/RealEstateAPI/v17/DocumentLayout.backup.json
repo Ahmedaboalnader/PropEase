@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "D:\\PropEase\\RealEstateAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\models\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\models\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -35,24 +51,12 @@
       "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\dtos\\resetpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\dtos\\resetpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\dtos\\forgotpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\dtos\\forgotpassworddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\dtos\\verifyotpdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -68,10 +72,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\models\\review.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\models\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|solutionrelative:realestateapi\\models\\property.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9EFE53EC-57D7-4606-BA69-6B783F4EA994}|RealEstateAPI\\RealEstateAPI.csproj|d:\\propease\\realestateapi\\realestateapi\\models\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -111,7 +111,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -119,31 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "20250313143917_UpdateUserModel.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
-              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-13T14:39:18.08Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "20250318224039_AddOtpToUser.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
-              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T22:40:39.385Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "20250318224704_UpdateUserSchema.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224704_UpdateUserSchema.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250318224704_UpdateUserSchema.cs",
@@ -155,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "20250312130138_InitialCreate.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250312130138_InitialCreate.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250312130138_InitialCreate.cs",
@@ -167,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Program.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\Program.cs",
@@ -175,56 +151,11 @@
               "RelativeToolTip": "RealEstateAPI\\Program.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAIAwwEYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:23:18.144Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+              "WhenOpened": "2025-03-12T12:23:18.144Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "20250312203757_AddEmailConfirmation.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
-              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T20:37:57.413Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "LoginDto.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\LoginDto.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\LoginDto.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\LoginDto.cs",
-              "RelativeToolTip": "RealEstateAPI\\DTOs\\LoginDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T21:31:27.693Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\User.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Models\\User.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\User.cs",
-              "RelativeToolTip": "RealEstateAPI\\Models\\User.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAADwvxwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:23:51.403Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "EmailService.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\Services\\EmailService.cs",
@@ -236,19 +167,113 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\appsettings.json",
               "RelativeDocumentMoniker": "RealEstateAPI\\appsettings.json",
               "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\appsettings.json",
               "RelativeToolTip": "RealEstateAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-12T12:23:00.783Z"
+              "WhenOpened": "2025-03-12T12:23:00.783Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "RealEstateAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAqwJ0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T14:57:32.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Property.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\Property.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Models\\Property.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\Property.cs",
+              "RelativeToolTip": "RealEstateAPI\\Models\\Property.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAzwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T12:24:26.813Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20250318224039_AddOtpToUser.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
+              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250318224039_AddOtpToUser.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T22:40:39.385Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "20250313143917_UpdateUserModel.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
+              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250313143917_UpdateUserModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-13T14:39:18.08Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "20250312203757_AddEmailConfirmation.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
+              "RelativeToolTip": "RealEstateAPI\\Migrations\\20250312203757_AddEmailConfirmation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T20:37:57.413Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 10,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\LoginDto.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\LoginDto.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\LoginDto.cs",
+              "RelativeToolTip": "RealEstateAPI\\DTOs\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T21:31:27.693Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\User.cs",
+              "RelativeDocumentMoniker": "RealEstateAPI\\Models\\User.cs",
+              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\User.cs",
+              "RelativeToolTip": "RealEstateAPI\\Models\\User.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAADwvxwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T12:23:51.403Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "ForgotPasswordDto.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\ForgotPasswordDto.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\ForgotPasswordDto.cs",
@@ -260,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "ResetPasswordDto.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\ResetPasswordDto.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\ResetPasswordDto.cs",
@@ -272,19 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "RealEstateAPI\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAHYAAAAAAAAAAAAmwJ0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T14:57:32.504Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "VerifyOtpDto.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\VerifyOtpDto.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\VerifyOtpDto.cs",
@@ -296,7 +309,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "RegisterDTO.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\DTOs\\RegisterDTO.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\DTOs\\RegisterDTO.cs",
@@ -320,7 +333,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "20250318224509_UpdateUser.cs",
               "DocumentMoniker": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224509_UpdateUser.cs",
               "ToolTip": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\Migrations\\20250318224509_UpdateUser.cs",
@@ -330,7 +343,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Review.cs",
               "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\Review.cs",
               "RelativeDocumentMoniker": "RealEstateAPI\\Models\\Review.cs",
@@ -339,18 +352,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-12T12:25:27.203Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Property.cs",
-              "DocumentMoniker": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\Property.cs",
-              "RelativeDocumentMoniker": "RealEstateAPI\\Models\\Property.cs",
-              "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\Models\\Property.cs",
-              "RelativeToolTip": "RealEstateAPI\\Models\\Property.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:24:26.813Z"
             },
             {
               "$type": "Document",

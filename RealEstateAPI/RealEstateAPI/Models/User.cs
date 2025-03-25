@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace RealEstateAPI.Models
 {
@@ -6,23 +7,23 @@ namespace RealEstateAPI.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        public string Name { get; set; } = string.Empty;
+        [Required, MinLength(3), MaxLength(50)]
+        public string Name { get; set; }
 
         [Required, EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; }
+
+        [Required, MinLength(10), MaxLength(15)]
+        public string PhoneNumber { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        [Required]
-        public string PasswordHash { get; set; } = string.Empty;
+        [JsonIgnore] 
+        public string PasswordHash { get; set; }
 
         public string Role { get; set; } = "User";
 
         public string? OTP { get; set; }
         public DateTime? OTPExpiry { get; set; }
         public bool IsEmailConfirmed { get; set; } = false;
-
     }
 }
