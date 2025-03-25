@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RealEstateAPI.Models
 {
@@ -6,15 +7,24 @@ namespace RealEstateAPI.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required, MaxLength(255)]
+        public string Title { get; set; } = string.Empty;
+
+        [Required, Column(TypeName = "text")]
+        public string Description { get; set; } = string.Empty;
+
         [Required]
-        public string Title { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
+
+        [Required, MaxLength(255)]
+        public string Location { get; set; } = string.Empty;
+
         [Required]
-        public string Description { get; set; }
-        [Required]
-        public double Price { get; set; }
-        [Required]
-        public string Location { get; set; }
+        [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; }
+
+        public User User { get; set; } = null!;
     }
 }
