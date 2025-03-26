@@ -49,21 +49,21 @@ pipeline {
             }
         }
 
-        stage('Push to Docker Hub') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerid',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
-                    sh '''
-                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $IMAGE_NAME:latest $DOCKER_HUB_REPO:latest
-                    docker push $DOCKER_HUB_REPO:latest
-                    '''
-                }
-            }
-        }
+        // stage('Push to Docker Hub') {
+        //     steps {
+        //         withCredentials([usernamePassword(
+        //             credentialsId: 'dockerid',
+        //             usernameVariable: 'DOCKER_USER',
+        //             passwordVariable: 'DOCKER_PASSWORD'
+        //         )]) {
+        //             sh '''
+        //             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        //             docker tag $IMAGE_NAME:latest $DOCKER_HUB_REPO:latest
+        //             docker push $DOCKER_HUB_REPO:latest
+        //             '''
+        //         }
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
