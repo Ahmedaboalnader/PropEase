@@ -23,7 +23,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # نسخ الملفات المبنية من المرحلة الأولى
-COPY --from=builder /app/dist/ .
+COPY --from=builder  /app/dist /usr/share/nginx/html
 
 # نسخ إعدادات Nginx (اختياري)
 #COPY nginx.conf /etc/nginx/conf.d/default.conf
