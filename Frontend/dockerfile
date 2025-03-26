@@ -1,7 +1,7 @@
 # ==============================
 # Stage One --> Build React App
 # ==============================
-FROM node AS builder
+FROM node:20-alpine@sha256:8bda036ddd59ea51a23bc1a1035d3b5c614e72c01366d989f4120e8adca196d4 AS builder
 WORKDIR /app
 
 # نسخ ملفات الباكج أولًا لتقليل إعادة بناء الكاش عند تحديث الكود
@@ -15,7 +15,7 @@ RUN npm run build
 # ==============================
 # Stage Two --> Serve with Nginx
 # ==============================
-FROM nginx@sha256:0a399eb16751829e1af26fea27b20c3ec28d7ab1fb72182879dcae1cca21206a
+FROM nginx:alpine@sha256:4ff102c5d78d254a6f0da062b3cf39eaf07f01eec0927fd21e219d0af8bc0591
 
 WORKDIR /usr/share/nginx/html
 
