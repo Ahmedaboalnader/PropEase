@@ -100,15 +100,25 @@ pipeline {
         }
 
         stage('Health Check') {
-            steps {
-                script {
-                    def response = sh(script: 'curl -s -o /dev/null -w "%{http_code}\\n" http://51.20.6.97/health', returnStdout: true).trim()
-                    if (response != "200") {
-                        error("Health check failed! HTTP response: ${response}")
-                    }
+    steps {
+        script {
+            def maxRetries = 5
+            def waitTime = 10 
+
+            for (int i = 0; i < maxRetries; i++) {
+                def response = sh(script: "curl -s -o /dev/null -w \"%{http_code}\" http://51.20.6.97/health", returnStdout: true).trim()
+                if (response == "200") {
+                    echo "✅ Health Check Passed!"
+                    return
                 }
+                echo "❌ Health Check failed! Retrying in ${waitTime} seconds..."
+                sleep(waitTime)
             }
+            error("🚨 Health Check failed after ${maxRetries} retries!")
         }
+    }
+}
+
     }
 
    post {
