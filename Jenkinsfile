@@ -32,7 +32,7 @@ pipeline {
         stage('Detect Changes') {
             steps {
                 script {
-                    def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim()
+                    def changes = sh(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
                     env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
                     env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
                 }
@@ -40,7 +40,6 @@ pipeline {
         }
 
         stage('Build Frontend') {
-            when { expression { return env.FRONTEND_CHANGED == "true" } }
             steps {
                 sh '''
                 echo "Building Frontend..."
@@ -52,7 +51,6 @@ pipeline {
         }
 
         stage('Build Backend') {
-            when { expression { return env.BACKEND_CHANGED == "true" } }
             steps {
                 sh '''
                 echo "Building Backend..."
@@ -64,7 +62,6 @@ pipeline {
         }
 
         stage('Push Frontend Image') {
-            when { expression { return env.FRONTEND_CHANGED == "true" } }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
@@ -77,7 +74,6 @@ pipeline {
         }
 
         stage('Push Backend Image') {
-            when { expression { return env.BACKEND_CHANGED == "true" } }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
