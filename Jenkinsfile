@@ -111,22 +111,30 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            sh 'sudo swapoff /swapfile || true'
-        }
-        success {
-            script {
-                def version = sh(script: "docker inspect --format='{{index .RepoDigests 0}}' $FRONTEND_IMAGE", returnStdout: true).trim()
-                mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                     subject: "✅ تم نشر التطبيق بنجاح",
-                     body: "تم نشر التطبيق على: http://$SERVER_IP\n\nالإصدار الحالي: ${version}"
-            }
-        }
-        failure {
+   post {
+    always {
+        sh 'sudo swapoff /swapfile || true'
+    }
+    success {
+        script {
+            def version = sh(script: "docker inspect --format='{{.Id}}' ahmedmostafa22/propease-frontend:latest", returnStdout: true).trim()
             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                 subject: "❌ فشل النشر",
-                 body: "راجع السجلات: ${env.BUILD_URL}"
+                 subject: "✅ تم نشر التطبيق بنجاح",
+                 body: """
+                 🔹 **تم نشر التطبيق بنجاح! 🎉**
+                 🔗 رابط التطبيق: http://$SERVER_IP
+                 🏷️ رقم الإصدار: ${version}
+                 """
         }
     }
+    failure {
+        mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+             subject: "❌ فشل النشر",
+             body: """
+             ❌ **فشل نشر التطبيق!**
+             🔗 راجع السجلات: ${env.BUILD_URL}
+             """
+    }
+}
+
 }
