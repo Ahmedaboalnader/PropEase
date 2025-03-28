@@ -102,7 +102,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 script {
-                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' http://$SERVER_IP/health", returnStdout: true).trim()
+                    def response = sh(script: "curl -s -o /dev/null -w "%{http_code}\\n" http://51.20.6.97/health", returnStdout: true).trim()
                     if (response != "200") {
                         error("Health check failed! HTTP response: ${response}")
                     }
