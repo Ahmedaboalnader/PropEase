@@ -123,20 +123,20 @@ pipeline {
 
    post {
     always {
-        sh 'sudo swapoff /swapfile || true'
+        sh 'sudo swapoff /swapfile || true &'
     }
-    success {
-        script {
-            def version = sh(script: "docker inspect --format='{{.Id}}' ahmedmostafa22/propease-frontend:latest", returnStdout: true).trim()
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                 subject: "✅ تم نشر التطبيق بنجاح",
-                 body: """
-                 🔹 **تم نشر التطبيق بنجاح! 🎉**
-                 🔗 رابط التطبيق: http://$SERVER_IP
-                 🏷️ رقم الإصدار: ${version}
-                 """
-        }
+   success {
+    script {
+        def version = sh(script: "docker inspect --format='{{.RepoDigests}}' ahmedmostafa22/propease-frontend:latest | grep -o 'sha256:[^]]*'", returnStdout: true).trim()
+        mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+             subject: "✅ تم نشر التطبيق بنجاح",
+             body: """
+             🔹 **تم نشر التطبيق بنجاح! 🎉**
+             🔗 رابط التطبيق: http://$SERVER_IP
+             🏷️ رقم الإصدار: ${version}
+             """
     }
+}
     failure {
         mail to: 'ahmed.mostafa.aboalnader@gmail.com',
              subject: "❌ فشل النشر",
