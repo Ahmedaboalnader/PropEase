@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh '''
                 if [ ! -f /swapfile ]; then
-                    sudo fallocate -l 8G /swapfile
+                    sudo fallocate -l 4G /swapfile
                     sudo chmod 600 /swapfile
                     sudo mkswap /swapfile
                 fi
@@ -43,8 +43,10 @@ pipeline {
             when { expression { return env.FRONTEND_CHANGED == "true" } }
             steps {
                 sh '''
-                cd Frontend
-                docker build -t $FRONTEND_IMAGE:latest .
+                echo "Building Frontend..."
+                cd Frontend || exit 1
+                ls -lah  # Debugging: عرض الملفات في المسار
+                docker build -t $FRONTEND_IMAGE:latest . || exit 1
                 '''
             }
         }
@@ -53,8 +55,10 @@ pipeline {
             when { expression { return env.BACKEND_CHANGED == "true" } }
             steps {
                 sh '''
-                cd RealEstateAPI
-                docker build -t $BACKEND_IMAGE:latest .
+                echo "Building Backend..."
+                cd RealEstateAPI || exit 1
+                ls -lah  # Debugging: عرض الملفات في المسار
+                docker build -t $BACKEND_IMAGE:latest . || exit 1
                 '''
             }
         }
@@ -88,6 +92,11 @@ pipeline {
         stage('Deploy with Docker Stack') {
             steps {
                 sh '''
+                echo "Deploying stack..."
+                if [ ! -f docker-stack.yml ]; then
+                    echo "Error: docker-stack.yml not found!"
+                    exit 1
+                fi
                 docker stack deploy -c docker-stack.yml propEaseStack
                 '''
             }
