@@ -89,11 +89,14 @@ pipeline {
             steps {
                 sh '''
                 echo "Deploying stack..."
-                if [ ! -f docker-stack.yml ]; then
-                    echo "Error: docker-stack.yml not found!"
+                if [ -f docker-stack.yml ]; then
+                    docker stack deploy -c docker-stack.yml propEaseStack
+                elif [ -f docker-stack.yaml ]; then
+                    docker stack deploy -c docker-stack.yaml propEaseStack
+                else
+                    echo "Error: No valid docker-stack file found!"
                     exit 1
                 fi
-                docker stack deploy -c docker-stack.yml propEaseStack
                 '''
             }
         }
