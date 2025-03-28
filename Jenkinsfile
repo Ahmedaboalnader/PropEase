@@ -49,21 +49,21 @@ pipeline {
             }
         }
 
-        // stage('Push to Docker Hub') {
-        //     steps {
-        //         withCredentials([usernamePassword(
-        //             credentialsId: 'dockerid',
-        //             usernameVariable: 'DOCKER_USER',
-        //             passwordVariable: 'DOCKER_PASSWORD'
-        //         )]) {
-        //             sh '''
-        //             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-        //             docker tag $IMAGE_NAME:latest $DOCKER_HUB_REPO:latest
-        //             docker push $DOCKER_HUB_REPO:latest
-        //             '''
-        //         }
-        //     }
-        // }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerid',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh '''
+                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+                    docker tag $IMAGE_NAME:latest $DOCKER_HUB_REPO:latest
+                    docker push $DOCKER_HUB_REPO:latest
+                    '''
+                }
+            }
+        }
 
         stage('Deploy') {
             steps {
@@ -90,12 +90,12 @@ pipeline {
             sh 'sudo swapoff /swapfile || true'
         }
         success {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com, adhamayad000@gmail.com',
                  subject: "✅ تم النشر بنجاح",
                  body: "تم نشر التطبيق على: http://<SERVER_IP>"
         }
         failure {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com, adhamayad@gmail.com',
                  subject: "❌ فشل النشر",
                  body: "راجع السجلات: ${env.BUILD_URL}"
         }
