@@ -1,31 +1,21 @@
-# ==============================
-# Stage One --> Build React App
-# ==============================
 FROM node:20-alpine@sha256:8bda036ddd59ea51a23bc1a1035d3b5c614e72c01366d989f4120e8adca196d4 AS builder
+
 WORKDIR /app
 
-# نسخ ملفات الباكج أولًا لتقليل إعادة بناء الكاش عند تحديث الكود
 COPY package*.json  .
 RUN npm install
 
-# نسخ باقي المشروع وبناؤه
 COPY . .
 RUN npm run build
 
-# ==============================
-# Stage Two --> Serve with Nginx
-# ==============================
 FROM nginx:alpine@sha256:4ff102c5d78d254a6f0da062b3cf39eaf07f01eec0927fd21e219d0af8bc0591
 
 WORKDIR /usr/share/nginx/html
 
-# تنظيف المجلد قبل النسخ
 RUN rm -rf ./*
 
-# نسخ الملفات المبنية من المرحلة الأولى
 COPY --from=builder  /app/dist /usr/share/nginx/html
 
-# نسخ إعدادات Nginx (اختياري)
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

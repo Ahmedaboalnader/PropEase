@@ -1,20 +1,16 @@
-version: 3.7
+version: "3.7"
 
 services:
 
   # DataBase Service
   database:
     image: adham00/sql-server:latest
-    container_name: database
     deploy:
-      replicas: 2
+      replicas: 1
       update_config:
         parallelism: 1
         delay: 10s
         failure_action: rollback
-      placement:
-        constraints: 
-          - 'node.role == worker'
       restart_policy:
         condition: on-failure
         delay: 10s 
@@ -22,25 +18,19 @@ services:
     env_file:
       - ./Database/.env
     volumes:
-      - type: volume
-        source: database-data
-        target: /var/opt/mssql/
+      - database-data:/var/opt/mssql/
     networks:
       - internal-network
    
   # BackEnd Service
   backend:
-    image: adham00/dotnet-server:latest
-    container_name: backend
+    image: adham00/dotnet-app:latest
     deploy:
-      replicas: 4
+      replicas: 2
       update_config:
         parallelism: 2
         delay: 10s
         failure_action: rollback
-      placement:
-        constraints: 
-          - 'node.role == worker'
       restart_policy:
         condition: on-failure
         delay: 10s 
@@ -50,10 +40,9 @@ services:
     
   # FrontEnd Service
   frontend:
-    image: adham00/web-server:latest
-    container_name: frontend
+    image: adham00/frontend:latest
     deploy:
-      mode: global # every node will have one container
+      replicas: 2
       update_config:
         parallelism: 1
         delay: 10s
@@ -68,22 +57,6 @@ services:
       - target: 80  
         published: 80
 
-  # Visualizer to Visual nodes and running containers
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8001:8080"
-    stop_grace_period: 1m30s
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      update_config:
-        failure_action: rollback
-      placement:
-        constraints:
-          - 'node.role == manager'        
-
-
 # Volume for Data of DataBase
 volumes: 
   database-data:
@@ -92,6 +65,3 @@ volumes:
 networks:
   internal-network:
     driver: overlay
-      driver_opts:
-        encrypted: 'yes'
-    
