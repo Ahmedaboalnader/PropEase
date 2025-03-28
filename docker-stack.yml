@@ -4,7 +4,7 @@ services:
 
   # DataBase Service
   database:
-    image: adham00/sql-server:latest
+    image: ahmedmostafa22/sql-server:latest
     deploy:
       replicas: 1
       update_config:
@@ -24,7 +24,7 @@ services:
    
   # BackEnd Service
   backend:
-    image: adham00/dotnet-app:latest
+    image: ahmedmostafa22/dotnet-app:latest
     deploy:
       replicas: 1
       update_config:
@@ -40,7 +40,7 @@ services:
     
   # FrontEnd Service
   frontend:
-    image: adham00/frontend:latest
+    image: ahmedmostafa22/frontend:latest
     deploy:
       replicas: 1
       update_config:
