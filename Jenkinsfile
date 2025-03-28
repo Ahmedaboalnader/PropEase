@@ -3,8 +3,11 @@ pipeline {
     environment {
         FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
         BACKEND_IMAGE = "ahmedmostafa22/propease-backend"
+        DATABASE_IMAGE = "ahmedmostafa22/sql-server"
         DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
         DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
+        DOCKER_HUB_REPO_DATABASE = "ahmedmostafa22/sql-server"
+        SERVER_IP = "51.20.6.97"
     }
 
     stages {
@@ -40,28 +43,29 @@ pipeline {
         }
 
         stage('Build Frontend') {
+            when { environment name: 'FRONTEND_CHANGED', value: 'true' }
             steps {
                 sh '''
                 echo "Building Frontend..."
                 cd Frontend || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
                 docker build -t $FRONTEND_IMAGE:latest -f Dockerfile . || exit 1
                 '''
             }
         }
 
         stage('Build Backend') {
+            when { environment name: 'BACKEND_CHANGED', value: 'true' }
             steps {
                 sh '''
                 echo "Building Backend..."
                 cd RealEstateAPI/RealEstateAPI || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
                 docker build -t $BACKEND_IMAGE:latest -f dockerfile . || exit 1
                 '''
             }
         }
 
         stage('Push Frontend Image') {
+            when { environment name: 'FRONTEND_CHANGED', value: 'true' }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
@@ -74,6 +78,7 @@ pipeline {
         }
 
         stage('Push Backend Image') {
+            when { environment name: 'BACKEND_CHANGED', value: 'true' }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
@@ -87,14 +92,21 @@ pipeline {
 
         stage('Deploy with Docker Stack') {
             steps {
-                
-                sh' docker stack deploy -c docker-stack.yml app'
+                sh '''
+                echo "Deploying stack..."
+                docker stack deploy -c docker-stack.yml app
+                '''
             }
         }
 
-        stage('Verify Deployment') {
+        stage('Health Check') {
             steps {
-                sh 'docker service ls'
+                script {
+                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' http://$SERVER_IP/health", returnStdout: true).trim()
+                    if (response != "200") {
+                        error("Health check failed! HTTP response: ${response}")
+                    }
+                }
             }
         }
     }
@@ -104,9 +116,12 @@ pipeline {
             sh 'sudo swapoff /swapfile || true'
         }
         success {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                 subject: "✅ تم نشر التطبيق بنجاح",
-                 body: "تم نشر التطبيق على: http://<SERVER_IP>"
+            script {
+                def version = sh(script: "docker inspect --format='{{index .RepoDigests 0}}' $FRONTEND_IMAGE", returnStdout: true).trim()
+                mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                     subject: "✅ تم نشر التطبيق بنجاح",
+                     body: "تم نشر التطبيق على: http://$SERVER_IP\n\nالإصدار الحالي: ${version}"
+            }
         }
         failure {
             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
