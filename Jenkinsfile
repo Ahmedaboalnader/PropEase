@@ -1,15 +1,18 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "propease-frontend"
-        DOCKER_HUB_REPO = "ahmedmostafa22/propease-frontend"
+        FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
+        BACKEND_IMAGE = "ahmedmostafa22/propease-backend"
+        DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
+        DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
     }
+
     stages {
         stage('Setup Swap') {
             steps {
                 sh '''
                 if [ ! -f /swapfile ]; then
-                    sudo fallocate -l 4G /swapfile
+                    sudo fallocate -l 8G /swapfile
                     sudo chmod 600 /swapfile
                     sudo mkswap /swapfile
                 fi
@@ -26,78 +29,90 @@ pipeline {
             }
         }
 
-        stage('Verify Files') {
+        stage('Detect Changes') {
             steps {
-                sh '''
-                echo "✅ التحقق من الملفات:"
-                ls -la Frontend/
-                echo "📦 التحقق من package.json:"
-                cat Frontend/package.json
-                '''
+                script {
+                    def changes = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim()
+                    env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
+                    env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
+                }
             }
         }
 
-        stage('Build Image') {
+        stage('Build Frontend') {
+            when { expression { return env.FRONTEND_CHANGED == "true" } }
             steps {
                 sh '''
                 cd Frontend
-                docker build \
-                    --memory=1.5g \
-                    --cpuset-cpus=0 \
-                    -t $IMAGE_NAME:latest .
+                docker build -t $FRONTEND_IMAGE:latest .
                 '''
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Build Backend') {
+            when { expression { return env.BACKEND_CHANGED == "true" } }
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerid',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
+                sh '''
+                cd RealEstateAPI
+                docker build -t $BACKEND_IMAGE:latest .
+                '''
+            }
+        }
+
+        stage('Push Frontend Image') {
+            when { expression { return env.FRONTEND_CHANGED == "true" } }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $IMAGE_NAME:latest $DOCKER_HUB_REPO:latest
-                    docker push $DOCKER_HUB_REPO:latest
+                    docker tag $FRONTEND_IMAGE:latest $DOCKER_HUB_REPO_FRONTEND:latest
+                    docker push $DOCKER_HUB_REPO_FRONTEND:latest
                     '''
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Push Backend Image') {
+            when { expression { return env.BACKEND_CHANGED == "true" } }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+                    docker tag $BACKEND_IMAGE:latest $DOCKER_HUB_REPO_BACKEND:latest
+                    docker push $DOCKER_HUB_REPO_BACKEND:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy with Docker Stack') {
             steps {
                 sh '''
-                # أوقف الحاوية إذا كانت تعمل
-                docker stop propease-frontend || true
-                docker rm propease-frontend || true
-                
-                # احذف أي حاوية تستخدم المنفذ 80
-                docker ps -q --filter "publish=80" | xargs -r docker stop | xargs -r docker rm
-                
-                # شغّل الحاوية الجديدة
-                docker run -d \
-                    --name propease-frontend \
-                    -p 80:80 \
-                    --restart unless-stopped \
-                    $DOCKER_HUB_REPO:latest
+                docker stack deploy -c docker-stack.yml propEaseStack
                 '''
             }
         }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'docker service ls'
+            }
+        }
     }
+
     post {
         always {
             sh 'sudo swapoff /swapfile || true'
         }
         success {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com, adhamayad000@gmail.com',
-                 subject: "✅ تم النشر بنجاح",
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                 subject: "✅ تم نشر التطبيق بنجاح",
                  body: "تم نشر التطبيق على: http://<SERVER_IP>"
         }
         failure {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com, adhamayad@gmail.com',
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
                  subject: "❌ فشل النشر",
                  body: "راجع السجلات: ${env.BUILD_URL}"
         }
     }
-}  // هذا القوس يغلق تعريف الـ pipeline
+}
