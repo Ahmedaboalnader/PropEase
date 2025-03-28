@@ -98,7 +98,7 @@ pipeline {
                 //     exit 1
                 // fi
                 // '''
-                sh' docker stack deploy -c docker-stack.yml'
+                sh' docker stack deploy -c docker-stack.yml app'
             }
         }
 
