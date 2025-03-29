@@ -1,151 +1,159 @@
 pipeline {
     agent any
     environment {
+        // Image configurations
         FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
         BACKEND_IMAGE = "ahmedmostafa22/propease-backend"
-        DATABASE_IMAGE = "ahmedmostafa22/sql-server"
-        DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
-        DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
-        DOCKER_HUB_REPO_DATABASE = "ahmedmostafa22/sql-server"
+        DOCKER_HUB_REPO = "ahmedmostafa22"
         SERVER_IP = "13.60.236.156"
-
+        
+        // Resource limits for t3.micro
+        SWAP_SIZE = "3G"
+        BUILD_MEMORY = "700m"
     }
 
     stages {
-        stage('Setup Swap') {
+        stage('Setup Server') {
             steps {
-                sh '''
-                if [ ! -f /swapfile ]; then
-                    sudo fallocate -l 8G /swapfile
-                    sudo chmod 600 /swapfile
-                    sudo mkswap /swapfile
-                fi
-                sudo swapon /swapfile || true
-                free -h
-                '''
+                sh """
+                # Configure swap memory
+                sudo fallocate -l ${SWAP_SIZE} /swapfile
+                sudo chmod 600 /swapfile
+                sudo mkswap /swapfile
+                sudo swapon /swapfile
+                
+                # Verify Docker
+                sudo systemctl start docker
+                """
             }
         }
 
-        stage('Clone Repository') {
+        stage('Clone Code') {
             steps {
                 git branch: 'main', 
-                url: 'https://github.com/Ahmedaboalnader/PropEase.git'
+                url: 'https://github.com/Ahmedaboalnader/PropEase.git',
+                poll: false
             }
         }
 
-        stage('Detect Changes') {
+        stage('Build Images') {
+            parallel {
+                stage('Build Frontend') {
+                    steps {
+                        sh """
+                        docker build \\
+                            --memory=${BUILD_MEMORY} \\
+                            -t ${FRONTEND_IMAGE}:latest \\
+                            -f Frontend/Dockerfile Frontend/
+                        """
+                    }
+                }
+                stage('Build Backend') {
+                    steps {
+                        sh """
+                        docker build \\
+                            --memory=${BUILD_MEMORY} \\
+                            -t ${BACKEND_IMAGE}:latest \\
+                            -f RealEstateAPI/RealEstateAPI/dockerfile RealEstateAPI/RealEstateAPI/
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerid',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh """
+                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                    
+                    # Tag and push frontend
+                    docker tag ${FRONTEND_IMAGE}:latest ${DOCKER_HUB_REPO}/propease-frontend:latest
+                    docker push ${DOCKER_HUB_REPO}/propease-frontend:latest
+                    
+                    # Tag and push backend
+                    docker tag ${BACKEND_IMAGE}:latest ${DOCKER_HUB_REPO}/propease-backend:latest
+                    docker push ${DOCKER_HUB_REPO}/propease-backend:latest
+                    """
+                }
+            }
+        }
+
+        stage('Deploy Stack') {
+            steps {
+                sh """
+                # Deploy using existing docker-stack.yml
+                docker stack deploy -c docker-stack.yml --with-registry-auth app
+                
+                # Verify deployment
+                echo "Current services:"
+                docker service ls
+                """
+            }
+        }
+
+        stage('Verify Health') {
             steps {
                 script {
-                    def changes = sh(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
-                    env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
-                    env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
+                    def healthy = false
+                    def maxRetries = 5
+                    
+                    for (int i = 1; i <= maxRetries; i++) {
+                        try {
+                            def status = sh(
+                                script: "curl -s -o /dev/null -w '%{http_code}' http://${SERVER_IP}/health",
+                                returnStdout: true
+                            ).trim()
+                            
+                            if (status == "200") {
+                                healthy = true
+                                break
+                            }
+                        } catch (Exception e) {
+                            echo "Attempt ${i}/${maxRetries} failed: ${e.message}"
+                        }
+                        sleep(time: 15, unit: 'SECONDS')
+                    }
+                    
+                    if (!healthy) {
+                        error("Health check failed after ${maxRetries} attempts")
+                    }
                 }
             }
         }
-
-        stage('Build Frontend') {
-            when { environment name: 'FRONTEND_CHANGED', value: 'true' }
-            steps {
-                sh '''
-                echo "Building Frontend..."
-                cd Frontend || exit 1
-                docker build -t $FRONTEND_IMAGE:latest -f Dockerfile . || exit 1
-                '''
-            }
-        }
-
-        stage('Build Backend') {
-            when { environment name: 'BACKEND_CHANGED', value: 'true' }
-            steps {
-                sh '''
-                echo "Building Backend..."
-                cd RealEstateAPI/RealEstateAPI || exit 1
-                docker build -t $BACKEND_IMAGE:latest -f dockerfile . || exit 1
-                '''
-            }
-        }
-
-        stage('Push Frontend Image') {
-            when { environment name: 'FRONTEND_CHANGED', value: 'true' }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $FRONTEND_IMAGE:latest $DOCKER_HUB_REPO_FRONTEND:latest
-                    docker push $DOCKER_HUB_REPO_FRONTEND:latest
-                    '''
-                }
-            }
-        }
-
-        stage('Push Backend Image') {
-            when { environment name: 'BACKEND_CHANGED', value: 'true' }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $BACKEND_IMAGE:latest $DOCKER_HUB_REPO_BACKEND:latest
-                    docker push $DOCKER_HUB_REPO_BACKEND:latest
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy with Docker Stack') {
-            steps {
-                sh '''
-                echo "Deploying stack..."
-                docker stack deploy -c docker-stack.yml app
-                '''
-            }
-        }
-
-        stage('Health Check') {
-    steps {
-        script {
-            def maxRetries = 5
-            def waitTime = 10 
-
-            for (int i = 0; i < maxRetries; i++) {
-                def response = sh(script: "curl -s -o /dev/null -w \"%{http_code}\" http://51.20.6.97/health", returnStdout: true).trim()
-                if (response == "200") {
-                    echo "✅ Health Check Passed!"
-                    return
-                }
-                echo "❌ Health Check failed! Retrying in ${waitTime} seconds..."
-                sleep(waitTime)
-            }
-            error("🚨 Health Check failed after ${maxRetries} retries!")
-        }
-    }
-}
-
     }
 
-   post {
-    always {
-        sh 'sudo swapoff /swapfile || true &'
+    post {
+        always {
+            sh """
+            docker logout || true
+            docker system prune -f || true
+            """
+        }
+        success {
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                 subject: "✅ Deployment Successful - ${currentBuild.number}",
+                 body: """
+                 Application deployed successfully!
+                 
+                 Frontend: ${FRONTEND_IMAGE}:latest
+                 Backend: ${BACKEND_IMAGE}:latest
+                 
+                 Access URL: http://${SERVER_IP}
+                 """
+        }
+        failure {
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                 subject: "❌ Deployment Failed - ${currentBuild.number}",
+                 body: """
+                 Deployment failed at stage: ${currentBuild.currentResult}
+                 
+                 Please check logs at: ${env.BUILD_URL}
+                 """
+        }
     }
-   success {
-    script {
-        def version = sh(script: "docker inspect --format='{{.RepoDigests}}' ahmedmostafa22/propease-frontend:latest | grep -o 'sha256:[^]]*'", returnStdout: true).trim()
-        mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-             subject: "✅ تم نشر التطبيق بنجاح",
-             body: """
-             🔹 **تم نشر التطبيق بنجاح! 🎉**
-             🔗 رابط التطبيق: http://$SERVER_IP
-             🏷️ رقم الإصدار: ${version}
-             """
-    }
-}
-    failure {
-        mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-             subject: "❌ فشل النشر",
-             body: """
-             ❌ **فشل نشر التطبيق!**
-             🔗 راجع السجلات: ${env.BUILD_URL}
-             """
-    }
-}
-
 }
