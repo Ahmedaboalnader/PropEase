@@ -7,7 +7,8 @@ pipeline {
         DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
         DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
         DOCKER_HUB_REPO_DATABASE = "ahmedmostafa22/sql-server"
-        SERVER_IP = "51.20.6.97"
+        SERVER_IP = "13.60.236.156"
+
     }
 
     stages {
