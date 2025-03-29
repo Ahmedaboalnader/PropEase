@@ -8,7 +8,7 @@ pipeline {
         SERVER_IP = "13.60.236.156"
         
         // Resource limits for t3.micro
-        SWAP_SIZE = "3G"
+        SWAP_SIZE = "8G"
         BUILD_MEMORY = "700m"
     }
 
