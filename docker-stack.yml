@@ -1,62 +1,61 @@
 version: "3.8"
 
 services:
+  # DataBase Service
   database:
     image: ahmedmostafa22/sql-server:latest
     deploy:
       replicas: 1
       update_config:
+        parallelism: 1
+        delay: 10s
         failure_action: rollback
       restart_policy:
         condition: on-failure
+        delay: 10s 
+        max_attempts: 3     
     env_file:
       - ./Database/.env
     volumes:
       - database-data:/var/opt/mssql/
     networks:
       - internal-network
-    healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "1433"]
-      interval: 30s
-      retries: 3
-      start_period: 10s
-      timeout: 5s
-
+   
+  # BackEnd Service
   backend:
     image: ahmedmostafa22/propease-backend:latest  
     deploy:
       replicas: 1
       update_config:
+        parallelism: 2
+        delay: 10s
         failure_action: rollback
       restart_policy:
         condition: on-failure
+        delay: 10s 
+        max_attempts: 3
     networks:
       - internal-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
-      interval: 30s
-      retries: 3
-      start_period: 10s
-      timeout: 5s
-
+    #ports:
+     # - "5000:80"  
+    
+  # FrontEnd Service
   frontend:
     image: ahmedmostafa22/propease-frontend:latest  
     deploy:
       replicas: 1
       update_config:
+        parallelism: 1
+        delay: 10s
         failure_action: rollback
       restart_policy:
         condition: on-failure
+        delay: 10s 
+        max_attempts: 3
     networks:
       - internal-network
     ports:
-      - "80:80"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
-      interval: 30s
-      retries: 3
-      start_period: 10s
-      timeout: 5s
+      - "80:80"  
 
 volumes: 
   database-data:
