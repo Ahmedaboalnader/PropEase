@@ -14,16 +14,37 @@ namespace RealEstateAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ≈÷«›… «· Õﬂ„ ›Ì «· ‰”Ìﬁ JSON
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            });
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
+
+
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
+            //  ﬂÊÌ‰ «·« ’«· »ﬁ«⁄œ… «·»Ì«‰« 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // ≈÷«›… «·Œœ„« 
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<EmailService>();
+            builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
+            builder.Services.AddScoped<IPropertySearchService, PropertySearchService>();
+            builder.Services.AddScoped<IPropertyService, PropertyService>();
+
+
 
             builder.Services.AddControllers();
 
+            // ≈⁄œ«œ«  JWT
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
@@ -41,13 +62,14 @@ namespace RealEstateAPI
                         ValidateLifetime = true,
                         ValidIssuer = jwtSettings["Issuer"],
                         ValidAudience = jwtSettings["Audience"],
-                        RoleClaimType = "role", // ≈÷«›… Â–« ·÷„«‰ «” Œ—«Ã «·√œÊ«— »‘ﬂ· ’ÕÌÕ
-                        NameClaimType = "name"  // ≈÷«›… Â–« ·÷„«‰ «” Œ—«Ã «·«”„ „‰ «· Êﬂ‰
+                        RoleClaimType = "role", // «” Œ—«Ã «·√œÊ«—
+                        NameClaimType = "name"  // «” Œ—«Ã «·«”„
                     };
                 });
 
             builder.Services.AddAuthorization();
 
+            // ≈÷«›… œ⁄„ Swagger ··‹ API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -79,19 +101,27 @@ namespace RealEstateAPI
 
             var app = builder.Build();
 
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+            
             app.UseHttpsRedirection();
 
+           
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllers(); //  √ﬂœ „‰ ≈÷«›… Â–Â «·”ÿ— »⁄œ Authorization
+           
+            app.MapControllers(); 
 
+           
+            app.UseStaticFiles();
+
+            //  ‘€Ì· «· ÿ»Ìﬁ
             app.Run();
         }
     }

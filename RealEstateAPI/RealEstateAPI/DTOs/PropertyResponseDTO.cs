@@ -7,6 +7,11 @@
         public string Description { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string Location { get; set; } = string.Empty;
+        public double Area { get; set; }
+        public int Rooms { get; set; }
+        public int Bathrooms { get; set; }
         public int UserId { get; set; }
+
+        public List<string> Images{ get; set; } = new();
     }
 }
