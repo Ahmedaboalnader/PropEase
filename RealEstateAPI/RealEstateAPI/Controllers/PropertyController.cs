@@ -15,64 +15,55 @@ public class PropertyController : ControllerBase
         _propertyService = propertyService;
     }
 
-    // ✅ إضافة عقار جديد
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateProperty([FromBody] CreatePropertyDTO propertyDto)
+    public async Task<IActionResult> Create([FromForm] CreatePropertyDTO dto)
     {
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        var newProperty = await _propertyService.CreateProperty(userId.Value, propertyDto);
-        return CreatedAtAction(nameof(GetAllProperties), newProperty);
+        var property = await _propertyService.CreateProperty(userId.Value, dto);
+        return Ok(property);
     }
 
-    // ✅ جلب جميع العقارات
     [HttpGet]
-    public async Task<IActionResult> GetAllProperties()
+    public async Task<IActionResult> GetAll()
     {
         var properties = await _propertyService.GetAllProperties();
         return Ok(properties);
     }
 
-    // ✅ تحديث العقار
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> UpdateProperty(int id, [FromBody] UpdatePropertyDTO propertyDto)
+    public async Task<IActionResult> Update(int id, [FromForm] UpdatePropertyDTO dto)
     {
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        var updatedProperty = await _propertyService.UpdateProperty(id, userId.Value, propertyDto);
-        if (updatedProperty == null) return NotFound();
+        var updated = await _propertyService.UpdateProperty(id, userId.Value, dto);
+        if (updated == null) return NotFound();
 
-        return Ok(updatedProperty);
+        return Ok(updated);
     }
 
-    // ✅ حذف العقار
     [HttpDelete("{id}")]
     [Authorize]
-    public async Task<IActionResult> DeleteProperty(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var userId = GetUserId();
         if (userId == null) return Unauthorized();
 
-        var isDeleted = await _propertyService.DeleteProperty(id, userId.Value);
-        if (!isDeleted) return NotFound();
+        var deleted = await _propertyService.DeleteProperty(id, userId.Value);
+        if (!deleted) return NotFound();
 
         return NoContent();
     }
 
-    // ✅ استخراج الـ UserId من الـ JWT Token
+
     private int? GetUserId()
     {
-        var userIdClaim = User.FindFirst("UserId")?.Value;
-
-        if (string.IsNullOrEmpty(userIdClaim))
-        {
-            userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-        }
-
-        return int.TryParse(userIdClaim, out int userId) ? userId : (int?)null;
+        var userIdClaim = User.FindFirst("UserId")?.Value
+                       ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return int.TryParse(userIdClaim, out int id) ? id : null;
     }
 }

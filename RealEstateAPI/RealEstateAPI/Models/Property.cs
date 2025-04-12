@@ -5,13 +5,12 @@ namespace RealEstateAPI.Models
 {
     public class Property
     {
-        [Key]
         public int Id { get; set; }
 
         [Required, MaxLength(255)]
         public string Title { get; set; } = string.Empty;
 
-        [Required, Column(TypeName = "text")]
+        [Required]
         public string Description { get; set; } = string.Empty;
 
         [Required]
@@ -22,9 +21,16 @@ namespace RealEstateAPI.Models
         public string Location { get; set; } = string.Empty;
 
         [Required]
-        [ForeignKey("User")]
+        public double Area { get; set; } 
+
+        [Required]
+        public int Rooms { get; set; } 
+
+        [Required]
+        public int Bathrooms { get; set; }
+
         public int UserId { get; set; }
 
-        public User User { get; set; } = null!;
+        public List<Image> Images { get; set; } = new();
     }
 }

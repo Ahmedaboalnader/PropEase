@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RealEstateAPI.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RealEstateAPI.Models
+public class Offer
 {
-    public class Offer
-    {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public double Amount { get; set; }
-        public int PropertyId { get; set; }
-        public Property Property { get; set; }
-        public int? UserId { get; set; }
-        public User? User { get; set; }
-    }
+    public int Id { get; set; }
+
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Amount { get; set; }
+
+    public int PropertyId { get; set; }
+    public Property Property { get; set; } = null!;
+
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 }

@@ -22,7 +22,7 @@ namespace RealEstateAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RealEstateAPI.Models.Image", b =>
+            modelBuilder.Entity("Offer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,35 +30,13 @@ namespace RealEstateAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("RealEstateAPI.Models.Offer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -70,6 +48,28 @@ namespace RealEstateAPI.Migrations
                     b.ToTable("Offers");
                 });
 
+            modelBuilder.Entity("RealEstateAPI.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("RealEstateAPI.Models.Property", b =>
                 {
                     b.Property<int>("Id")
@@ -78,27 +78,36 @@ namespace RealEstateAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Bathrooms")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Rooms")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Properties");
                 });
@@ -112,7 +121,8 @@ namespace RealEstateAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
@@ -120,7 +130,7 @@ namespace RealEstateAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -149,7 +159,8 @@ namespace RealEstateAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("OTP")
                         .HasColumnType("nvarchar(max)");
@@ -163,7 +174,8 @@ namespace RealEstateAPI.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -174,7 +186,7 @@ namespace RealEstateAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RealEstateAPI.Models.Image", b =>
+            modelBuilder.Entity("Offer", b =>
                 {
                     b.HasOne("RealEstateAPI.Models.Property", "Property")
                         .WithMany()
@@ -182,35 +194,26 @@ namespace RealEstateAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Property");
-                });
-
-            modelBuilder.Entity("RealEstateAPI.Models.Offer", b =>
-                {
-                    b.HasOne("RealEstateAPI.Models.Property", "Property")
-                        .WithMany()
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RealEstateAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Property");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RealEstateAPI.Models.Property", b =>
-                {
                     b.HasOne("RealEstateAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Property");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RealEstateAPI.Models.Image", b =>
+                {
+                    b.HasOne("RealEstateAPI.Models.Property", "Property")
+                        .WithMany("Images")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("RealEstateAPI.Models.Review", b =>
@@ -223,11 +226,18 @@ namespace RealEstateAPI.Migrations
 
                     b.HasOne("RealEstateAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Property");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RealEstateAPI.Models.Property", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

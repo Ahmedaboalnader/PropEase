@@ -42,7 +42,7 @@ namespace RealEstateAPI.Services
                     mail.AlternateViews.Add(plainTextView);
                     mail.AlternateViews.Add(htmlView);
 
-                    
+
                     mail.Headers.Add("X-Priority", "1");
                     mail.Headers.Add("X-MSMail-Priority", "High");
 
