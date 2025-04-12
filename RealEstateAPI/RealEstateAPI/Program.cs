@@ -41,8 +41,8 @@ namespace RealEstateAPI
                         ValidateLifetime = true,
                         ValidIssuer = jwtSettings["Issuer"],
                         ValidAudience = jwtSettings["Audience"],
-                        RoleClaimType = "role", // ≈÷«›… Â–« ·÷„«‰ «” Œ—«Ã «·√œÊ«— »‘ﬂ· ’ÕÌÕ
-                        NameClaimType = "name"  // ≈÷«›… Â–« ·÷„«‰ «” Œ—«Ã «·«”„ „‰ «· Êﬂ‰
+                        RoleClaimType = "role",
+                        NameClaimType = "name"
                     };
                 });
 
@@ -79,18 +79,16 @@ namespace RealEstateAPI
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            // ÿ™ŸÅÿπŸäŸÑ Swagger ŸÅŸä ÿ¨ŸÖŸäÿπ ÿßŸÑÿ®Ÿäÿ¶ÿßÿ™
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllers(); //  √ﬂœ „‰ ≈÷«›… Â–Â «·”ÿ— »⁄œ Authorization
+            app.MapControllers();
 
             app.Run();
         }
