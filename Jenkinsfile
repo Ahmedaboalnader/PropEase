@@ -37,7 +37,8 @@ pipeline {
         stage('Detect Changes') {
             steps {
                 script {
-                    def changes = sh(script: 'git diff --name-only HEAD~1 HEAD', returnStdout: true).trim()
+                   def changes = sh(script: 'git diff --name-only origin/main', returnStdout: true).trim()
+
                     env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
                     env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
                 }
