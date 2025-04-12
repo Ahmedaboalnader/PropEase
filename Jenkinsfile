@@ -22,12 +22,17 @@ pipeline {
             }
         }
 
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', 
-                url: 'https://github.com/Ahmedaboalnader/PropEase.git'
-            }
-        }
+       stage('Clone Repository') {
+    steps {
+        deleteDir()
+        sh '''
+        git clone https://github.com/Ahmedaboalnader/PropEase.git .
+        git fetch --all
+        git reset --hard origin/main
+        '''
+    }
+}
+
 
         stage('Detect Changes') {
             steps {
@@ -99,19 +104,19 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            sh 'sudo swapoff /swapfile || true'
-        }
-        success {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                 subject: "✅ تم نشر التطبيق بنجاح",
-                 body: "تم نشر التطبيق على: http://13.60.236.156/"
-        }
-        failure {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                 subject: "❌ فشل النشر",
-                 body: "راجع السجلات: ${env.BUILD_URL}"
-        }
-    }
+    // post {
+    //     always {
+    //         sh 'sudo swapoff /swapfile || true'
+    //     }
+    //     success {
+    //         mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+    //              subject: "✅ تم نشر التطبيق بنجاح",
+    //              body: "تم نشر التطبيق على: http://13.60.236.156/"
+    //     }
+    //     failure {
+    //         mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+    //              subject: "❌ فشل النشر",
+    //              body: "راجع السجلات: ${env.BUILD_URL}"
+    //     }
+    // }
 }
