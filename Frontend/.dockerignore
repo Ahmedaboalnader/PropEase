@@ -1,0 +1,5 @@
+echo "node_modules
+.git
+dist
+*.log
+.DS_Store" > Frontend/.dockerignore
