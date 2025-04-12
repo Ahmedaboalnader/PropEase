@@ -106,7 +106,7 @@ pipeline {
         success {
             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
                  subject: "✅ تم نشر التطبيق بنجاح",
-                 body: "تم نشر التطبيق على: http://<SERVER_IP>"
+                 body: "تم نشر التطبيق على: http://13.60.236.156/"
         }
         failure {
             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
