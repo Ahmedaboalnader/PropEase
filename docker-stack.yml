@@ -2,24 +2,24 @@ version: "3.8"
 
 services:
   # DataBase Service
-  database:
-    image: ahmedmostafa22/sql-server:latest
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 10s
-        failure_action: rollback
-      restart_policy:
-        condition: on-failure
-        delay: 10s 
-        max_attempts: 3     
-    env_file:
-      - ./Database/.env
-    volumes:
-      - database-data:/var/opt/mssql/
-    networks:
-      - internal-network
+  #database:
+   # image: ahmedmostafa22/sql-server:latest
+   # deploy:
+    #  replicas: 1
+     # update_config:
+      #  parallelism: 1
+       # delay: 10s
+        #failure_action: rollback
+      #restart_policy:
+       # condition: on-failure
+        #delay: 10s 
+        #max_attempts: 3     
+    #env_file:
+     #3 - ./Database/.env
+    #volumes:
+      #- database-data:/var/opt/mssql/
+   # networks:
+    #  - internal-network
    
   # BackEnd Service
   backend:
