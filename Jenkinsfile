@@ -1,12 +1,11 @@
 pipeline {
     agent any
+
     environment {
         FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
         BACKEND_IMAGE = "ahmedmostafa22/propease-backend"
         DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
         DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
-        FRONTEND_VERSION = "v${BUILD_NUMBER}"  
-        BACKEND_VERSION = "v${BUILD_NUMBER}"   
     }
 
     stages {
@@ -38,7 +37,8 @@ pipeline {
         stage('Detect Changes') {
             steps {
                 script {
-                   def changes = sh(script: 'git diff --name-only origin/main', returnStdout: true).trim()
+                    def changes = sh(script: 'git diff --name-only origin/main', returnStdout: true).trim()
+
                     env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
                     env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
                 }
@@ -53,7 +53,8 @@ pipeline {
                 sh '''
                 echo "Building Frontend..."
                 cd Frontend || exit 1
-                docker build -t $FRONTEND_IMAGE:$FRONTEND_VERSION -f Dockerfile . || exit 1
+                ls -lah  # Debugging: عرض الملفات في المسار
+                docker build -t $FRONTEND_IMAGE:$BUILD_NUMBER -f Dockerfile . || exit 1
                 '''
             }
         }
@@ -66,7 +67,8 @@ pipeline {
                 sh '''
                 echo "Building Backend..."
                 cd RealEstateAPI/RealEstateAPI || exit 1
-                docker build -t $BACKEND_IMAGE:$BACKEND_VERSION -f dockerfile . || exit 1
+                ls -lah  # Debugging: عرض الملفات في المسار
+                docker build -t $BACKEND_IMAGE:$BUILD_NUMBER -f dockerfile . || exit 1
                 '''
             }
         }
@@ -79,8 +81,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $FRONTEND_IMAGE:$FRONTEND_VERSION $DOCKER_HUB_REPO_FRONTEND:$FRONTEND_VERSION
-                    docker push $DOCKER_HUB_REPO_FRONTEND:$FRONTEND_VERSION
+                    docker tag $FRONTEND_IMAGE:$BUILD_NUMBER $DOCKER_HUB_REPO_FRONTEND:$BUILD_NUMBER
+                    docker push $DOCKER_HUB_REPO_FRONTEND:$BUILD_NUMBER
                     '''
                 }
             }
@@ -94,8 +96,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $BACKEND_IMAGE:$BACKEND_VERSION $DOCKER_HUB_REPO_BACKEND:$BACKEND_VERSION
-                    docker push $DOCKER_HUB_REPO_BACKEND:$BACKEND_VERSION
+                    docker tag $BACKEND_IMAGE:$BUILD_NUMBER $DOCKER_HUB_REPO_BACKEND:$BUILD_NUMBER
+                    docker push $DOCKER_HUB_REPO_BACKEND:$BUILD_NUMBER
                     '''
                 }
             }
@@ -103,6 +105,7 @@ pipeline {
 
         stage('Deploy with Docker Stack') {
             steps {
+                echo "Deploying with Docker Stack"
                 sh '''
                 docker stack deploy -c docker-stack.yml app
                 '''
