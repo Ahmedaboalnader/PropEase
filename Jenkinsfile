@@ -5,6 +5,8 @@ pipeline {
         BACKEND_IMAGE = "ahmedmostafa22/propease-backend"
         DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/propease-frontend"
         DOCKER_HUB_REPO_BACKEND = "ahmedmostafa22/propease-backend"
+        FRONTEND_VERSION = "v${BUILD_NUMBER}"  
+        BACKEND_VERSION = "v${BUILD_NUMBER}"   
     }
 
     stages {
@@ -22,23 +24,21 @@ pipeline {
             }
         }
 
-       stage('Clone Repository') {
-    steps {
-        deleteDir()
-        sh '''
-        git clone https://github.com/Ahmedaboalnader/PropEase.git .
-        git fetch --all
-        git reset --hard origin/main
-        '''
-    }
-}
-
+        stage('Clone Repository') {
+            steps {
+                deleteDir()
+                sh '''
+                git clone https://github.com/Ahmedaboalnader/PropEase.git .
+                git fetch --all
+                git reset --hard origin/main
+                '''
+            }
+        }
 
         stage('Detect Changes') {
             steps {
                 script {
                    def changes = sh(script: 'git diff --name-only origin/main', returnStdout: true).trim()
-
                     env.FRONTEND_CHANGED = changes.contains("Frontend/") ? "true" : "false"
                     env.BACKEND_CHANGED = changes.contains("RealEstateAPI/") ? "true" : "false"
                 }
@@ -46,46 +46,56 @@ pipeline {
         }
 
         stage('Build Frontend') {
+            when {
+                expression { return env.FRONTEND_CHANGED == "true" }
+            }
             steps {
                 sh '''
                 echo "Building Frontend..."
                 cd Frontend || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
-                docker build -t $FRONTEND_IMAGE:latest -f Dockerfile . || exit 1
+                docker build -t $FRONTEND_IMAGE:$FRONTEND_VERSION -f Dockerfile . || exit 1
                 '''
             }
         }
 
         stage('Build Backend') {
+            when {
+                expression { return env.BACKEND_CHANGED == "true" }
+            }
             steps {
                 sh '''
                 echo "Building Backend..."
                 cd RealEstateAPI/RealEstateAPI || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
-                docker build -t $BACKEND_IMAGE:latest -f dockerfile . || exit 1
+                docker build -t $BACKEND_IMAGE:$BACKEND_VERSION -f dockerfile . || exit 1
                 '''
             }
         }
 
         stage('Push Frontend Image') {
+            when {
+                expression { return env.FRONTEND_CHANGED == "true" }
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $FRONTEND_IMAGE:latest $DOCKER_HUB_REPO_FRONTEND:latest
-                    docker push $DOCKER_HUB_REPO_FRONTEND:latest
+                    docker tag $FRONTEND_IMAGE:$FRONTEND_VERSION $DOCKER_HUB_REPO_FRONTEND:$FRONTEND_VERSION
+                    docker push $DOCKER_HUB_REPO_FRONTEND:$FRONTEND_VERSION
                     '''
                 }
             }
         }
 
         stage('Push Backend Image') {
+            when {
+                expression { return env.BACKEND_CHANGED == "true" }
+            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
                     docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $BACKEND_IMAGE:latest $DOCKER_HUB_REPO_BACKEND:latest
-                    docker push $DOCKER_HUB_REPO_BACKEND:latest
+                    docker tag $BACKEND_IMAGE:$BACKEND_VERSION $DOCKER_HUB_REPO_BACKEND:$BACKEND_VERSION
+                    docker push $DOCKER_HUB_REPO_BACKEND:$BACKEND_VERSION
                     '''
                 }
             }
@@ -93,8 +103,9 @@ pipeline {
 
         stage('Deploy with Docker Stack') {
             steps {
-                
-                sh' docker stack deploy -c docker-stack.yml app'
+                sh '''
+                docker stack deploy -c docker-stack.yml app
+                '''
             }
         }
 
@@ -106,9 +117,6 @@ pipeline {
     }
 
     post {
-        // always {
-        //     sh 'sudo swapoff /swapfile || true'
-        // }
         success {
             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
                  subject: "✅ تم نشر التطبيق بنجاح",
