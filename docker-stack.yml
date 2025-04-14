@@ -37,8 +37,8 @@ services:
         max_attempts: 3
     networks:
       - internal-network
-    ports:
-      - "5000:80"  
+    #ports:
+      #- "5000:80"  
     
   # FrontEnd Service
   frontend:
