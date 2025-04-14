@@ -4920,11 +4920,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+      "projectUniqueName": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
       "projectName": "RealEstateAPI",
-      "projectPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+      "projectPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
       "packagesPath": "C:\\Users\\mshar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\obj\\",
+      "outputPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mshar\\AppData\\Roaming\\NuGet\\NuGet.Config",
