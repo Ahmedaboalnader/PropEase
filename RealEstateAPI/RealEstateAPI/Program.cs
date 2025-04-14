@@ -14,25 +14,28 @@ namespace RealEstateAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ≈÷«›… «· Õﬂ„ ›Ì «· ‰”Ìﬁ JSON
+            // JSON Config
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             });
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // CORS („› ÊÕ ··›—Ê‰   „«„«)
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
-            builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
-
-
-            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-            //  ﬂÊÌ‰ «·« ’«· »ﬁ«⁄œ… «·»Ì«‰« 
+            // DB Context
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // ≈÷«›… «·Œœ„« 
+            // Services
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<EmailService>();
             builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
@@ -42,9 +45,9 @@ namespace RealEstateAPI
 
 
 
-            builder.Services.AddControllers();
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            // ≈⁄œ«œ«  JWT
+            // JWT
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
@@ -62,14 +65,14 @@ namespace RealEstateAPI
                         ValidateLifetime = true,
                         ValidIssuer = jwtSettings["Issuer"],
                         ValidAudience = jwtSettings["Audience"],
-                        RoleClaimType = "role", // «” Œ—«Ã «·√œÊ«—
-                        NameClaimType = "name"  // «” Œ—«Ã «·«”„
+                        RoleClaimType = "role",
+                        NameClaimType = "name"
                     };
                 });
 
             builder.Services.AddAuthorization();
 
-            // ≈÷«›… œ⁄„ Swagger ··‹ API
+     
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -101,27 +104,29 @@ namespace RealEstateAPI
 
             var app = builder.Build();
 
+          
             if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-
-
             app.UseHttpsRedirection();
 
+          
+            app.UseCors("AllowAll");
+
+           
+            app.UseStaticFiles();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
             app.MapControllers();
 
 
             app.UseStaticFiles();
 
-            //  ‘€Ì· «· ÿ»Ìﬁ
+        
             app.Run();
         }
     }
