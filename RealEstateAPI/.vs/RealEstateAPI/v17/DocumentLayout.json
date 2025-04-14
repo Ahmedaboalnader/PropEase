@@ -135,11 +135,15 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
               "$type": "Document",
@@ -151,8 +155,7 @@
               "RelativeToolTip": "RealEstateAPI\\Models\\Image.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:24:46.841Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-12T12:24:46.841Z"
             },
             {
               "$type": "Document",
@@ -188,8 +191,7 @@
               "RelativeToolTip": "RealEstateAPI\\Program.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAAwEYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:23:18.144Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-12T12:23:18.144Z"
             },
             {
               "$type": "Document",
@@ -201,8 +203,7 @@
               "RelativeToolTip": "RealEstateAPI\\Data\\AppDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T12:22:34.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-12T12:22:34.145Z"
             },
             {
               "$type": "Document",
@@ -212,10 +213,14 @@
               "RelativeDocumentMoniker": "RealEstateAPI\\appsettings.json",
               "ToolTip": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\appsettings.json",
               "RelativeToolTip": "RealEstateAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-03-12T12:23:00.783Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Document",
@@ -240,14 +245,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-12T20:31:05.868Z"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
               "$type": "Document",
