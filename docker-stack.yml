@@ -23,7 +23,7 @@ services:
    
   # BackEnd Service
   backend:
-     image: ahmedmostafa22/propease-backend:latest  
+    image: ahmedmostafa22/propease-backend:latest  
        # image: ahmedmostafa22/propease-backend:${BUILD_NUMBER}  
     deploy:
       replicas: 1
@@ -37,8 +37,8 @@ services:
         max_attempts: 3
     networks:
       - internal-network
-    #ports:
-     # - "5000:80"  
+    ports:
+      - "5000:80"  
     
   # FrontEnd Service
   frontend:
