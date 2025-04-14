@@ -16,7 +16,7 @@ import Image4 from "../../assets/heroo.svg";
 const propertyFilters = ["All Properties", "For Sale", "For Rent"];
 
 const Hero = () => {
-    const words = ["Find", "Your", "Perfect", "Home!"];
+    const words = ["Find", "Your", "Perfect", "Home"];
 
     return (
         <div className="relative h-[90vh] border-b-[15px] border-main overflow-hidden ">
