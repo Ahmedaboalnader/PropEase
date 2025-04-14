@@ -14,13 +14,13 @@ namespace RealEstateAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // JSON Config
+            
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             });
 
-            // CORS (ãÝÊæÍ ááÝÑæäÊ ÊãÇãðÇ)
+            
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
@@ -31,11 +31,11 @@ namespace RealEstateAPI
                 });
             });
 
-            // DB Context
+            
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+              
 
-            // Services
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<EmailService>();
             builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
@@ -47,7 +47,7 @@ namespace RealEstateAPI
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            // JWT
+           
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
