@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RealEstateAPI.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders; 
+using System.IO;
 
 namespace RealEstateAPI
 {
@@ -15,20 +17,21 @@ namespace RealEstateAPI
             var builder = WebApplication.CreateBuilder(args);
 
             
-            builder.Services.AddControllers().AddJsonOptions(options =>
+            builder.Services.AddCors(options =>
             {
-                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
             });
 
             
-            builder.Services.AddCors(options =>
+            builder.Services.AddControllers().AddJsonOptions(options =>
             {
-                options.AddPolicy("AllowFrontend", policy =>
-                {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                });
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
             });
 
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -38,11 +41,11 @@ namespace RealEstateAPI
 
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            
+           
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-           
+            
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<EmailService>();
             builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
@@ -52,7 +55,7 @@ namespace RealEstateAPI
 
             builder.Services.AddControllers();
 
-           
+       
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
@@ -71,13 +74,13 @@ namespace RealEstateAPI
                         ValidIssuer = jwtSettings["Issuer"],
                         ValidAudience = jwtSettings["Audience"],
                         RoleClaimType = "role",
-                        NameClaimType = "name"  
+                        NameClaimType = "name"
                     };
                 });
 
             builder.Services.AddAuthorization();
 
-         
+           
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -109,25 +112,30 @@ namespace RealEstateAPI
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
-
-            app.UseCors("AllowFrontend");
-
-            
-            app.UseStaticFiles();
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
 
+            app.UseStaticFiles();
+
            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+                RequestPath = ""
+            });
+
             app.Run();
         }
     }
