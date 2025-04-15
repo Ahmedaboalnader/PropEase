@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Text, Group } from '@mantine/core';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AuthFormLayout from '../AuthComponents/AuthFormLayout';
 import FormInput from '../Forms/FormInput';
 import PasswordInput from '../Forms/PasswordInput';
@@ -11,15 +11,17 @@ import { LuUserRound } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
+import { useRegisterMutation } from '../../Store/Auth/authApi';
 
 const Signup = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const [register, { isLoading: isLoadingSignup }] = useRegisterMutation();
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
@@ -30,10 +32,14 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
-  };
+  const onSubmit = async (data) => {
+    try {
+      await register(data).unwrap();
+      reset();
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };  
 
   return (
     <AuthFormLayout
@@ -82,10 +88,13 @@ const Signup = () => {
 
           <Button
             type="submit"
-            className="!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
-            onClick={() => {navigate('/verfication')}}
+            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
+              ${(isLoadingSignup || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+            loading={isLoadingSignup}
+            disabled={isLoadingSignup || !isValid}
+            loaderProps={{ color: 'white', size: 'sm', variant: 'dots' }}
           >
-            Sign In
+            Sign Up
           </Button>
         </form>
 

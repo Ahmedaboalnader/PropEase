@@ -6,7 +6,7 @@ import ScrollToTopButton from '../Components/ScrollToTopButton';
 // Lazy loaded pages
 const Home = lazy(() => import('../Pages/Home/Home'));
 const Properties = lazy(() => import('../Pages/Properties/Properties'));
-const Services = lazy(() => import('../Pages/Services/Services'));
+const PropertyDetails = lazy(() => import('../Pages/Properties/PropertyDetails/PropertyDetails'));
 const Contact = lazy(() => import('../Pages/Contact/Contact'));
 const Login = lazy(() => import('../Auth/Login/Login'));
 const Signup = lazy(() => import('../Auth/Signup/Signup'));
@@ -39,10 +39,10 @@ function Routers() {
                         }
                     />
                     <Route
-                        path="/services"
+                        path="/property/details"
                         element={
                             <Suspense fallback={<Loading />}>
-                                <Services />
+                                <PropertyDetails />
                             </Suspense>
                         }
                     />

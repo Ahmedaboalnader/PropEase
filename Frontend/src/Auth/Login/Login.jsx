@@ -11,15 +11,17 @@ import RememberMe from './RememberMe';
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
+import { useLoginMutation } from '../../Store/Auth/authApi';
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState('email');
+  const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(LoginSchema(activeTab)), 
     defaultValues: {
@@ -29,16 +31,20 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    const submissionData = { ...data };
-    if (activeTab === 'email') {
-      delete submissionData.phone; 
-    } else {
-      delete submissionData.email; 
-    }
+  const onSubmit = async (data) => {
+    try {
+      const submissionData = { ...data };
+      if (activeTab === 'email') {
+        delete submissionData.phone;
+      } else {
+        delete submissionData.email;
+      }
 
-    console.log(submissionData); 
-    reset();
+      await login(submissionData).unwrap();
+      reset();
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 
   return (
@@ -104,7 +110,11 @@ const Login = () => {
 
           <Button
             type="submit"
-            className="!text-white !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
+            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
+              ${(isLoadingLogin || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+            loading={isLoadingLogin}
+            disabled={isLoadingLogin || !isValid}
+            loaderProps={{ color: 'white', size: 'sm', variant: 'dots' }}
           >
             Login
           </Button>

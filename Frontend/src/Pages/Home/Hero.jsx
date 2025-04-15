@@ -25,8 +25,8 @@ const Hero = () => {
             <Swiper
                 modules={[Autoplay, EffectFade]}
                 effect="fade"
-                autoplay={{ delay: 5000, disableOnInteraction: false }}
-                speed={1200}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                speed={1500}
                 loop
                 className="absolute inset-0 w-full h-full"
             >
