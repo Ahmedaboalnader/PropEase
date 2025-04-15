@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Button, Group, Text, Popover, Burger, Stack } from '@mantine/core';
+import { Button, Group, Text, Burger, Stack } from '@mantine/core';
 import logo from '../assets/logo.svg';
 import { motion } from "framer-motion";
 import { useState } from 'react';
@@ -11,7 +11,6 @@ export default function Header() {
     const navItems = [
         { name: 'Home', path: '/home' },
         { name: 'Properties', path: '/properties' },
-        { name: 'Services', path: '/services' },
         { name: 'Contact us', path: '/contact' },
     ];
 
@@ -29,7 +28,7 @@ export default function Header() {
             </motion.div>
 
             {/* Desktop Navigation */}
-            <Group className="!hidden md:!flex !space-x-3">
+            <Group className="!hidden md:!flex ">
                 {navItems?.map((item) => (
                 <Link
                     key={item?.path}
@@ -115,7 +114,6 @@ export default function Header() {
                         </Link>
                         ))}
                     </Stack>
-
 
                 </motion.div>
             )}
