@@ -50,7 +50,7 @@ pipeline {
                 sh '''
                 echo "Building Frontend..."
                 cd Frontend || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
+                ls -lah  
                 docker build -t $FRONTEND_IMAGE:latest -f Dockerfile . || exit 1
                 '''
             }
@@ -61,7 +61,7 @@ pipeline {
                 sh '''
                 echo "Building Backend..."
                 cd RealEstateAPI/RealEstateAPI || exit 1
-                ls -lah  # Debugging: عرض الملفات في المسار
+                ls -lah  
                 docker build -t $BACKEND_IMAGE:latest -f dockerfile . || exit 1
                 '''
             }
