@@ -2,4 +2,5 @@ echo "node_modules
 .git
 dist
 *.log
+*.tmp
 .DS_Store" > Frontend/.dockerignore
