@@ -1,32 +1,38 @@
-# مرحلة البناء
+# المرحلة الأولى: البناء باستخدام Node.js
 FROM node:20-slim AS builder
 
-# تثبيت الأدوات المطلوبة للبناء (خصوصًا إذا كنت بتبني مكتبات native)
+# ضبط الحد الأقصى للذاكرة لـ Node.js
+ENV NODE_OPTIONS=--max-old-space-size=1024
+
+# تثبيت الأدوات اللازمة للبناء
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
+# تعيين الدليل للعمل داخل الحاوية
 WORKDIR /app
 
-# نسخ ملفات الـ package فقط أولًا للاستفادة من الكاش
+# نسخ الملفات اللازمة للتثبيت
 COPY package*.json ./
 
-# تثبيت الحزم
+# تثبيت التبعيات
 RUN npm install --legacy-peer-deps
 
 # نسخ باقي الملفات وبناء المشروع
 COPY . .
+
+# تشغيل البناء
 RUN npm run build
 
-# المرحلة النهائية: سيرفر NGINX خفيف
+# المرحلة الثانية: استخدام NGINX لعرض التطبيق
 FROM nginx:alpine
 
-# مسح ملفات HTML الافتراضية
+# إزالة ملفات الـ NGINX الافتراضية
 RUN rm -rf /usr/share/nginx/html/*
 
-# نسخ ملفات البناء من المرحلة الأولى
+# نسخ الملفات المبنية من المرحلة الأولى
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# نسخ إعدادات NGINX المخصصة (لو عندك ملف default.conf)
-COPY default.conf /etc/nginx/conf.d/default.conf
-
+# فتح المنفذ 80
 EXPOSE 80
+
+# تشغيل NGINX
 CMD ["nginx", "-g", "daemon off;"]
