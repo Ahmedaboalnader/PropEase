@@ -11,7 +11,8 @@ export default {
         hover: "#0c332e",
         yellowCustom:"#E7C873",
         bg:"#FFF8F6",
-        text: "#769F7D"
+        text: "#769F7D",
+        logout: "#AE2E2E",
       },
     },
   },

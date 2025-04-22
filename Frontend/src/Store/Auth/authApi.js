@@ -1,5 +1,4 @@
 import { baseApi } from '../baseApi';
-import { showNotification } from '../../utils/notification';
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -9,14 +8,6 @@ export const authApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: userData,
             }),
-            async onQueryStarted(_, { queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                    showNotification.success('Registration successful! Please verify your email.');
-                } catch (error) {
-                    showNotification.error(error.data?.message || 'Registration failed');
-                }
-            },
         }),
 
         login: builder.mutation({
@@ -25,20 +16,38 @@ export const authApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: credentials,
             }),
-            async onQueryStarted(_, { queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                    showNotification.success('Login successful!');
-                } catch (error) {
-                    showNotification.error(error.data?.message || 'Login failed');
-                }
-            },
         }),
         
+        verify: builder.mutation({
+            query: (credentials) => ({
+                url: '/auth/verify-otp',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
+
+        forgotPassword: builder.mutation({
+            query: (credentials) => ({
+                url: '/auth/forgot-password',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
+
+        resetPassword: builder.mutation({
+            query: (credentials) => ({
+                url: '/auth/forgot-password',
+                method: 'POST',
+                body: credentials,
+            }),
+        }),
     }),
 });
 
 export const {
     useRegisterMutation,
     useLoginMutation,
+    useVerifyMutation,
+    useForgotPasswordMutation,
+    useResetPasswordMutation,
 } = authApi;
