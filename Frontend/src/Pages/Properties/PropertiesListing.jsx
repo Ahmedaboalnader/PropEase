@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import SharedCard from '../../Components/SharedCard';
 import { SimpleGrid, Container, Pagination, Center } from '@mantine/core';
 
-const PropertiesListing = ({data}) => {
+const PropertiesListing = ({data, offers}) => {
     const navigate = useNavigate();
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +28,7 @@ const PropertiesListing = ({data}) => {
                         key={property.id} 
                         property={property}
                         onClick={() => handleCardClick(property.id)}
+                        offers={offers}
                     />
                 ))}
             </SimpleGrid>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Text, Group } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthFormLayout from '../AuthComponents/AuthFormLayout';
 import FormInput from '../Forms/FormInput';
 import PasswordInput from '../Forms/PasswordInput';
@@ -12,10 +12,14 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
 import { useRegisterMutation } from '../../Store/Auth/authApi';
+import { showNotification } from '../../utils/notification';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../Store/Auth/authSlice';
 
 const Signup = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [register, { isLoading: isLoadingSignup }] = useRegisterMutation();
+  const dispatch = useDispatch();
 
   const {
     control,
@@ -25,21 +29,43 @@ const Signup = () => {
   } = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
-      userName: '',
+      Name: '',
       email: '',
-      phone: '',
+      PhoneNumber: '',
       password: '',
     },
   });
 
   const onSubmit = async (data) => {
     try {
-      await register(data).unwrap();
+      const response = await register(data).unwrap();
+      
+      // Store auth data in Redux and cookies
+      dispatch(setCredentials({
+          user: response?.user,
+          accessToken: response?.accessToken,
+          refreshToken: response?.refreshToken
+      }));
+
       reset();
+      showNotification.success(response?.message || 'Registration successful');
+      navigate('/verfication', { 
+          state: { 
+              email: data?.email,
+              phoneNumber: data?.PhoneNumber,
+              fromLogin: false
+          } 
+      });
     } catch (error) {
       console.log("Error", error);
+      if (error.data?.message === "Email is already registered.") {
+        showNotification.info('Email already exists, please login');
+        navigate('/login');
+      } else {
+        showNotification.error(error.data?.message || 'Registration failed');
+      }
     }
-  };  
+  };
 
   return (
     <AuthFormLayout
@@ -56,9 +82,9 @@ const Signup = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 w-full">
           <FormInput
             control={control}
-            name="userName"
+            name="Name"
             placeholder="User Name"
-            error={errors.userName?.message}
+            error={errors.Name?.message}
             icon={<LuUserRound color='black'/>}
           />
 
@@ -72,9 +98,9 @@ const Signup = () => {
 
           <FormInput
             control={control}
-            name="phone"
+            name="PhoneNumber"
             placeholder="Phone"
-            error={errors.phone?.message}
+            error={errors.PhoneNumber?.message}
             icon={<FaPhoneAlt color='black'/>}
           />
 
@@ -92,7 +118,7 @@ const Signup = () => {
               ${(isLoadingSignup || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
             loading={isLoadingSignup}
             disabled={isLoadingSignup || !isValid}
-            loaderProps={{ color: 'white', size: 'sm', variant: 'dots' }}
+            loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
           >
             Sign Up
           </Button>

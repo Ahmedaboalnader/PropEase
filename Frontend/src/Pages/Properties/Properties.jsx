@@ -1,9 +1,9 @@
 import React from 'react'
 import Header from '../../Header/Header'
 import Footer from '../../Footer/Footer'
-import Filter from './Filter'
 import PropertiesListing from './PropertiesListing'
 import rent1 from '../../assets/rent1.png';
+import Filter from '../../Components/Filter';
 
 const generateProperties = (count) => {
   const properties = [];

@@ -7,14 +7,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ResetPasswordSchema } from '../ValidationSchema';
 import PasswordInput from '../Forms/PasswordInput';
 import { BsShieldLock } from "react-icons/bs";
+import { useResetPasswordMutation } from '../../Store/Auth/authApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { showNotification } from '../../utils/notification';
 
 const ResetPassword = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const email = location.state?.email;
+    const otp = location.state?.otp;
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
+
     const {
         control,
         handleSubmit,
         reset,
-        formState: { errors },
-        } = useForm({
+        formState: { errors, isValid },
+    } = useForm({
         resolver: yupResolver(ResetPasswordSchema),
         defaultValues: {
             password: '',
@@ -22,9 +31,21 @@ const ResetPassword = () => {
         },
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        reset();
+    const onSubmit = async (data) => {
+        try {
+            await resetPassword({
+                email,
+                otp,
+                newPassword: data.password,
+                confirmPassword: data.confirmPassword
+            }).unwrap();
+            
+            reset();
+            showNotification.success('Password reset successful');
+            navigate('/login');
+        } catch (error) {
+            showNotification.error(error.data?.message || 'Password reset failed');
+        }
     };
 
     return (
@@ -58,9 +79,13 @@ const ResetPassword = () => {
 
                 <Button
                     type="submit"
-                    className="!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
+                    className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8
+                        ${(isLoading || !isValid) ? '!opacity-50 !cursor-not-allowed' : ''}`}
+                    loading={isLoading}
+                    disabled={isLoading || !isValid}
+                    loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
                 >
-                    Confirm
+                    Reset Password
                 </Button>
             </form>
 

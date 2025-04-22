@@ -69,13 +69,13 @@ const WorkWithUs = () => {
                 </div>
 
                 {/* Button */}
-                <motion.button
+                {/* <motion.button
                     className="bg-main text-white hover:bg-hover rounded-2xl font-semibold py-3 px-6 flex justify-center items-center gap-1.5 w-fit tracking-widest transition-all duration-700 ease-in-out shadow-lg hover:shadow-2xl"
                     whileHover={{ scale: 1.05 }}
                 >
                     Learn More
                     <GoArrowRight size={20} className="mt-1" />
-                </motion.button>
+                </motion.button> */}
             </motion.div>
         </div>
     );
