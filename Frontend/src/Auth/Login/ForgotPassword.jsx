@@ -7,23 +7,41 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ForgotPasswordSchema } from '../ValidationSchema';
 import { MdOutlineMail } from "react-icons/md";
+import { useForgotPasswordMutation } from '../../Store/Auth/authApi';
+import { showNotification } from '../../utils/notification';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
+    const navigate = useNavigate();
+    const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
     const {
         control,
         handleSubmit,
         reset,
-        formState: { errors },
-        } = useForm({
+        formState: { errors, isValid },
+    } = useForm({
         resolver: yupResolver(ForgotPasswordSchema),
         defaultValues: {
             email: '',
         },
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
-        reset();
+    const onSubmit = async (data) => {
+        try {
+            const response = await forgotPassword(data).unwrap();
+            reset();
+            showNotification.success(response?.message || 'Reset code sent successfully');
+            navigate('/verfication', { 
+                state: { 
+                    email: data?.email,
+                    fromForgotPassword: true
+                } 
+            });
+        } catch (error) {
+            console.log("Error", error);
+            showNotification.error(error.data?.message || 'Failed to send reset code');
+        }
     };
 
     return (
@@ -38,7 +56,6 @@ const ForgotPassword = () => {
             </Group>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 w-full">
-
                 <FormInput
                     control={control}
                     name="email"
@@ -47,14 +64,16 @@ const ForgotPassword = () => {
                     icon={<MdOutlineMail color='black'/>}
                 />
 
-                <Link to="/reset-password">
-                    <Button
-                        type="submit"
-                        className="!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
-                    >
-                        Send Code
-                    </Button>
-                </Link>
+                <Button
+                    type="submit"
+                    className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8
+                        ${(isLoading || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+                    loading={isLoading}
+                    disabled={isLoading || !isValid}
+                    loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
+                >
+                    Send Code
+                </Button>
             </form>
 
             <div className='flex justify-center w-full'>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Text, Group } from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthFormLayout from '../AuthComponents/AuthFormLayout';
 import FormInput from '../Forms/FormInput';
 import PasswordInput from '../Forms/PasswordInput';
@@ -11,34 +11,64 @@ import RememberMe from './RememberMe';
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
+import { useLoginMutation } from '../../Store/Auth/authApi';
+import { showNotification } from '../../utils/notification';
+import { useDispatch } from 'react-redux';
+import { setCredentials, setVerifiedCredentials } from '../../Store/Auth/authSlice';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('email');
+  const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(LoginSchema(activeTab)), 
     defaultValues: {
       email: '',
-      phone: '',
+      PhoneNumber: '',
       password: '',
     },
   });
 
-  const onSubmit = (data) => {
-    const submissionData = { ...data };
-    if (activeTab === 'email') {
-      delete submissionData.phone; 
-    } else {
-      delete submissionData.email; 
-    }
+  const onSubmit = async (data) => {
+    try {
+      const submissionData = { ...data };
+      if (activeTab === 'email') {
+        delete submissionData.PhoneNumber;
+      } else {
+        delete submissionData.email;
+      }
 
-    console.log(submissionData); 
-    reset();
+      const response = await login(submissionData).unwrap();
+      dispatch(setCredentials({
+        user: response?.user,
+        accessToken: response?.accessToken,
+        refreshToken: response?.refreshToken
+    }));
+    dispatch(setVerifiedCredentials());
+
+      reset();
+      showNotification.success(response?.message || 'Login successful');
+      navigate('/');
+    } catch (error) {
+      if (error.data?.message === "Please verify your email first.") {
+        showNotification.warning("Please verify your email first");
+        navigate('/verfication', { 
+          state: { 
+            email: data?.email,
+            fromLogin: true 
+          } 
+        });
+      } else {
+        showNotification.error(error.data?.message || 'Login failed');
+      }
+    }
   };
 
   return (
@@ -85,9 +115,9 @@ const Login = () => {
           ) : (
             <FormInput
               control={control}
-              name="phone"
+              name="PhoneNumber"
               placeholder="Phone"
-              error={errors.phone?.message}
+              error={errors.PhoneNumber?.message}
               icon={<FaPhoneAlt color='black'/>}
             />
           )}
@@ -104,7 +134,11 @@ const Login = () => {
 
           <Button
             type="submit"
-            className="!text-white !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
+            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
+              ${(isLoadingLogin || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+            loading={isLoadingLogin}
+            disabled={isLoadingLogin || !isValid}
+            loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
           >
             Login
           </Button>

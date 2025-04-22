@@ -13,7 +13,7 @@ import Image2 from "../../assets/imageOne.png";
 import Image3 from "../../assets/image3.jpg";
 import Image4 from "../../assets/heroo.svg";
 
-const propertyFilters = ["All Properties", "For Sale", "For Rent"];
+const propertyFilters = ["All Properties", "For Sale", "For Rent", "For Sell"];
 
 const Hero = () => {
     const words = ["Find", "Your", "Perfect", "Home"];
