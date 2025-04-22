@@ -1,4 +1,6 @@
-﻿namespace RealEstateAPI.DTOs
+﻿using RealEstateAPI.Models;
+
+namespace RealEstateAPI.DTOs
 {
     public class PropertyResponseDTO
     {
@@ -11,7 +13,7 @@
         public int Rooms { get; set; }
         public int Bathrooms { get; set; }
         public int UserId { get; set; }
-
+        public ListingType ListingType { get; set; }
         public List<string> Images{ get; set; } = new();
     }
 }

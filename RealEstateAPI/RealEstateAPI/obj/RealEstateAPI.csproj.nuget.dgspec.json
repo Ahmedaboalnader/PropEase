@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {}
+    "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {}
   },
   "projects": {
-    "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {
+    "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+        "projectUniqueName": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
         "projectName": "RealEstateAPI",
-        "projectPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+        "projectPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
         "packagesPath": "C:\\Users\\mshar\\.nuget\\packages\\",
-        "outputPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\obj\\",
+        "outputPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mshar\\AppData\\Roaming\\NuGet\\NuGet.Config",

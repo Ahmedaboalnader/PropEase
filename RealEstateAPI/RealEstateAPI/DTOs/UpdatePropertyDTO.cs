@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using RealEstateAPI.Models;
 
 namespace RealEstateAPI.DTOs
 {
@@ -11,6 +12,7 @@ namespace RealEstateAPI.DTOs
         public double? Area { get; set; }
         public int? Rooms { get; set; }
         public int? Bathrooms { get; set; }
+        public ListingType ListingType { get; set; }
 
         public List<IFormFile>? Images { get; set; } 
     }

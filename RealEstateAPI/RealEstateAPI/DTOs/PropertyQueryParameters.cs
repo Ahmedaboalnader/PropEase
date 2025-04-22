@@ -1,4 +1,6 @@
-﻿namespace RealEstateAPI.DTOs
+﻿using RealEstateAPI.Models;
+
+namespace RealEstateAPI.DTOs
 {
     public class PropertyQueryParameters
     {
@@ -9,5 +11,6 @@
         public int? MinBathrooms { get; set; }
         public int? MinArea { get; set; }
         public string? Location { get; set; }
+        public ListingType? ListingType { get; set; }
     }
 }
