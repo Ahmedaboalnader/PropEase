@@ -24,6 +24,12 @@ namespace RealEstateAPI.Models
 
         public string? OTP { get; set; }
         public DateTime? OTPExpiry { get; set; }
+        public bool IsResetOtpVerified { get; set; } = false;
         public bool IsEmailConfirmed { get; set; } = false;
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiry { get; set; }
+
+
     }
+
 }

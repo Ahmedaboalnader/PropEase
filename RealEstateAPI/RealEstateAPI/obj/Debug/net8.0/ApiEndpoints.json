@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
     "Method": "SendResetOtp",
     "RelativePath": "api/auth/forgot-password",
     "HttpMethod": "POST",
@@ -8,7 +8,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "forgotPasswordDto",
+        "Name": "dto",
         "Type": "ForgotPasswordDto",
         "IsRequired": true
       }
@@ -16,7 +16,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
@@ -24,7 +24,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "loginDto",
+        "Name": "dto",
         "Type": "RealEstateAPI.DTOs.LoginDto",
         "IsRequired": true
       }
@@ -32,7 +32,23 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
+    "Method": "LoginByPhone",
+    "RelativePath": "api/auth/login-by-phone",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "RealEstateAPI.DTOs.LoginByPhoneDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
     "Method": "Register",
     "RelativePath": "api/auth/register",
     "HttpMethod": "POST",
@@ -40,7 +56,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "registerDto",
+        "Name": "dto",
         "Type": "RealEstateAPI.DTOs.RegisterDto",
         "IsRequired": true
       }
@@ -48,7 +64,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthController",
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
     "Method": "ResetPassword",
     "RelativePath": "api/auth/reset-password",
     "HttpMethod": "POST",
@@ -56,7 +72,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "resetPasswordDto",
+        "Name": "dto",
         "Type": "ResetPasswordDto",
         "IsRequired": true
       }
@@ -64,15 +80,31 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AuthController",
-    "Method": "VerifyOTP",
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
+    "Method": "VerifyOtp",
     "RelativePath": "api/auth/verify-otp",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "otpDto",
+        "Name": "dto",
+        "Type": "RealEstateAPI.DTOs.VerifyOtpDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RealEstateAPI.Controllers.AuthController",
+    "Method": "VerifyResetOtp",
+    "RelativePath": "api/auth/verify-reset-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
         "Type": "RealEstateAPI.DTOs.VerifyOtpDto",
         "IsRequired": true
       }
@@ -171,6 +203,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ListingType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
@@ -237,6 +274,11 @@
         "IsRequired": false
       },
       {
+        "Name": "ListingType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
         "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
@@ -300,6 +342,11 @@
       },
       {
         "Name": "Location",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ListingType",
         "Type": "System.String",
         "IsRequired": false
       }

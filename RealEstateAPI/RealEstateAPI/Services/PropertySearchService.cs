@@ -18,34 +18,39 @@ namespace RealEstateAPI.Services
         {
             var query = _context.Properties.AsQueryable();
 
-            // تطبيق البحث بالكلمات (يشمل Title, Description, Location)
+         
             if (!string.IsNullOrEmpty(queryParams.SearchTerm))
             {
                 query = query.Where(p =>
                     p.Title.Contains(queryParams.SearchTerm) ||
                     p.Description.Contains(queryParams.SearchTerm) ||
-                    p.Location.Contains(queryParams.SearchTerm));  // إضافة بحث في اللوكيشن
+                    p.Location.Contains(queryParams.SearchTerm));
             }
 
-            // إضافة فلترة حسب السعر
+           
             if (queryParams.MinPrice.HasValue)
                 query = query.Where(p => p.Price >= queryParams.MinPrice.Value);
 
             if (queryParams.MaxPrice.HasValue)
                 query = query.Where(p => p.Price <= queryParams.MaxPrice.Value);
 
-            // إضافة فلترة حسب عدد الغرف
+           
             if (queryParams.MinRooms.HasValue)
                 query = query.Where(p => p.Rooms >= queryParams.MinRooms.Value);
 
-            // إضافة فلترة حسب عدد الحمام
+           
             if (queryParams.MinBathrooms.HasValue)
                 query = query.Where(p => p.Bathrooms >= queryParams.MinBathrooms.Value);
 
-            // إضافة فلترة حسب المساحة
+           
             if (queryParams.MinArea.HasValue)
                 query = query.Where(p => p.Area >= queryParams.MinArea.Value);
 
+            
+            if (queryParams.ListingType.HasValue)
+                query = query.Where(p => p.ListingType == queryParams.ListingType.Value);
+
+           
             var properties = await query
                 .Select(property => new PropertyResponseDTO
                 {
@@ -58,6 +63,7 @@ namespace RealEstateAPI.Services
                     Rooms = property.Rooms,
                     Bathrooms = property.Bathrooms,
                     Area = property.Area,
+                    ListingType = property.ListingType, 
                     Images = property.Images.Select(i => $"/uploads/{i.FileName}").ToList()
                 })
                 .ToListAsync();

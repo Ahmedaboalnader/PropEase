@@ -28,6 +28,7 @@ namespace RealEstateAPI.Models
 
         [Required]
         public int Bathrooms { get; set; }
+        public ListingType ListingType { get; set; }
 
         public int UserId { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using RealEstateAPI.Models;
 
 namespace RealEstateAPI.DTOs
 {
@@ -25,6 +26,8 @@ namespace RealEstateAPI.DTOs
 
         [Required]
         public int Bathrooms { get; set; }
+        public ListingType ListingType { get; set; }
+
 
         public List<IFormFile> Images { get; set; } = new();
     }

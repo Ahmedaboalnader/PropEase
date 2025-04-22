@@ -27,6 +27,7 @@ public class PropertyService : IPropertyService
             Area = dto.Area,
             Rooms = dto.Rooms,
             Bathrooms = dto.Bathrooms,
+            ListingType = dto.ListingType,
             UserId = userId
         };
 
@@ -67,6 +68,7 @@ public class PropertyService : IPropertyService
         property.Area = dto.Area ?? property.Area;
         property.Rooms = dto.Rooms ?? property. Rooms;
         property.Bathrooms = dto.Bathrooms ?? property.Bathrooms;
+        property.ListingType = dto.ListingType; 
 
         if (dto.Images != null && dto.Images.Count > 0)
         {
@@ -126,6 +128,7 @@ public class PropertyService : IPropertyService
             Area = property.Area,
             Rooms = property.Rooms,
             Bathrooms = property.Bathrooms,
+            ListingType = property.ListingType,
             UserId = property.UserId,
             Images = property.Images.Select(i => $"/uploads/{i.FileName}").ToList()
         };

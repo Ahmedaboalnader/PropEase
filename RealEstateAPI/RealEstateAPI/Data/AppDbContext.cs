@@ -19,7 +19,10 @@ namespace RealEstateAPI.Data
                 .HasMany(p => p.Images)
                 .WithOne(i => i.Property!)
                 .HasForeignKey(i => i.PropertyId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Property>()
+        .Property(p => p.ListingType)
+        .HasConversion<string>();
         }
     }
 }
