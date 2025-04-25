@@ -12,6 +12,7 @@ namespace RealEstateAPI.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

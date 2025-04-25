@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RealEstateAPI.Data;
@@ -177,6 +178,62 @@ namespace RealEstateAPI.Controllers
             _context.SaveChanges();
 
             return Ok(new { message = "Password reset successfully." });
+        }
+        // ------------------- Resend OTP (After Register) -------------------
+        [HttpPost("resend-otp-after-register")]
+        public async Task<IActionResult> ResendOtpAfterRegister([FromBody] ResendOtpDto dto)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email);
+            if (user == null)
+                return BadRequest(new { message = "User not found." });
+
+            if (user.IsEmailConfirmed)
+                return BadRequest(new { message = "Email already verified." });
+
+            
+            if (user.LastOtpSent.HasValue && DateTime.UtcNow < user.LastOtpSent.Value.AddSeconds(30))  
+            {
+                return BadRequest(new { message = "Please wait before resending OTP." });
+            }
+
+            var otp = new Random().Next(100000, 999999).ToString();
+            user.OTP = otp;
+            user.OTPExpiry = DateTime.UtcNow.AddMinutes(5); 
+            user.LastOtpSent = DateTime.UtcNow;  
+
+            await _context.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(user.Email, "OTP Code", $"<h2>Hello {user.Name}</h2><p>Your OTP: <strong>{otp}</strong><br>Expires in 5 mins.</p>");
+
+            return Ok(new { message = "OTP resent successfully." });
+        }
+
+
+
+        // ------------------- Resend Reset OTP (Forgot Password) -------------------
+        [HttpPost("resend-otp-after-forgot")]
+        public async Task<IActionResult> ResendOtpAfterForgot([FromBody] ResendOtpDto dto)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email);
+            if (user == null)
+                return BadRequest(new { message = "User not found." });
+
+         
+            if (user.LastOtpSent.HasValue && DateTime.UtcNow < user.LastOtpSent.Value.AddSeconds(60)) 
+            {
+                return BadRequest(new { message = "Please wait before resending OTP." });
+            }
+
+            var otp = new Random().Next(100000, 999999).ToString();
+            user.OTP = otp;
+            user.OTPExpiry = DateTime.UtcNow.AddMinutes(5); 
+            user.LastOtpSent = DateTime.UtcNow;  
+
+            await _context.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(user.Email, "Reset Password - OTP", $"<h2>Hello {user.Name}</h2><p>Your OTP: <strong>{otp}</strong><br>Expires in 5 mins.</p>");
+
+            return Ok(new { message = "Reset OTP resent successfully." });
         }
 
         // ------------------- Helpers -------------------
