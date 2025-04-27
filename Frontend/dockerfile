@@ -1,38 +1,23 @@
-# المرحلة الأولى: البناء باستخدام Node.js
-FROM node:20-slim AS builder
+FROM node:20-alpine@sha256:8bda036ddd59ea51a23bc1a1035d3b5c614e72c01366d989f4120e8adca196d4 AS builder
 
-# ضبط الحد الأقصى للذاكرة لـ Node.js
-ENV NODE_OPTIONS=--max-old-space-size=1024
-
-# تثبيت الأدوات اللازمة للبناء
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
-
-# تعيين الدليل للعمل داخل الحاوية
 WORKDIR /app
 
-# نسخ الملفات اللازمة للتثبيت
-COPY package*.json ./
+COPY package*.json  .
+RUN npm install
 
-# تثبيت التبعيات
-RUN npm install --legacy-peer-deps
-
-# نسخ باقي الملفات وبناء المشروع
 COPY . .
-
-# تشغيل البناء
 RUN npm run build
 
-# المرحلة الثانية: استخدام NGINX لعرض التطبيق
-FROM nginx:alpine
+FROM nginx:alpine@sha256:4ff102c5d78d254a6f0da062b3cf39eaf07f01eec0927fd21e219d0af8bc0591
 
-# إزالة ملفات الـ NGINX الافتراضية
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /usr/share/nginx/html
 
-# نسخ الملفات المبنية من المرحلة الأولى
-COPY --from=builder /app/dist /usr/share/nginx/html
+RUN rm -rf ./*
 
-# فتح المنفذ 80
+COPY --from=builder  /app/dist /usr/share/nginx/html
+
+COPY default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 
-# تشغيل NGINX
 CMD ["nginx", "-g", "daemon off;"]
