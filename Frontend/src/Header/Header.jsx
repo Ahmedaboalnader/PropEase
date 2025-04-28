@@ -70,7 +70,7 @@ export default function Header() {
                     >
                         <IoIosHeartEmpty size={22} /> 
                     </div>
-                    {!isAuthenticated && !user && !isVerified ? (
+                    {(!isAuthenticated && !user && !isVerified) ? (
                         <>
                             <Link to="/login">
                             <Button className='!bg-main !rounded-full !py-2 !font-semibold !text-white 

@@ -25,7 +25,7 @@ const authSlice = createSlice({
         setVerifiedCredentials: (state) => {
             state.isVerified = true;   
             state.isAuthenticated = true;         
-            Cookies.set('accessToken', state.accessToken, { expires: 7 });
+            Cookies.set('accessToken', state.accessToken, { expires: 1/24 });
             Cookies.set('refreshToken', state.refreshToken, { expires: 30 });
         },
         logout: (state) => {

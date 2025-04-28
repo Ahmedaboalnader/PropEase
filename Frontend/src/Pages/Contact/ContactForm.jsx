@@ -5,7 +5,7 @@ import { ContactSchema } from './ContactSchema';
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { showNotification } from '../../utils/notification';
-import { useContactMutation } from '../../Store/ContactUs/ContactUsApi';
+import { useContactMutation } from '../../Store/ContactUs/contactUsApi';
 
 const ContactForm = () => {
     const {
