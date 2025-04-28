@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install --include=dev
+RUN npx vite --version
 
 COPY . .
 RUN npm run build
