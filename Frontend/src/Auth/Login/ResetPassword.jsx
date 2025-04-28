@@ -15,7 +15,6 @@ const ResetPassword = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state?.email;
-    const otp = location.state?.otp;
     const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
     const {
@@ -35,9 +34,8 @@ const ResetPassword = () => {
         try {
             await resetPassword({
                 email,
-                otp,
-                newPassword: data.password,
-                confirmPassword: data.confirmPassword
+                newPassword: data?.password,
+                confirmPassword: data?.confirmPassword
             }).unwrap();
             
             reset();

@@ -1,22 +1,45 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, Modal, Text, TextInput } from '@mantine/core';
+import { Button, Modal, Text } from '@mantine/core';
 import React from 'react'
-import { Controller, useForm } from 'react-hook-form';
-import * as yup from 'yup';
-
-
-const passwordSchema = yup.object().shape({
-    currentPassword: yup.string().required('Current password is required'),
-    newPassword: yup.string().required('New password is required'),
-});
+import { useForm } from 'react-hook-form';
+import { ChangePasswordSchema } from '../AccountSchema';
+import PasswordInput from '../../../Auth/Forms/PasswordInput';
+import { BsShieldLock } from 'react-icons/bs';
+import { useChangePasswordMutation } from '../../../Store/Account/accountApi';
+import { showNotification } from '../../../utils/notification';
 
 const ChangePassword = ({isPasswordModalOpen, setIsPasswordModalOpen}) => {
-    const { control: passwordControl, handleSubmit: handlePasswordSubmit } = useForm({
-        resolver: yupResolver(passwordSchema)
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isValid },
+        reset,
+    } = useForm({
+        mode: 'onChange',
+        resolver: yupResolver(ChangePasswordSchema),
+        defaultValues: {
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+        }
     });
-    const onPasswordSubmit = (data) => {
-        console.log('Password change:', data);
-        setIsPasswordModalOpen(false);
+
+    const[changePassword, {isLoading:isLoadingChangePassword}] = useChangePasswordMutation();
+
+    const onPasswordSubmit = async (data) => {
+        try {
+            await changePassword({
+                currentPassword: data?.currentPassword,
+                newPassword: data?.newPassword,
+                confirmNewPassword: data?.confirmPassword
+            }).unwrap();
+            
+            showNotification.success('Password changed successfully');
+            reset();
+            setIsPasswordModalOpen(false);
+        } catch (error) {
+            showNotification.error(error.data?.message || 'Failed to change password');
+        }
     };
 
     return (
@@ -26,39 +49,30 @@ const ChangePassword = ({isPasswordModalOpen, setIsPasswordModalOpen}) => {
             title={<Text className="!text-2xl !font-bold">Change Password</Text>}
             centered
         >
-            <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-4">
-                <Controller
+            <form onSubmit={handleSubmit(onPasswordSubmit)} className="space-y-4">
+                <PasswordInput
+                    control={control}
                     name="currentPassword"
-                    control={passwordControl}
-                    render={({ field, fieldState: { error } }) => (
-                        <TextInput
-                            {...field}
-                            type="password"
-                            label="Current Password"
-                            placeholder='Enter your current password'
-                            error={error?.message}
-                            classNames={{
-                                input: 'bg-gray-50 border-0 h-12',
-                            }}
-                        />
-                    )}
+                    label="Current Password"
+                    placeholder="Enter your current password"
+                    error={errors.currentPassword?.message}
+                    icon={<BsShieldLock color='black'/>}
                 />
-
-                <Controller
+                <PasswordInput
+                    control={control}
                     name="newPassword"
-                    control={passwordControl}
-                    render={({ field, fieldState: { error } }) => (
-                        <TextInput
-                            {...field}
-                            type="password"
-                            label="New Password"
-                            placeholder='Enter your new password'
-                            error={error?.message}
-                            classNames={{
-                                input: 'bg-gray-50 border-0 h-12',
-                            }}
-                        />
-                    )}
+                    label="New Password"
+                    placeholder="Enter your new password"
+                    error={errors.newPassword?.message}
+                    icon={<BsShieldLock color='black'/>}
+                />
+                <PasswordInput
+                    control={control}
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    placeholder="Enter your Confirm password"
+                    error={errors.confirmPassword?.message}
+                    icon={<BsShieldLock color='black'/>}
                 />
 
                 <div className="flex justify-end gap-3 mt-6">
@@ -66,12 +80,17 @@ const ChangePassword = ({isPasswordModalOpen, setIsPasswordModalOpen}) => {
                         variant="outline" 
                         onClick={() => setIsPasswordModalOpen(false)}
                         className="!border-gray-300 !text-gray-500"
+                        disabled={isLoadingChangePassword}
                     >
                         Cancel
                     </Button>
                     <Button 
                         type="submit"
-                        className="!bg-main !text-white hover:!bg-[#0a2c28]"
+                        className={`!bg-main !text-white hover:!bg-[#0a2c28] 
+                            ${(isLoadingChangePassword || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+                        loading={isLoadingChangePassword}
+                        disabled={isLoadingChangePassword || !isValid}
+                        loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
                     >
                         Change Password
                     </Button>

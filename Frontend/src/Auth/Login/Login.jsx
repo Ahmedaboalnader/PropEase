@@ -11,7 +11,7 @@ import RememberMe from './RememberMe';
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
-import { useLoginMutation } from '../../Store/Auth/authApi';
+import { useLoginMutation, useLoginPhoneMutation } from '../../Store/Auth/authApi';
 import { showNotification } from '../../utils/notification';
 import { useDispatch } from 'react-redux';
 import { setCredentials, setVerifiedCredentials } from '../../Store/Auth/authSlice';
@@ -21,6 +21,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('email');
   const [login, { isLoading: isLoadingLogin }] = useLoginMutation();
+  const [loginPhone, { isLoading: isLoadingPhoneLogin }] = useLoginPhoneMutation();
 
   const {
     control,
@@ -35,29 +36,31 @@ const Login = () => {
       password: '',
     },
   });
-
+  
   const onSubmit = async (data) => {
     try {
       const submissionData = { ...data };
+      let response;
+      
       if (activeTab === 'email') {
         delete submissionData.PhoneNumber;
+        response = await login(submissionData).unwrap();
       } else {
         delete submissionData.email;
+        response = await loginPhone(submissionData).unwrap();
       }
 
-      const response = await login(submissionData).unwrap();
       dispatch(setCredentials({
-        user: response?.user,
         accessToken: response?.accessToken,
         refreshToken: response?.refreshToken
-    }));
-    dispatch(setVerifiedCredentials());
+      }));
+      dispatch(setVerifiedCredentials());
 
       reset();
       showNotification.success(response?.message || 'Login successful');
       navigate('/');
     } catch (error) {
-      if (error.data?.message === "Please verify your email first.") {
+      if (error?.message?.includes('verify your email')) {
         showNotification.warning("Please verify your email first");
         navigate('/verfication', { 
           state: { 
@@ -135,9 +138,9 @@ const Login = () => {
           <Button
             type="submit"
             className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
-              ${(isLoadingLogin || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
-            loading={isLoadingLogin}
-            disabled={isLoadingLogin || !isValid}
+              ${((isLoadingLogin || isLoadingPhoneLogin) || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+            loading={isLoadingLogin || isLoadingPhoneLogin}
+            disabled={isLoadingLogin || isLoadingPhoneLogin || !isValid}
             loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
           >
             Login

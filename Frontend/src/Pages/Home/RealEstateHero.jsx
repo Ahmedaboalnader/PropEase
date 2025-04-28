@@ -2,10 +2,16 @@ import React, { useRef } from 'react';
 import image from '../../assets/realestate.png';
 import { motion, useInView } from "framer-motion";
 import { Image } from "@mantine/core";
+import { useNavigate } from 'react-router-dom';
 
 const RealEstateHero = () => {
+    const navigate = useNavigate();
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true });
+    const handleNavigation = (path) => {
+        window.scrollTo(0, 0);
+        navigate(path);
+    };
     return (
         <motion.div 
             ref={sectionRef} className="bg-main rounded-md lg:rounded-2xl max-lg:px-4 !overflow-x-hidden
@@ -33,6 +39,7 @@ const RealEstateHero = () => {
                 </p>
 
                 <motion.button
+                    onClick={() => handleNavigation('/contact')}
                     radius="md"
                     size="md"
                     className="bg-yellowCustom text-white rounded-2xl font-semibold w-fit px-20 py-3 uppercase tracking-widest 

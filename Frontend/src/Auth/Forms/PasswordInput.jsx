@@ -3,7 +3,7 @@ import { TextInput } from '@mantine/core';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Controller } from 'react-hook-form';
 
-const PasswordInput = ({ control, name, placeholder, error, icon }) => {
+const PasswordInput = ({ control, name, placeholder, error, icon, label }) => {
 const [passwordVisibility, setPasswordVisibility] = useState(false);
 
 const togglePasswordVisibility = () => {
@@ -17,6 +17,7 @@ const togglePasswordVisibility = () => {
             render={({ field }) => (
                 <TextInput
                     {...field}
+                    label={label}
                     type={passwordVisibility ? 'text' : 'password'}
                     placeholder={placeholder}
                     error={error}
