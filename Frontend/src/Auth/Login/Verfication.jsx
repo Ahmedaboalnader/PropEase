@@ -8,24 +8,31 @@ import { useNavigate } from 'react-router-dom';
 import OTPInput from '../Forms/OTPInput';
 import logo from '../../assets/otp.png';
 import { useLocation } from 'react-router-dom';
-import { useVerifyMutation } from '../../Store/Auth/authApi';
+import { useResendOTPForgotMutation, useVerifyMutation, useVerifyResetMutation } from '../../Store/Auth/authApi';
 import { useDispatch } from 'react-redux';
 import { setVerifiedCredentials } from '../../Store/Auth/authSlice';
 import { showNotification } from '../../utils/notification';
+import { useState, useEffect } from 'react';
+import { useResendOTPRegisterMutation } from '../../Store/Auth/authApi';
 
 const Verfication = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
+    const [countdown, setCountdown] = useState(30);
+    const [canResend, setCanResend] = useState(false);
     const email = location.state?.email;
     const fromForgotPassword = location.state?.fromForgotPassword;
     const [verify, { isLoading }] = useVerifyMutation();
+    const [verifyForgotPassword, { isLoading: isLoadingForgotPassword }] = useVerifyResetMutation();
+    const [resendOTP, { isLoading: isLoadingResend }] = useResendOTPRegisterMutation();
+    const [resendForgotOTP, { isLoading: isLoadingForgotResend }] = useResendOTPForgotMutation();
 
     const {
         control,
         handleSubmit,
         reset,
-        formState: { errors, isValid },
+        formState: { isValid },
     } = useForm({
         resolver: yupResolver(OTPSchema),
         defaultValues: {
@@ -33,21 +40,52 @@ const Verfication = () => {
         },
     });
 
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
+        } else {
+            setCanResend(true);
+        }
+    }, [countdown]);
+
+    const handleResendOTP = async () => {
+        try {
+            if (fromForgotPassword) {
+                const response = await resendForgotOTP({ email }).unwrap();
+                showNotification.success(response?.message || 'OTP resent successfully');
+            } else {
+                const response = await resendOTP({ email }).unwrap();
+                showNotification.success(response?.message || 'OTP resent successfully');
+            }
+            setCountdown(30);
+            setCanResend(false);
+        } catch (error) {
+            showNotification.error(error.data?.message || 'Failed to resend OTP');
+        }
+    };
+
     const onSubmit = async (data) => {
         try {
-            const response = await verify({
-                email: email,
-                otp: data?.otp
-            }).unwrap();
-
             if (fromForgotPassword) {
+                const response = await verifyForgotPassword({
+                    email: email,
+                    otp: data?.otp
+                }).unwrap();
+                
                 navigate('/reset-password', { 
                     state: { 
                         email,
                         otp: data?.otp
                     } 
                 });
+                showNotification.success(response?.message || 'OTP verified successfully');
             } else {
+                const response = await verify({
+                    email: email,
+                    otp: data?.otp
+                }).unwrap();
+                
                 dispatch(setVerifiedCredentials());
                 showNotification.success(response?.message || 'Verification successful');
                 navigate('/');
@@ -75,15 +113,14 @@ const Verfication = () => {
                     <OTPInput
                         control={control}
                         name="otp"
-                        // error={errors.otp?.message}
                     />
 
                     <Button
                         type="submit"
                         className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-4
-                            ${(isLoading || !isValid) ? '!opacity-50 !cursor-not-allowed' : ''}`}
-                        loading={isLoading}
-                        disabled={isLoading || !isValid}
+                            ${((isLoading || isLoadingForgotPassword) || !isValid) ? '!opacity-50 !cursor-not-allowed' : ''}`}
+                        loading={isLoading || isLoadingForgotPassword}
+                        disabled={isLoading || isLoadingForgotPassword || !isValid}
                         loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
                     >
                         Verify
@@ -92,11 +129,14 @@ const Verfication = () => {
                     <Group position="center" className="!mt-4 !flex !gap-0 !justify-center !items-center">
                         <Text className="!cursor-pointer !text-base !font-semibold">Didn't receive the OTP?</Text>
                         <Button 
-                            variant="subtle" 
-                            className="!text-text !text-base !font-bold !p-0"
-                            onClick={() => {/* Add resend OTP logic here */}}
+                            variant="transparent" 
+                            className="!text-text !text-sm !font-bold !p-0 !bg-white"
+                            onClick={handleResendOTP}
+                            disabled={!canResend || isLoadingResend || isLoadingForgotResend}
+                            loading={isLoadingResend || isLoadingForgotResend}
+                            loaderProps={{ color: '#1F4B43', size: 'sm', type: 'dots' }}
                         >
-                            Resend OTP
+                            {canResend ? 'Resend OTP' : `Resend OTP (${countdown}s)`}
                         </Button>
                     </Group>
                 </form>

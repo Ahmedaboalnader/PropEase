@@ -42,7 +42,6 @@ const Signup = () => {
       
       // Store auth data in Redux and cookies
       dispatch(setCredentials({
-          user: response?.user,
           accessToken: response?.accessToken,
           refreshToken: response?.refreshToken
       }));

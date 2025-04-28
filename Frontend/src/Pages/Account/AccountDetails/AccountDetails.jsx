@@ -1,24 +1,19 @@
-import { Text, Button, TextInput, Modal } from '@mantine/core';
+import { Text, Button, TextInput } from '@mantine/core';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useAuth } from '../../../hooks/useAuth';
 import { FiEdit2 } from "react-icons/fi";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChangePassword from './ChangePassword';
-
-const accountSchema = yup.object().shape({
-    name: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    phone: yup.string()
-        .matches(/^[0-9]+$/, 'Phone number must contain only digits')
-        .min(11, 'Phone number must be at least 11 digits')
-        .required('Phone number is required'),
-});
+import { AccountSchema } from '../AccountSchema';
+import { showNotification } from '../../../utils/notification';
+import { usePutAccountMutation } from '../../../Store/Account/accountApi';
+import { useGetAccountQuery } from '../../../Store/Account/accountApi';
 
 const AccountDetails = () => {
-    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
     const { user } = useAuth();
+    const { refetch } = useGetAccountQuery();
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
     const [editableFields, setEditableFields] = useState({
         name: false,
         email: false,
@@ -28,9 +23,10 @@ const AccountDetails = () => {
     const {
         control,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid },
+        reset,
     } = useForm({
-        resolver: yupResolver(accountSchema),
+        resolver: yupResolver(AccountSchema),
         defaultValues: {
             name: user?.name || '',
             email: user?.email || '',
@@ -38,9 +34,46 @@ const AccountDetails = () => {
         }
     });
 
+    useEffect(() => {
+        if (user) {
+            reset({
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phoneNumber || '',
+            });
+        }
+    }, [user, reset]);
+
+    const [updateAccount, {isLoading: isLoadingUpdateAccount}] = usePutAccountMutation();
+
+    const handleFieldUpdate = async (fieldName, value) => {
+        try {
+            const updateData = {
+                name: fieldName === 'name' ? value : user?.name,
+                email: fieldName === 'email' ? value : user?.email,
+                PhoneNumber: fieldName === 'phone' ? value : user?.phoneNumber,
+            };
+            
+            const response = await updateAccount(updateData).unwrap();
+            setEditableFields(prev => ({
+                ...prev,
+                [fieldName]: false
+            }));
+            
+            await refetch(); 
+            showNotification.success(response?.message || `${fieldName} updated successfully`);
+        } catch (error) {
+            showNotification.error(error.data?.message || 'Update failed');
+        }
+    };
+
     const onSubmit = (data) => {
-        // Handle form submission here
-        console.log(data);
+        const updatedField = Object.keys(editableFields).find(key => editableFields[key]);
+        if (updatedField) {
+            handleFieldUpdate(updatedField, data[updatedField]);
+        }
+
+        console.log(data)
     };
 
     const toggleEdit = (field) => {
@@ -133,6 +166,20 @@ const AccountDetails = () => {
                             )}
                         />
                     </div>
+
+                    {Object.values(editableFields).some(field => field) && (
+                        <div className="flex justify-end">
+                            <Button
+                                type="submit"
+                                className="!bg-main hover:!bg-[#1e3d2f]"
+                                loading={isLoadingUpdateAccount}
+                                disabled={isLoadingUpdateAccount || !isValid}
+                                loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
+                            >
+                                Save Changes
+                            </Button>
+                        </div>
+                    )}
 
                     <Button 
                         variant="subtle" 

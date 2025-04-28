@@ -15,7 +15,7 @@ email: yup
     .string()
     .matches(emailRegex, 'Please enter a valid email address')
     .required('Email is required'),
-phone: yup
+PhoneNumber: yup
     .string()
     .matches(phoneRegex, 'Phone number must be 11 digits and start with 0')
     .required('Phone number is required'),
@@ -28,7 +28,7 @@ subject: yup
 message: yup
     .string()
     .matches(textRegex, 'Message must contain only letters')
-    .min(20, 'Message must be at least 3 characters')
-    .max(500, 'Message must be at most 50 characters')
+    .min(20, 'Message must be at least 20 characters')
+    .max(500, 'Message must be at most 500 characters')
     .required('Message is required'),
 });

@@ -12,8 +12,6 @@ const initialState = {
     refreshToken: refreshToken || null,
     isAuthenticated: !!accessToken,
     isVerified: !!accessToken,
-    tempEmail: null,
-    tempPhone: null
 };
 
 const authSlice = createSlice({
@@ -21,24 +19,19 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, { payload }) => {
-            state.user = payload.user;
             state.accessToken = payload.accessToken;
             state.refreshToken = payload.refreshToken;
-            state.tempEmail = payload.email;
-            state.tempPhone = payload.phoneNumber;
         },
         setVerifiedCredentials: (state) => {
             state.isVerified = true;   
             state.isAuthenticated = true;         
             Cookies.set('accessToken', state.accessToken, { expires: 7 });
             Cookies.set('refreshToken', state.refreshToken, { expires: 30 });
-            Cookies.set('user', JSON.stringify(state.user), { expires: 7 });
         },
         logout: (state) => {
             Object.assign(state, initialState);
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
-            Cookies.remove('user');
         },
     },
 });
