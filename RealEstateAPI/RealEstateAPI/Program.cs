@@ -38,6 +38,11 @@ namespace RealEstateAPI
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+            });
 
 
             builder.Services.AddScoped<IPropertyOfferService, PropertyOfferService>();
@@ -52,8 +57,9 @@ namespace RealEstateAPI
             builder.Services.AddScoped<IPropertySearchService, PropertySearchService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<EmailService>();
+            builder.Services.AddScoped<IFavoritesService, FavoritesService>();
 
-            
+
 
 
 

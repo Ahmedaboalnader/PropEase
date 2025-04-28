@@ -212,6 +212,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "RealEstateAPI.Controllers.FavoritesController",
+    "Method": "GetFavorites",
+    "RelativePath": "api/Favorites",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RealEstateAPI.Controllers.FavoritesController",
+    "Method": "ToggleFavorite",
+    "RelativePath": "api/Favorites/toggle/{propertyId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "propertyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RealEstateAPI.Controllers.OfferController",
     "Method": "CreateOffer",
     "RelativePath": "api/offers",
@@ -308,6 +334,51 @@
         "IsRequired": false
       },
       {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Address",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PropertyType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ViewType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "LocationType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "BuildingYear",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Parking",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "Garden",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
         "Name": "Images",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
@@ -323,6 +394,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PropertyController",
+    "Method": "GetPropertyById",
+    "RelativePath": "api/properties/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -376,6 +463,51 @@
       {
         "Name": "ListingType",
         "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Address",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Phone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PropertyType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ViewType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "LocationType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "BuildingYear",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Parking",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Garden",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {

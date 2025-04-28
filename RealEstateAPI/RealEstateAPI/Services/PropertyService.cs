@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using RealEstateAPI.Data;
 using RealEstateAPI.DTOs;
 using RealEstateAPI.Models;
-using RealEstateAPI.Services;
 
 public class PropertyService : IPropertyService
 {
@@ -28,7 +27,20 @@ public class PropertyService : IPropertyService
             Rooms = dto.Rooms,
             Bathrooms = dto.Bathrooms,
             ListingType = dto.ListingType,
-            UserId = userId
+            UserId = userId,
+
+            // Brokers Info
+            Name = dto.Name,
+            Address = dto.Address,
+            Phone = dto.Phone,
+
+            // Highlights
+            PropertyType = dto.PropertyType,
+            ViewType = dto.ViewType,
+            LocationType = dto.LocationType,
+            BuildingYear = dto.BuildingYear,
+            Parking = dto.Parking,
+            Garden = dto.Garden
         };
 
         // حفظ الصور
@@ -61,15 +73,30 @@ public class PropertyService : IPropertyService
         var property = await _context.Properties.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId);
         if (property == null) return null;
 
+        // تحديث الحقول الأساسية
         property.Title = dto.Title ?? property.Title;
         property.Description = dto.Description ?? property.Description;
         property.Price = dto.Price ?? property.Price;
         property.Location = dto.Location ?? property.Location;
         property.Area = dto.Area ?? property.Area;
-        property.Rooms = dto.Rooms ?? property. Rooms;
+        property.Rooms = dto.Rooms ?? property.Rooms;
         property.Bathrooms = dto.Bathrooms ?? property.Bathrooms;
-        property.ListingType = dto.ListingType; 
+        property.ListingType = dto.ListingType;
 
+        // تحديث بيانات الوسيط
+        property.Name = dto.Name ?? property.Name;
+        property.Address = dto.Address ?? property.Address;
+        property.Phone = dto.Phone ?? property.Phone;
+
+        // تحديث Highlights
+        property.PropertyType = dto.PropertyType ?? property.PropertyType;
+        property.ViewType = dto.ViewType ?? property.ViewType;
+        property.LocationType = dto.LocationType ?? property.LocationType;
+        property.BuildingYear = dto.BuildingYear ?? property.BuildingYear;
+        property.Parking = dto.Parking ?? property.Parking;
+        property.Garden = dto.Garden ?? property.Garden;
+
+        // تحديث الصور إن وجدت
         if (dto.Images != null && dto.Images.Count > 0)
         {
             // حذف الصور القديمة
@@ -104,7 +131,7 @@ public class PropertyService : IPropertyService
         var property = await _context.Properties.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id && p.UserId == userId);
         if (property == null) return false;
 
-        // حذف الصور
+        // حذف الصور من السيرفر
         foreach (var img in property.Images)
         {
             var path = Path.Combine(_env.WebRootPath ?? "wwwroot", "uploads", img.FileName);
@@ -114,6 +141,13 @@ public class PropertyService : IPropertyService
         _context.Properties.Remove(property);
         await _context.SaveChangesAsync();
         return true;
+    }
+    public async Task<PropertyResponseDTO?> GetPropertyById(int id)
+    {
+        var property = await _context.Properties.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
+        if (property == null) return null;
+
+        return MapToDTO(property);
     }
 
     private PropertyResponseDTO MapToDTO(Property property)
@@ -130,6 +164,20 @@ public class PropertyService : IPropertyService
             Bathrooms = property.Bathrooms,
             ListingType = property.ListingType,
             UserId = property.UserId,
+
+            // Brokers Info
+            Name = property.Name,
+            Address = property.Address,
+            Phone = property.Phone,
+
+            // Highlights
+            PropertyType = property.PropertyType,
+            ViewType = property.ViewType,
+            LocationType = property.LocationType,
+            BuildingYear = property.BuildingYear,
+            Parking = property.Parking,
+            Garden = property.Garden,
+
             Images = property.Images.Select(i => $"/uploads/{i.FileName}").ToList()
         };
     }

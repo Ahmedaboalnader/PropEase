@@ -31,6 +31,16 @@ public class PropertyController : ControllerBase
     {
         var properties = await _propertyService.GetAllProperties();
         return Ok(properties);
+    } 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetPropertyById(int id)
+    {
+        var property = await _propertyService.GetPropertyById(id);
+
+        if (property == null)
+            return NotFound(new { message = "Property not found." });
+
+        return Ok(property);
     }
 
     [HttpPut("{id}")]
