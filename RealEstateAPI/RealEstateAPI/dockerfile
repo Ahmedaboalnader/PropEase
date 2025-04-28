@@ -13,8 +13,9 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet build -c ${BUILD_CONFIGURATION} --output /app/build
 
-RUN dotnet ef migrations add AutoMigration --output-dir Migrations || true
-RUN dotnet ef database update || true
+RUN dotnet ef migrations add AutoMigration --output-dir Migrations
+
+RUN dotnet ef database update
 
 RUN dotnet publish RealEstateAPI.csproj -c Release -o /build --no-restore
 
