@@ -36,7 +36,6 @@ namespace RealEstateAPI.Models
 
         public List<Image> Images { get; set; } = new();
 
-        // ----------------------- Brokers Information -----------------------
 
         [Required, MaxLength(255)]
         public string Name { get; set; } = string.Empty;
@@ -47,7 +46,7 @@ namespace RealEstateAPI.Models
         [Required, MaxLength(20)]
         public string Phone { get; set; } = string.Empty;
 
-        // ----------------------- Highlights -----------------------
+     
 
         [Required]
         public PropertyType PropertyType { get; set; }
@@ -66,7 +65,7 @@ namespace RealEstateAPI.Models
         public bool Garden { get; set; }
     }
 
-    // ----------------------- Enums -----------------------
+   
 
     public enum PropertyType
     {

@@ -223,6 +223,22 @@
   },
   {
     "ContainingType": "RealEstateAPI.Controllers.FavoritesController",
+    "Method": "GetFavoriteStatus",
+    "RelativePath": "api/Favorites/{propertyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "propertyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RealEstateAPI.Controllers.FavoritesController",
     "Method": "ToggleFavorite",
     "RelativePath": "api/Favorites/toggle/{propertyId}",
     "HttpMethod": "POST",
@@ -532,6 +548,26 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PropertyController",
+    "Method": "GetPropertiesForRent",
+    "RelativePath": "api/properties/for-rent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PropertyController",
+    "Method": "GetPropertiesForSale",
+    "RelativePath": "api/properties/for-sale",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

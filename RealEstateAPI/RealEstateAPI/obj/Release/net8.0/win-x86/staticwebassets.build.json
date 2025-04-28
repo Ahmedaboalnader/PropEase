@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QdWfBrTKiYGpwmj4AmE/J6QAi4g1N1pbnx+QxmvE/8o=",
+  "Hash": "3ldJGHL65HSb2sw5M8mdvAbexeGKe/kA/Lp4bVC/ApE=",
   "Source": "RealEstateAPI",
   "BasePath": "_content/RealEstateAPI",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\c48b7b4a-fd6d-4e88-baf0-984959f77c53_download.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\c9e67930-6a43-4fac-b261-19dc71ea70c0_download.jpg",
+      "SourceId": "RealEstateAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\",
+      "BasePath": "_content/RealEstateAPI",
+      "RelativePath": "uploads/c9e67930-6a43-4fac-b261-19dc71ea70c0_download.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\c9e67930-6a43-4fac-b261-19dc71ea70c0_download.jpg"
     },
     {
       "Identity": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\d048f05e-3e15-4db4-8e1d-adf9ef4dd650_download.jpg",
