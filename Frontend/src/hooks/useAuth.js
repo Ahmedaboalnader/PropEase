@@ -10,10 +10,8 @@ export const useAuth = () => {
         skip: !isAuthenticated
     });
     
-    const storedUser = getAccount ;
-
     return {
-        user: storedUser,
+        user: getAccount,
         isAuthenticated,
         isVerified: auth.isVerified || !!Cookies.get('accessToken'),
         accessToken: auth.accessToken || Cookies.get('accessToken'),
