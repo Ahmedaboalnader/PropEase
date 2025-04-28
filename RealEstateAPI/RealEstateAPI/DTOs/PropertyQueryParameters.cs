@@ -11,6 +11,8 @@ namespace RealEstateAPI.DTOs
         public int? MinBathrooms { get; set; }
         public int? MinArea { get; set; }
         public string? Location { get; set; }
+        public PropertyType? PropertyType { get; set; }
+
         public ListingType? ListingType { get; set; }
     }
 }
