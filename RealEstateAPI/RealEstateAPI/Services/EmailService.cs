@@ -6,7 +6,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace RealEstateAPI.Services
 {
-    public class EmailService
+    public class EmailService : IEmailService
+
     {
         private readonly SmtpClient _smtpClient;
         private readonly string _fromEmail;

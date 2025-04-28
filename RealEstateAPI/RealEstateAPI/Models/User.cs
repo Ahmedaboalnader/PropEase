@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace RealEstateAPI.Models
 {
-    public class User
+    public class User 
     {
         public int Id { get; set; }
 
@@ -17,19 +18,19 @@ namespace RealEstateAPI.Models
         public string PhoneNumber { get; set; }
 
         [Required]
-        [JsonIgnore] 
+        [JsonIgnore]
         public string PasswordHash { get; set; }
 
         public string Role { get; set; } = "User";
 
-        public string? OTP { get; set; }
-        public DateTime? OTPExpiry { get; set; }
-        public bool IsResetOtpVerified { get; set; } = false;
-        public bool IsEmailConfirmed { get; set; } = false;
-        public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenExpiry { get; set; }
-
-
+        public string? OTP { get; set; }   
+        public DateTime? OTPExpiry { get; set; }   
+        public DateTime? LastOtpSent { get; set; }   
+        public bool? IsResetOtpVerified { get; set; }  
+        public bool IsEmailConfirmed { get; set; } = false;   
+        public string? RefreshToken { get; set; }   
+        public DateTime? RefreshTokenExpiry { get; set; }  
     }
+
 
 }
