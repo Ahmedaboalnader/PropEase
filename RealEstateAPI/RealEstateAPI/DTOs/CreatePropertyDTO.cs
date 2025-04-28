@@ -29,12 +29,12 @@ namespace RealEstateAPI.DTOs
 
         public ListingType ListingType { get; set; }
 
-        // بيانات الوسيط العقاري
+     
         public string Name { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
 
-        // Highlights
+        
         public PropertyType PropertyType { get; set; }
         public ViewType ViewType { get; set; }
         public Location LocationType { get; set; }

@@ -149,6 +149,15 @@ public class PropertyService : IPropertyService
 
         return MapToDTO(property);
     }
+    public async Task<IEnumerable<PropertyResponseDTO>> GetPropertiesByListingType(ListingType listingType)
+    {
+        var properties = await _context.Properties
+            .Where(p => p.ListingType == listingType)
+            .Include(p => p.Images)
+            .ToListAsync();
+
+        return properties.Select(MapToDTO);
+    }
 
     private PropertyResponseDTO MapToDTO(Property property)
     {
@@ -165,12 +174,12 @@ public class PropertyService : IPropertyService
             ListingType = property.ListingType,
             UserId = property.UserId,
 
-            // Brokers Info
+          
             Name = property.Name,
             Address = property.Address,
             Phone = property.Phone,
 
-            // Highlights
+            
             PropertyType = property.PropertyType,
             ViewType = property.ViewType,
             LocationType = property.LocationType,

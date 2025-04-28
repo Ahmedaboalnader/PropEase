@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateAPI.DTOs;
+using RealEstateAPI.Models;
 using RealEstateAPI.Services;
 using System.Security.Claims;
 
@@ -31,7 +32,23 @@ public class PropertyController : ControllerBase
     {
         var properties = await _propertyService.GetAllProperties();
         return Ok(properties);
-    } 
+    }
+
+    [HttpGet("for-sale")]
+    public async Task<IActionResult> GetPropertiesForSale()
+    {
+        var properties = await _propertyService.GetPropertiesByListingType(ListingType.ForSale);
+        return Ok(properties);
+    }
+
+    [HttpGet("for-rent")]
+    public async Task<IActionResult> GetPropertiesForRent()
+    {
+        var properties = await _propertyService.GetPropertiesByListingType(ListingType.ForRent);
+        return Ok(properties);
+    }
+
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPropertyById(int id)
     {

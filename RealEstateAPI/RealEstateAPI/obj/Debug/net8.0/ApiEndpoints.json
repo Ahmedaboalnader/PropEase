@@ -188,7 +188,7 @@
   {
     "ContainingType": "RealEstateAPI.Controllers.ContactController",
     "Method": "GetContactInfo",
-    "RelativePath": "api/contact/info",
+    "RelativePath": "api/contact us/info",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -198,7 +198,7 @@
   {
     "ContainingType": "RealEstateAPI.Controllers.ContactController",
     "Method": "SendMessage",
-    "RelativePath": "api/contact/send",
+    "RelativePath": "api/contact us/send",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -219,6 +219,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RealEstateAPI.Controllers.FavoritesController",
+    "Method": "GetFavoriteStatus",
+    "RelativePath": "api/Favorites/{propertyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "propertyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -535,6 +551,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PropertyController",
+    "Method": "GetPropertiesForRent",
+    "RelativePath": "api/properties/for-rent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PropertyController",
+    "Method": "GetPropertiesForSale",
+    "RelativePath": "api/properties/for-sale",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "RealEstateAPI.Controllers.PropertySearchController",
     "Method": "SearchProperties",
     "RelativePath": "api/PropertySearch",
@@ -574,6 +610,11 @@
       },
       {
         "Name": "Location",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PropertyType",
         "Type": "System.String",
         "IsRequired": false
       },

@@ -50,7 +50,14 @@ namespace RealEstateAPI.Services
             if (queryParams.ListingType.HasValue)
                 query = query.Where(p => p.ListingType == queryParams.ListingType.Value);
 
-           
+
+            if (queryParams.PropertyType.HasValue)
+                query = query.Where(p => p.PropertyType == queryParams.PropertyType.Value);
+
+
+
+
+
             var properties = await query
                 .Select(property => new PropertyResponseDTO
                 {
@@ -63,7 +70,8 @@ namespace RealEstateAPI.Services
                     Rooms = property.Rooms,
                     Bathrooms = property.Bathrooms,
                     Area = property.Area,
-                    ListingType = property.ListingType, 
+                    ListingType = property.ListingType,
+                    PropertyType = property.PropertyType,
                     Images = property.Images.Select(i => $"/uploads/{i.FileName}").ToList()
                 })
                 .ToListAsync();
