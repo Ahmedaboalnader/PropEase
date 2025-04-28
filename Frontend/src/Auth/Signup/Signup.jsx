@@ -11,28 +11,60 @@ import { LuUserRound } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
+import { useRegisterMutation } from '../../Store/Auth/authApi';
+import { showNotification } from '../../utils/notification';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../Store/Auth/authSlice';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [register, { isLoading: isLoadingSignup }] = useRegisterMutation();
+  const dispatch = useDispatch();
 
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(SignUpSchema),
     defaultValues: {
-      userName: '',
+      Name: '',
       email: '',
-      phone: '',
+      PhoneNumber: '',
       password: '',
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const response = await register(data).unwrap();
+      
+      // Store auth data in Redux and cookies
+      dispatch(setCredentials({
+          user: response?.user,
+          accessToken: response?.accessToken,
+          refreshToken: response?.refreshToken
+      }));
+
+      reset();
+      showNotification.success(response?.message || 'Registration successful');
+      navigate('/verfication', { 
+          state: { 
+              email: data?.email,
+              phoneNumber: data?.PhoneNumber,
+              fromLogin: false
+          } 
+      });
+    } catch (error) {
+      console.log("Error", error);
+      if (error.data?.message === "Email is already registered.") {
+        showNotification.info('Email already exists, please login');
+        navigate('/login');
+      } else {
+        showNotification.error(error.data?.message || 'Registration failed');
+      }
+    }
   };
 
   return (
@@ -50,9 +82,9 @@ const Signup = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 w-full">
           <FormInput
             control={control}
-            name="userName"
+            name="Name"
             placeholder="User Name"
-            error={errors.userName?.message}
+            error={errors.Name?.message}
             icon={<LuUserRound color='black'/>}
           />
 
@@ -66,9 +98,9 @@ const Signup = () => {
 
           <FormInput
             control={control}
-            name="phone"
+            name="PhoneNumber"
             placeholder="Phone"
-            error={errors.phone?.message}
+            error={errors.PhoneNumber?.message}
             icon={<FaPhoneAlt color='black'/>}
           />
 
@@ -82,10 +114,13 @@ const Signup = () => {
 
           <Button
             type="submit"
-            className="!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8"
-            onClick={() => {navigate('/verfication')}}
+            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
+              ${(isLoadingSignup || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+            loading={isLoadingSignup}
+            disabled={isLoadingSignup || !isValid}
+            loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
           >
-            Sign In
+            Sign Up
           </Button>
         </form>
 
