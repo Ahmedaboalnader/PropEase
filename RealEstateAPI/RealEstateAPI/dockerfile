@@ -13,6 +13,8 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet build -c ${BUILD_CONFIGURATION} --output /app/build
 
+RUN dotnet tool restore
+
 RUN dotnet ef migrations add AutoMigration --output-dir Migrations
 
 RUN dotnet ef database update
