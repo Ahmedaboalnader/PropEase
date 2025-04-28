@@ -2,8 +2,8 @@ FROM node:20-alpine@sha256:8bda036ddd59ea51a23bc1a1035d3b5c614e72c01366d989f4120
 
 WORKDIR /app
 
-COPY package*.json  .
-RUN npm install
+COPY package*.json ./
+RUN npm install --include=dev
 
 COPY . .
 RUN npm run build
@@ -14,7 +14,7 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
 
-COPY --from=builder  /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist .
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
