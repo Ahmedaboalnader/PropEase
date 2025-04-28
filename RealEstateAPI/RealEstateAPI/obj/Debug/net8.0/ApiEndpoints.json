@@ -188,7 +188,7 @@
   {
     "ContainingType": "RealEstateAPI.Controllers.ContactController",
     "Method": "GetContactInfo",
-    "RelativePath": "api/contact us/info",
+    "RelativePath": "api/contact/info",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -198,7 +198,7 @@
   {
     "ContainingType": "RealEstateAPI.Controllers.ContactController",
     "Method": "SendMessage",
-    "RelativePath": "api/contact us/send",
+    "RelativePath": "api/contact/send",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
