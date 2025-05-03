@@ -124,75 +124,87 @@
 
 
 
+// 2 
+
+// pipeline {
+//     agent any
+
+//     environment {
+//         FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
+//         BACKEND_IMAGE  = "ahmedmostafa22/propease-backend"
+//         TAG = "latest"  // أو v$VERSION لو هتربطها برقم معين
+//     }
+
+//     stages {
+//         stage('Clone Repository') {
+//             steps {
+//                 deleteDir()
+//                 sh '''
+//                     git clone https://github.com/Ahmedaboalnader/PropEase.git .
+//                     git fetch --all
+//                     git reset --hard origin/main
+//                 '''
+//             }
+//         }
+
+//         stage('Pull Images') {
+//             steps {
+//                 sh '''
+//                     echo "Pulling latest images from Docker Hub..."
+//                     docker pull $FRONTEND_IMAGE:$TAG
+//                     docker pull $BACKEND_IMAGE:$TAG
+//                 '''
+//             }
+//         }
+
+//         stage('Update docker-stack.yml') {
+//             steps {
+//                 sh '''
+//                     sed -i "s|image: $FRONTEND_IMAGE:.*|image: $FRONTEND_IMAGE:$TAG|" docker-stack.yml
+//                     sed -i "s|image: $BACKEND_IMAGE:.*|image: $BACKEND_IMAGE:$TAG|" docker-stack.yml
+//                 '''
+//             }
+//         }
+
+//         stage('Deploy Stack') {
+//             steps {
+//                 sh 'docker stack deploy -c docker-stack.yml app'
+//             }
+//         }
+
+//         stage('Verify Deployment') {
+//             steps {
+//                 sh 'docker service ls'
+//             }
+//         }
+//     }
+
+//     post {
+//         success {
+//             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+//                 subject: "✅ تم النشر بنجاح",
+//                 body: "تم استخدام الصور من Docker Hub وتحديث الخدمات."
+//         }
+//         failure {
+//             mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+//                 subject: "❌ فشل النشر",
+//                 body: "راجع السجلات: ${env.BUILD_URL}"
+//         }
+//     }
+// }
+
 
 pipeline {
     agent any
 
-    environment {
-        FRONTEND_IMAGE = "ahmedmostafa22/propease-frontend"
-        BACKEND_IMAGE  = "ahmedmostafa22/propease-backend"
-        TAG = "latest"  // أو v$VERSION لو هتربطها برقم معين
-    }
-
     stages {
-        // stage('Clone Repository') {
-        //     steps {
-        //         deleteDir()
-        //         sh '''
-        //             git clone https://github.com/Ahmedaboalnader/PropEase.git .
-        //             git fetch --all
-        //             git reset --hard origin/main
-        //         '''
-        //     }
-        // }
-
-        stage('Pull Images') {
+        stage('Docker Pull') {
             steps {
-                sh '''
-                    echo "Pulling latest images from Docker Hub..."
-                    docker pull $FRONTEND_IMAGE:$TAG
-                    docker pull $BACKEND_IMAGE:$TAG
-                '''
+                sh 'docker pull ahmedmostafa22/propease-frontend:v28'
             }
-        }
-
-        stage('Update docker-stack.yml') {
-            steps {
-                sh '''
-                    sed -i "s|image: $FRONTEND_IMAGE:.*|image: $FRONTEND_IMAGE:$TAG|" docker-stack.yml
-                    sed -i "s|image: $BACKEND_IMAGE:.*|image: $BACKEND_IMAGE:$TAG|" docker-stack.yml
-                '''
-            }
-        }
-
-        // stage('Deploy Stack') {
-        //     steps {
-        //         sh 'docker stack deploy -c docker-stack.yml app'
-        //     }
-        // }
-
-        // stage('Verify Deployment') {
-        //     steps {
-        //         sh 'docker service ls'
-        //     }
-        // }
-    }
-
-    post {
-        success {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                subject: "✅ تم النشر بنجاح",
-                body: "تم استخدام الصور من Docker Hub وتحديث الخدمات."
-        }
-        failure {
-            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
-                subject: "❌ فشل النشر",
-                body: "راجع السجلات: ${env.BUILD_URL}"
         }
     }
 }
-
-
 
 
 
