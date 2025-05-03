@@ -135,16 +135,16 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                deleteDir()
-                sh '''
-                    git clone https://github.com/Ahmedaboalnader/PropEase.git .
-                    git fetch --all
-                    git reset --hard origin/main
-                '''
-            }
-        }
+        // stage('Clone Repository') {
+        //     steps {
+        //         deleteDir()
+        //         sh '''
+        //             git clone https://github.com/Ahmedaboalnader/PropEase.git .
+        //             git fetch --all
+        //             git reset --hard origin/main
+        //         '''
+        //     }
+        // }
 
         stage('Pull Images') {
             steps {
