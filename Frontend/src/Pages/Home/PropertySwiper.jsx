@@ -1,30 +1,13 @@
 
 import { SwiperSlide } from 'swiper/react';
 import CustomSwiper from '../../Components/CustomSwiper';
-import rent1 from '../../assets/rent1.png';
 import { motion } from "framer-motion";
 import SharedCard from '../../Components/SharedCard';
-
-const generateProperties = (count) => {
-    const properties = [];
-    for (let i = 1; i <= count; i++) {
-        properties.push({
-            id: i,
-            title: 'New Apartment Nice View',
-            location: 'Taj Sultan - Taj City Compound',
-            price: '18,000,000 EGP',
-            image: rent1, 
-            rooms: 4,
-            baths: 1,
-            size: 460,
-        });
-    }
-    return properties;
-};
-
-const properties = generateProperties(11);
+import { useGetAllProperitesQuery } from '../../Store/Properites/PropertiesApi';
 
 export default function PropertySwiper() {
+    const{data: getAllProperites, isLoading: isLoadingGetAllProperites, refetch} = useGetAllProperitesQuery();
+
     return (
         <div className="!w-full !py-10 !px-4 !h-[90vh] mb-24">
             <motion.h2
@@ -38,9 +21,12 @@ export default function PropertySwiper() {
             </motion.h2>
 
             <CustomSwiper paginationId="property-swiper-pagination">
-                {properties?.map((property) => (
-                    <SwiperSlide key={property.id}>
-                        <SharedCard property={property} />
+                {getAllProperites?.$values?.map((property) => (
+                    <SwiperSlide key={property?.$id}>
+                        <SharedCard 
+                            property={property} 
+                            refetch={refetch}
+                        />
                     </SwiperSlide>
                 ))}
             </CustomSwiper> 

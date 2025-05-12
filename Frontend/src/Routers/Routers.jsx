@@ -24,7 +24,14 @@ function Routers() {
             <ScrollToTopButton />
             <Router>
                 <Routes>
-                    <Route path="/" element={<Navigate to="/home" />} />
+                    <Route
+                        path="/"
+                        element={
+                            <Suspense fallback={<Loading />}>
+                                <Home />
+                            </Suspense>
+                        }
+                    />
 
                     <Route
                         path="/home"
@@ -46,7 +53,9 @@ function Routers() {
                         path="/property/details"
                         element={
                             <Suspense fallback={<Loading />}>
-                                <PropertyDetails />
+                                <PrivateRoute>
+                                    <PropertyDetails />
+                                </PrivateRoute>
                             </Suspense>
                         }
                     />
@@ -62,7 +71,9 @@ function Routers() {
                         path="/sell"
                         element={
                             <Suspense fallback={<Loading />}>
-                                <Sell />
+                                <PrivateRoute>
+                                    <Sell />
+                                </PrivateRoute>
                             </Suspense>
                         }
                     />

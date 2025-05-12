@@ -32,7 +32,7 @@ const MainContent = () => {
     });
     return (
         <div className="min-h-screen py-8 w-full px-3 md:px-8 lg:px-12 bg-[#fafafa]">
-            <Text className="!text-2xl !font-bold !my-5 !w-full !px-20 !mb-10">My Account</Text>
+            <Text className="!text-2xl !font-bold !my-5 !w-full max-lg:!px-3 lg:!px-20 !mb-10">My Account</Text>
             <SharedTabs
                 tabValue={tabValue}
                 onChange={(value) => {navigate(`/account/${value}`)}}

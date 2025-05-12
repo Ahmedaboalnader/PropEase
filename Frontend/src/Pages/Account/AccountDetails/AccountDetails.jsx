@@ -85,7 +85,7 @@ const AccountDetails = () => {
 
     return (
         <>
-            <div className='bg-white rounded-lg p-8 shadow-sm'>
+            <div className='bg-white rounded-lg max-lg:p-3 lg:p-8 shadow-custom'>
                 <Text className="!text-2xl !font-bold mb-8">Account Details</Text>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">

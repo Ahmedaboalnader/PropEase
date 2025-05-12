@@ -139,7 +139,7 @@ const Filter = () => {
             </div>
 
             {/* Breadcrumb and Results Count */}
-            <div className="flex flex-col gap-1 mt-8">
+            {/* <div className="flex flex-col gap-1 mt-8">
                 <div className="flex items-center gap-2">
                     <IoHomeOutline size={20} className="!text-main !font-bold" />
                     <IoIosArrowForward />
@@ -147,7 +147,7 @@ const Filter = () => {
                 </div>
                 <Text className="!text-xl !font-bold !mt-4">Properties for rent</Text>
                 <Text className="!text-gray-500 !font-semibold">500 Properties</Text>
-            </div>
+            </div> */}
         </Container>
     );
 };
