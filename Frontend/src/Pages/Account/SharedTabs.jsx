@@ -51,7 +51,10 @@ return (
                 </Tabs.Tab>
                 ) : null
             )}
-            <Logout />
+
+            {!isSmallScreen && (
+                <Logout tabs={true}/>  
+            ) }
 
             </Tabs.List>
 

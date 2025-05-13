@@ -1,17 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
+const isTokenExpired = (token) => {
+    if (!token) return true;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp * 1000 < Date.now();
+    } catch (e) {
+        return true;
+    }
+};
+
 // Check for existing auth data in cookies
 const storedUser = Cookies.get('user');
 const accessToken = Cookies.get('accessToken');
 const refreshToken = Cookies.get('refreshToken');
 
+// Remove expired access token
+if (accessToken && isTokenExpired(accessToken)) {
+    Cookies.remove('accessToken');
+}
+
 const initialState = {
     user: storedUser ? JSON.parse(storedUser) : null,
-    accessToken: accessToken || null,
+    accessToken: (accessToken && !isTokenExpired(accessToken)) ? accessToken : null,
     refreshToken: refreshToken || null,
-    isAuthenticated: !!accessToken,
-    isVerified: !!accessToken,
+    isAuthenticated: !!(accessToken && !isTokenExpired(accessToken)),
+    isVerified: !!(accessToken && !isTokenExpired(accessToken)),
 };
 
 const authSlice = createSlice({

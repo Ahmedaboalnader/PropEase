@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Modal,Text, Group, Button } from '@mantine/core';
 
-const AuthModal = ({isModalOpen, setIsModalOpen}) => {
+const AuthModal = ({isModalOpen, setIsModalOpen, value="your favorites"}) => {
     const navigate = useNavigate();
 
 return(
@@ -11,7 +11,7 @@ return(
         title={<Text className="!text-xl !font-bold">Login Required</Text>}
         centered
     >
-        <Text className="mb-6">Please login or sign up to access your favorites</Text>
+        <Text className="mb-6">Please login or sign up to access {value}</Text>
         <Group justify="center" className="!gap-4 !mt-5 !w-full">
             <Button
                 onClick={() => {
