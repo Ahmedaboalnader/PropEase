@@ -1,3 +1,75 @@
+  // jenkins1
+pipeline {
+    agent any
+
+    environment {
+        FRONTEND_IMAGE = "ahmedmostafa22/image-frontend"
+        DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/image-frontend"
+        JENKINS_TRIGGER_URL = "http://34.247.209.44:8080/job/pull_image/build?token=mytoken123"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                deleteDir()
+                sh '''
+                    git clone https://github.com/Ahmedaboalnader/PropEase.git .
+                    git fetch --all
+                    git reset --hard origin/main
+                '''
+            }
+        }
+
+        stage('Build Frontend (latest)') {
+            steps {
+                sh '''
+                    echo "Building Frontend with tag: latest..."
+                    cd Frontend || exit 1
+                    docker build -t "$FRONTEND_IMAGE:latest" -f Dockerfile . || exit 1
+                '''
+            }
+        }
+
+        stage('Push Frontend Image (latest)') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerid', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                        echo "Logging in to Docker Hub..."
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+
+                        echo "Pushing Frontend Image: latest..."
+                        docker push "$FRONTEND_IMAGE:latest"
+                    '''
+                }
+            }
+        }
+
+        stage('Trigger EC2 Jenkins Job') {
+            steps {
+                sh '''
+                    echo "Waiting a bit to ensure Docker Hub is updated..."
+                    sleep 15
+
+                    echo "Triggering EC2 Jenkins Job..."
+                    curl -u ahmed:1235 "$JENKINS_TRIGGER_URL"
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                subject: "✅ Image built and deployed (latest)",
+                body: "تم رفع الإيمدج بالتاج latest وتفعيل Jenkins Job على EC2."
+        }
+        failure {
+            mail to: 'ahmed.mostafa.aboalnader@gmail.com',
+                subject: "❌ فشل في بناء أو رفع أو نشر الإيمدج",
+                body: "راجع اللوج من هنا: ${env.BUILD_URL}"
+        }
+    }
+}
 
 //
 // pipeline {
@@ -196,17 +268,17 @@
 // }
 
 
-pipeline {
-    agent any
+// pipeline {
+//     agent any
 
-    stages {
-        stage('Docker Pull') {
-            steps {
-                sh 'docker pull ahmedmostafa22/propease-frontend:v28'
-            }
-        }
-    }
-}
+//     stages {
+//         stage('Docker Pull') {
+//             steps {
+//                 sh 'docker pull ahmedmostafa22/propease-frontend:v28'
+//             }
+//         }
+//     }
+// }
 
 
 
