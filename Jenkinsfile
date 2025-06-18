@@ -5,7 +5,7 @@ pipeline {
     environment {
         FRONTEND_IMAGE = "ahmedmostafa22/image-frontend"
         DOCKER_HUB_REPO_FRONTEND = "ahmedmostafa22/image-frontend"
-        JENKINS_TRIGGER_URL = "http://34.247.209.44:8080/job/pull_image/build?token=mytoken123"
+        JENKINS_TRIGGER_URL = "http://34.255.91.208:8080/job/propease/build?token=mytoken123"
     }
 
     stages {
