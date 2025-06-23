@@ -1,7 +1,13 @@
 import React from 'react'
+<<<<<<< HEAD
 import { Badge, Group, Text, Button } from '@mantine/core'
 import { FaShare } from 'react-icons/fa';
 import { FiEdit, FiMapPin, FiTrash2 } from "react-icons/fi";
+=======
+import { Badge, Group, Text } from '@mantine/core'
+import { FaShare, FaHeart, FaFlag } from 'react-icons/fa';
+import { FiMapPin } from "react-icons/fi";
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
 import { 
     PiBedFill, 
     PiBathtubFill, 
@@ -10,6 +16,7 @@ import {
 import getCountryFromGoogleMapsUrl from '../../../Functions/getCountryFromGoogleMapsUrl';
 import numberToWords from '../../../Functions/numberToWords';
 import { IoPricetagsOutline } from "react-icons/io5";
+<<<<<<< HEAD
 import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../../../Store/Favorite/FavoriteApi';
 import { showNotification } from '../../../utils/notification';
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
@@ -60,6 +67,10 @@ const LeftCard = ({singleProperty, setIsShareModalOpen, refetch, refetchListing}
         navigate(`/sell?id=${id}`);
     };
 
+=======
+
+const LeftCard = ({singleProperty, setIsShareModalOpen}) => {
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
     return (
         <div className="col-span-12 md:col-span-7">
             <div className="flex justify-between items-start mb-6">
@@ -79,13 +90,18 @@ const LeftCard = ({singleProperty, setIsShareModalOpen, refetch, refetchListing}
                         </div>
                     )}
                 </div>
+<<<<<<< HEAD
                 <div className={`flex items-center gap-4 ${singleProperty?.userId === userChecked?.id ? "flex-wrap" : ""} `}>
+=======
+                <div className='flex items-center gap-4'>
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
                     <Badge 
                         className="!bg-transparent !text-black !border !border-gray-400 !rounded-full !w-10 !h-10 !cursor-pointer"
                         onClick={() => setIsShareModalOpen(true)}
                     >
                         <FaShare size={18} />
                     </Badge>
+<<<<<<< HEAD
                     <div 
                         className={`!border !border-gray-300 !rounded-full !w-10 !h-10 !flex !justify-center !items-center !cursor-pointer hover:!bg-gray-100 ${
                             singleProperty?.isFavorite ? '!border-red-500' : ''
@@ -120,25 +136,43 @@ const LeftCard = ({singleProperty, setIsShareModalOpen, refetch, refetchListing}
                             </Button>
                         </>
                     )}
+=======
+                    <Badge className="!bg-transparent !text-red-600 !border !border-gray-400 !rounded-full !w-10 !h-10 !cursor-pointer">
+                        <FaHeart size={18} />
+                    </Badge>
+                    <Badge className="!bg-transparent !text-black !border !border-gray-400 !rounded-full !w-10 !h-10 !cursor-pointer"><FaFlag size={18} /></Badge>
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
                 </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mt-14 border border-gray-400 rounded-xl">
+<<<<<<< HEAD
                 <div className="text-left p-3">
+=======
+                <div className="text-left p-4">
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
                     <Text size="sm" color="dimmed" fw={500}>Bedroom</Text>
                     <Group className="mt-2 !flex !items-center !justify-start">
                         <PiBedFill size={24} className='!text-gray-400'/>
                         <Text fw={700}>{numberToWords(singleProperty?.rooms)}</Text>
                     </Group>
                 </div>
+<<<<<<< HEAD
                 <div className="text-left border-l-2 border-gray-300 pl-4 p-3">
+=======
+                <div className="text-left border-l-2 border-gray-300 pl-4 p-4">
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
                     <Text size="sm" color="dimmed" fw={500}>Bathroom</Text>
                     <Group className="mt-2 !flex !items-center !justify-start">
                         <PiBathtubFill size={24} className='!text-gray-400'/>
                         <Text fw={700}>{numberToWords(singleProperty?.bathrooms)}</Text>
                     </Group>
                 </div>
+<<<<<<< HEAD
                 <div className="text-left border-l-2 border-gray-300 pl-4 p-3">
+=======
+                <div className="text-left border-l-2 border-gray-300 pl-4 p-4">
+>>>>>>> a588ca3df038e42a4bd921a57072cba0cdc6a212
                     <Text size="sm" color="dimmed" fw={500}>Area</Text>
                     <Group className="mt-2 !flex !items-center !justify-start">
                         <PiTriangleFill size={24} className='!text-gray-400'/>

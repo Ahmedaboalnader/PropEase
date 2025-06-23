@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Logout = ({tabs = false}) => {
     const [logoutApi] = useLogoutMutation();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const{navigate} = useNavigate();
 
     const handleLogout = async () => {
         try {
