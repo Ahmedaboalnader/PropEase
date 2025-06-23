@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Card, Badge, Text, Group } from '@mantine/core';
 import { FaBath, FaBed, FaRulerCombined } from 'react-icons/fa';
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { useAddFavoriteMutation } from '../Store/Favorite/FavoriteApi';
+import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../Store/Favorite/FavoriteApi';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
 import { useNavigate } from 'react-router-dom';
@@ -14,17 +14,23 @@ const SharedCard = ({property, offers,refetch}) => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [addFavorite, { isLoading }] = useAddFavoriteMutation();
+    const [addFavorite, { isLoading: isLoadingAddFavorite }] = useAddFavoriteMutation();
+    const [deleteFavorite, { isLoading: isLoadingDeleteFavorite }] = useDeleteFavoriteMutation();
 
-    const handleFavoriteClick = async (id) => {        
+    const handleFavoriteClick = async (id, isFavorite) => {        
     if (!isAuthenticated) {
         setIsModalOpen(true);
         return;
     }
 
     try {
-        const response = await addFavorite(Number(id)).unwrap();
-        showNotification.success(response?.message || 'Favorite updated successfully');
+        if(!isFavorite) {
+            const response = await addFavorite(Number(id)).unwrap();
+            showNotification.success(response?.message || 'Favorite updated successfully');
+        } else{
+            const response = await deleteFavorite(Number(id)).unwrap();
+            showNotification.success(response?.message || 'Favorite updated successfully');
+        }
         refetch();
     } catch (error) {
         console.error("Error:", error);
@@ -106,8 +112,8 @@ const SharedCard = ({property, offers,refetch}) => {
                             className={`!border !border-gray-300 !rounded-full !w-10 !h-10 !flex !justify-center !items-center !cursor-pointer hover:!bg-gray-100 ${
                                 property?.isFavorite ? '!border-red-500' : ''
                             }`}
-                            onClick={() => handleFavoriteClick(property?.$id)}
-                            disabled={isLoading}                        
+                            onClick={() => handleFavoriteClick(property?.id, property?.isFavorite)}
+                            disabled={isLoadingAddFavorite || isLoadingDeleteFavorite}                        
                         >
                             {property?.isFavorite ? (
                                 <IoIosHeart size={22} className="text-red-500" />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import SharedCard from '../../Components/SharedCard';
 import NoDataFound from '../../Components/NoDataFound';
 import { SimpleGrid, Container, Pagination, Center } from '@mantine/core';
@@ -13,6 +13,10 @@ const PropertiesListing = ({data, offers, refetch}) => {
 
     // Check if there's no data or empty array
     const noDataToDisplay = !data || data.length === 0;
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll
+    }, [currentPage]);
 
     return (
         <Container size="2xl" className="max-lg:!px-4 lg:!px-16 !py-6">

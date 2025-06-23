@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\7471c87f-5ee4-4336-a2dc-83536503b16e_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\7471c87f-5ee4-4336-a2dc-83536503b16e_download.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\b77bb67b-42f7-425c-96a7-84fe62c35fa7_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\b77bb67b-42f7-425c-96a7-84fe62c35fa7_download.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\c48b7b4a-fd6d-4e88-baf0-984959f77c53_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\c48b7b4a-fd6d-4e88-baf0-984959f77c53_download.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\c9e67930-6a43-4fac-b261-19dc71ea70c0_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\c9e67930-6a43-4fac-b261-19dc71ea70c0_download.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\d048f05e-3e15-4db4-8e1d-adf9ef4dd650_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\d048f05e-3e15-4db4-8e1d-adf9ef4dd650_download.jpg"
+    },
+    {
+      "Id": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\wwwroot\\uploads\\dbe079a9-0df8-4827-a74d-436b42f03dfd_download.jpg",
+      "PackagePath": "staticwebassets\\uploads\\dbe079a9-0df8-4827-a74d-436b42f03dfd_download.jpg"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.RealEstateAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.RealEstateAPI.props",
+      "PackagePath": "build\\RealEstateAPI.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.RealEstateAPI.props",
+      "PackagePath": "buildMultiTargeting\\RealEstateAPI.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.RealEstateAPI.props",
+      "PackagePath": "buildTransitive\\RealEstateAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

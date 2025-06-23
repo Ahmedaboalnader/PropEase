@@ -12,8 +12,16 @@ export const FavoriteApi = baseApi.injectEndpoints({
 
         addFavorite: builder.mutation({
             query: (propertyId) => ({
-                url: `/Favorites/toggle/${propertyId}`,
+                url: `/Favorites/${propertyId}`,
                 method: 'POST',
+            }),
+            invalidatesTags: ['Favorites'],
+        }),
+        
+        deleteFavorite: builder.mutation({
+            query: (propertyId) => ({
+                url: `/Favorites/${propertyId}`,
+                method: 'DELETE',
             }),
             invalidatesTags: ['Favorites'],
         }),
@@ -31,5 +39,6 @@ export const FavoriteApi = baseApi.injectEndpoints({
 export const {
     useGetFavoritesQuery,
     useAddFavoriteMutation,
+    useDeleteFavoriteMutation,
     useGetFavoriteQuery,
 } = FavoriteApi;

@@ -15,6 +15,7 @@ import { useRegisterMutation } from '../../Store/Auth/authApi';
 import { showNotification } from '../../utils/notification';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../Store/Auth/authSlice';
+import Cookies from 'js-cookie';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -46,6 +47,12 @@ const Signup = () => {
           refreshToken: response?.refreshToken
       }));
 
+      Cookies.set('user', JSON.stringify(response?.user), {
+        expires: 1, // Expires in 7 days
+        secure: true, // Secure in production
+        sameSite: 'strict', // Protection against CSRF
+      });
+
       reset();
       showNotification.success(response?.message || 'Registration successful');
       navigate('/verfication', { 
@@ -71,11 +78,15 @@ const Signup = () => {
       title="Welcome to the community"
       subtitle="Sign up to Explore"
     >
-      <Group className="!px-0 !max-w-[48%] flex flex-col items-center">
+      <Group className="!px-4 sm:px-6 md:px-0 !w-full sm:!max-w-[85%] md:!max-w-[48%] flex flex-col items-center">
 
-        <Group className="!mb-3! w-full">
-          <Text className="!text-3xl !font-bold !mb-10">Create your Account</Text>
-          <Text className="!font-bold !text-base">Enter your Full Details</Text>
+        <Group className="!mb-3 !w-full">
+          <Text className="!text-xl sm:!text-2xl md:!text-3xl !font-bold !mb-1 sm:!mb-8 md:!mb-10 text-center sm:text-left">
+            Create your Account
+          </Text>
+          <Text className="!font-bold !text-sm sm:!text-base text-center sm:text-left">
+            Enter your Full Details
+          </Text>
         </Group>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 w-full">
@@ -113,7 +124,7 @@ const Signup = () => {
 
           <Button
             type="submit"
-            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-8 
+            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-6 sm:!mt-8 !text-sm sm:!text-base
               ${(isLoadingSignup || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
             loading={isLoadingSignup}
             disabled={isLoadingSignup || !isValid}
@@ -124,10 +135,14 @@ const Signup = () => {
         </form>
 
         <div className='flex justify-center w-full'>
-          <Group justify="center" className="!mt-1 !flex !gap-0 ">
-            <Text className="!cursor-pointer !text-base !font-semibold">Have an Account?</Text>
+          <Group justify="center" className="!mt-1 !flex !gap-0 flex-col sm:flex-row items-center">
+            <Text className="!cursor-pointer !text-sm sm:!text-base !font-semibold text-center">
+              Have an Account?
+            </Text>
             <Link to={'/login'}>
-              <Text className="!cursor-pointer !text-[#769F7D] !text-base !font-bold">Login</Text>
+              <Text className="!cursor-pointer !text-[#769F7D] !text-sm sm:!text-base !font-bold ml-0 sm:ml-1">
+                Login
+              </Text>
             </Link>
           </Group>
         </div>

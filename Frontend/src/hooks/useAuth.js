@@ -9,9 +9,13 @@ export const useAuth = () => {
     const { data: getAccount } = useGetAccountQuery(undefined, {
         skip: !isAuthenticated
     });
+
+    const userCookie = Cookies.get('user');
+    const user = userCookie ? JSON.parse(userCookie) : null;
     
     return {
         user: getAccount,
+        userChecked: user,
         isAuthenticated,
         isVerified: auth.isVerified || !!Cookies.get('accessToken'),
         accessToken: auth.accessToken || Cookies.get('accessToken'),

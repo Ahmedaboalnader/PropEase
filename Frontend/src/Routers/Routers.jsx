@@ -9,7 +9,7 @@ const Home = lazy(() => import('../Pages/Home/Home'));
 const Properties = lazy(() => import('../Pages/Properties/Properties'));
 const PropertyDetails = lazy(() => import('../Pages/Properties/PropertyDetails/PropertyDetails'));
 const Contact = lazy(() => import('../Pages/Contact/Contact'));
-const Sell = lazy(() => import('../Pages/Sell/index'));
+const Sell = lazy(() => import('../Pages/Sell/Sell.jsx'));
 const Login = lazy(() => import('../Auth/Login/Login'));
 const Signup = lazy(() => import('../Auth/Signup/Signup'));
 const ForgotPassword = lazy(() => import('../Auth/Login/ForgotPassword/'));
@@ -17,6 +17,7 @@ const ResetPassword = lazy(() => import('../Auth/Login/ResetPassword'));
 const Verfication = lazy(() => import('../Auth/Login/Verfication'));
 const Account = lazy(() => import('../Pages/Account/index.jsx'));
 const Offers = lazy(() => import('../Pages/Offers/Offers.jsx'));
+const ComingSoon = lazy(() => import('../Components/ComingSoon.jsx'));
 
 function Routers() {
     return (
@@ -82,6 +83,14 @@ function Routers() {
                         element={
                             <Suspense fallback={<Loading />}>
                                 <Offers />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="/coming-soon"
+                        element={
+                            <Suspense fallback={<Loading />}>
+                                <ComingSoon />
                             </Suspense>
                         }
                     />

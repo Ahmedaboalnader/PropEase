@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {}
+    "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {}
   },
   "projects": {
-    "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {
+    "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+        "projectUniqueName": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
         "projectName": "RealEstateAPI",
-        "projectPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
+        "projectPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\RealEstateAPI.csproj",
         "packagesPath": "C:\\Users\\mshar\\.nuget\\packages\\",
-        "outputPath": "D:\\PropEase\\RealEstateAPI\\RealEstateAPI\\obj\\",
+        "outputPath": "C:\\Users\\mshar\\source\\repos\\RealEstateAPI\\RealEstateAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mshar\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -54,15 +54,19 @@
               "target": "Package",
               "version": "[8.0.14, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.15, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.3, )"
+              "version": "[9.0.4, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.3, )"
+              "version": "[9.0.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

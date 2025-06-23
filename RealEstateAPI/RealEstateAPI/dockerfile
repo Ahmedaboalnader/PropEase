@@ -1,0 +1,33 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine@sha256:7d3a75ca5c8ac4679908ef7a2591b9bc257c62bd530167de32bba105148bb7be AS build
+WORKDIR /src
+
+COPY RealEstateAPI.csproj .
+
+RUN dotnet restore
+
+COPY . .
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet build -c ${BUILD_CONFIGURATION} --output /app/build
+
+RUN dotnet tool restore
+
+RUN dotnet ef migrations add AutoMigration --output-dir Migrations
+
+RUN dotnet ef database update
+
+RUN dotnet publish RealEstateAPI.csproj -c Release -o /build --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine@sha256:0389d5b7d60f75ebbeec3bfffd2ad0a06d234e7b998231a5a86abf5e919a7d01 AS runtime
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV LD_LIBRARY_PATH=/usr/lib
+RUN apk add --no-cache icu-libs
+
+WORKDIR /app
+COPY --from=build /build/ .
+
+ENTRYPOINT ["dotnet", "RealEstateAPI.dll"]

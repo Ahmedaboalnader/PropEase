@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  # DataBase Service
+  #database:
+   # image: ahmedmostafa22/sql-server:latest
+   # deploy:
+    #  replicas: 1
+     # update_config:
+      #  parallelism: 1
+       # delay: 10s
+        #failure_action: rollback
+      #restart_policy:
+       # condition: on-failure
+        #delay: 10s 
+        #max_attempts: 3     
+    #env_file:
+     #3 - ./Database/.env
+    #volumes:
+      #- database-data:/var/opt/mssql/
+   # networks:
+    #  - internal-network
+   
+  # BackEnd Service
+  backend:
+    image: ahmedmostafa22/propease-backend:latest  
+       # image: ahmedmostafa22/propease-backend:${BUILD_NUMBER}  
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: rollback
+      restart_policy:
+        condition: on-failure
+        delay: 10s 
+        max_attempts: 3
+    networks:
+      - internal-network
+    #ports:
+      #- "5000:80"  
+    
+  # FrontEnd Service
+  frontend:
+    image: ahmedmostafa22/propease-frontend:latest  
+      #  image: ahmedmostafa22/propease-frontend:${BUILD_NUMBER}  
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+      restart_policy:
+        condition: on-failure
+        delay: 10s 
+        max_attempts: 3
+    networks:
+      - internal-network
+    ports:
+      - "80:80"  
+
+volumes: 
+  database-data:
+
+networks:
+  internal-network:
+    driver: overlay
