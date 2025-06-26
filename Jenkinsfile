@@ -9,17 +9,31 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                deleteDir()
-                sh '''
-                    git clone https://github.com/Ahmedaboalnader/PropEase.git .
-                    git fetch --all
-                    git reset --hard origin/main
-                '''
-            }
-        }
+//         stage('Clone Repository') {
+//             steps {
+//                 deleteDir()
+//                 // sh '''
+//                 //     git clone https://github.com/Ahmedaboalnader/PropEase.git .
+//                 //     git fetch --all
+//                 //     git reset --hard origin/main
+//                 // '''
+//               sh '''
+//     git clone --depth 1 https://github.com/Ahmedaboalnader/PropEase.git .
+//     git fetch --depth=1 origin main
+//     git reset --hard origin/main
+// '''
 
+//             }
+//         }
+stage('Clone Repository') {
+    steps {
+        deleteDir()
+        sh '''
+            git clone --depth 1 --branch main https://github.com/Ahmedaboalnader/PropEase.git .
+        '''
+    }
+}
+      
         stage('Build Frontend (latest)') {
             steps {
                 sh '''
