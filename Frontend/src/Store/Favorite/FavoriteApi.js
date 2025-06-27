@@ -33,6 +33,14 @@ export const FavoriteApi = baseApi.injectEndpoints({
             providesTags: ['Favorites'],
             }),
         }),
+
+        getSingleProperty: builder.query({
+            query: (id) => ({
+                url: `/properties/${id}`,
+                method: 'GET',
+            }),
+            providesTags: ['Property', 'Favorites']
+        }),
     }),
 });
 
@@ -41,4 +49,5 @@ export const {
     useAddFavoriteMutation,
     useDeleteFavoriteMutation,
     useGetFavoriteQuery,
+    useGetSinglePropertyQuery,
 } = FavoriteApi;

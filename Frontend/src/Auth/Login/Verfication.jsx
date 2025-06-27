@@ -88,7 +88,7 @@ const Verfication = () => {
                 
                 dispatch(setVerifiedCredentials());
                 showNotification.success(response?.message || 'Verification successful');
-                navigate('/');
+                navigate('/account/details');
             }
             reset();
         } catch (error) {

@@ -124,7 +124,7 @@ const Signup = () => {
 
           <Button
             type="submit"
-            className={`!text-white !font-bold !p-2 !w-full !bg-gradient-to-r !from-text !to-main !mt-6 sm:!mt-8 !text-sm sm:!text-base
+            className={`!text-white !font-bold !p-1 !w-full !bg-gradient-to-r !from-text !to-main !mt-6 sm:!mt-8 !text-sm sm:!text-base
               ${(isLoadingSignup || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
             loading={isLoadingSignup}
             disabled={isLoadingSignup || !isValid}

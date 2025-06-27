@@ -22,7 +22,6 @@ const propertyFilters = [
 ];
 const words = ["Find", "Your", "Perfect", "Home"];
 const Hero = () => {
-<<<<<<< main
     const [searchValue, setSearchValue] = useState('');
     const navigate = useNavigate();
 
@@ -40,9 +39,6 @@ const Hero = () => {
         handleSearch(e);
     }
     };
-=======
-    const words = ["Find", "Your", "Perfect", "Home!"];
->>>>>>> main
 
     return (
         <div className="relative h-[90vh] border-b-[15px] border-main overflow-hidden ">

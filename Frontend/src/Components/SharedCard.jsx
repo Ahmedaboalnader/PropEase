@@ -10,7 +10,7 @@ import rent1 from '../assets/rent1.png';
 import { showNotification } from '../utils/notification';
 import getCountryFromGoogleMapsUrl from '../Functions/getCountryFromGoogleMapsUrl';
 
-const SharedCard = ({property, offers,refetch}) => {
+const SharedCard = ({property,refetch}) => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,18 +63,17 @@ const SharedCard = ({property, offers,refetch}) => {
                         className="!w-full !h-full !object-cover" 
                         onClick={handleCardClick}
                     />
-                    {offers ? (
+                    {property?.hasOffer && (
                         <div className="!absolute !top-2 !right-2 !flex">
                             <Badge className='!bg-red-500 !text-white !min-w-[60px] !p-2 !text-xs !rounded-md !font-medium'>
                                 {property?.discountPercentage}% Discount
                             </Badge>
                         </div>
-                    ) : (
-                        <div className="!absolute !top-2 !left-2 !flex !gap-2">
-                            <Badge className='!bg-main !text-white !min-w-[60px] !p-2 !rounded-full !font-medium'>{property?.listingType}</Badge>
-                            <Badge className='!bg-yellowCustom !text-black !min-w-[60px] !p-2 !rounded-full !font-semibold'>{property?.propertyType}</Badge>
-                        </div>
-                    )}                
+                    )}
+                    <div className="!absolute !top-2 !left-2 !flex !gap-2">
+                        <Badge className='!bg-main !text-white !min-w-[60px] !p-2 !rounded-full !font-medium'>{property?.listingType}</Badge>
+                        <Badge className='!bg-yellowCustom !text-black !min-w-[60px] !p-2 !rounded-full !font-semibold'>{property?.propertyType}</Badge>
+                    </div>
                 </div>
                 <div className="!mt-4 !space-y-2 !px-5 !pb-2">
                     <Text 
@@ -102,7 +101,7 @@ const SharedCard = ({property, offers,refetch}) => {
                             {property?.hasOffer ? (
                                 <div className='flex items-center gap-2'>
                                     <Text className='!text-gray-500 !text-base !font-medium !line-through'>{property?.price} EGP</Text>
-                                    <Text className='!text-red-400 !text-lg !font-semibold'>{property?.priceAfterDiscount}</Text>
+                                    <Text className='!text-red-400 !text-lg !font-semibold'>{property?.priceAfterDiscount} EGP</Text>
                                 </div>
                             ) : (
                                 <Text className='!text-red-400 !text-lg !font-semibold'>{property?.price} EGP</Text>

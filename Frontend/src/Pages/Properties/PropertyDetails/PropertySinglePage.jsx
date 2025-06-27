@@ -18,7 +18,7 @@ const PropertySinglePage = ({ singleProperty, getAllProperites, refetchDetails, 
                     <LeftCard 
                         singleProperty={singleProperty} 
                         setIsShareModalOpen ={setIsShareModalOpen} 
-                        refetch={refetchDetails}
+                        refetchDetails={refetchDetails}
                         refetchListing={refetchListing}
                     />
                     <RightCard singleProperty={singleProperty}/>
