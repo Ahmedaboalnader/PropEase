@@ -79,9 +79,10 @@ export default function Header() {
                             }
                         }}
                         className={`!px-3 !py-1 !rounded-md !font-medium !text-main ${
-                        location?.pathname === item?.path
-                            ? '!bg-main !text-white !font-bold'
-                            : 'hover:!bg-hover hover:!text-white'
+                            location.pathname === item.path || 
+                            (item.path === '/home' && location.pathname === '/') // Add this condition
+                                ? '!bg-main !text-white !font-bold'
+                                : 'hover:!bg-hover hover:!text-white'
                         }`}
                     >
                         {item?.name}

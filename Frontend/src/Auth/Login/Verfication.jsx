@@ -88,7 +88,7 @@ const Verfication = () => {
                 
                 dispatch(setVerifiedCredentials());
                 showNotification.success(response?.message || 'Verification successful');
-                navigate('/');
+                navigate('/account/details');
             }
             reset();
         } catch (error) {
@@ -98,14 +98,17 @@ const Verfication = () => {
     };
 
     return (
-        <AuthFormLayout>
-            <Group className="!px-0 !max-w-[48%] flex flex-col justify-center items-center">
-                <Group className="!mb-3 !w-full !flex !flex-col !items-center !justify-center">
+        <AuthFormLayout
+            title="Welcome to the community" 
+            subtitle="Login to Explore"
+        >
+            <Group className="!px-4 sm:px-6 md:px-0 !w-full sm:!max-w-[80%] md:!max-w-[45%]">
+                <Group className="!mb-3 !w-full !flex !flex-col !items-start md:!items-center !justify-center">
                     <Text className="!text-3xl !font-bold ">OTP Verification</Text>
                     <Text className="!text-base !text-gray-600">We've sent a verification code to {email}</Text>
                     <Image 
                         src={logo}
-                        className='!w-52 !h-52'
+                        className='!w-28 !h-28 !hidden md:!block'
                     />
                 </Group>
 

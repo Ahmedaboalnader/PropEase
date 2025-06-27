@@ -1,21 +1,20 @@
+import {useEffect} from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Text, Container, Divider, Grid, Checkbox } from '@mantine/core';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SellSchema } from './SellSchema';
-import UploadImages from '../../Components/UploadImages';
 import SellInput from '../../Components/SellInput';
 import CustomSelect from '../../Components/CustomSelect';
-import { useCreatePropertyMutation } from '../../Store/Properites/PropertiesApi';
+import { useCreatePropertyMutation, useEditPropertyMutation } from '../../Store/Properites/PropertiesApi';
 import { showNotification } from '../../utils/notification';
 import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import UploadImages from '../../Components/UploadImages';
+import Loading from '../../Components/Loading';
 
-const SUPPORTED_FILE_TYPES = [
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-];
+const MAX_FILE_COUNT = 10;
 
-const SellForm = () => {
+const SellForm = ({singleProperty, isLoadingProperty, refetchDetails}) => {
     const navigate = useNavigate();
     const {
         control,
@@ -23,41 +22,96 @@ const SellForm = () => {
         reset,
         setValue,
         watch,
+        trigger,
         formState: { errors, isValid },
     } = useForm({
-        mode:"onChange",
+        mode: "onChange",
         resolver: yupResolver(SellSchema),
         defaultValues: {
             images: [],
             title: "",
             description: "",
-            location: "", 
+            location: "",
             address: "",
             price: "",
-            hasOffer: false,
+            hasOffer: false, 
             discountPercentage: "", 
             bedrooms: "",
             bathrooms: "",
-            area: "",            
+            area: "",          
             propertyType: "", 
             propertyView: "",
             propertyLocation: "",
             buildingYear: "",
             listingType: "",
-            hasParking: "", 
-            hasGarden: "",
+            hasParking: false,  
+            hasGarden: false,  
             name: "",
             phone: "",
         }
     });
+    
+    useEffect(() => {
+        if (singleProperty) {
+            reset({
+                images: singleProperty?.images?.$values || [],
+                title: singleProperty.title || "",
+                description: singleProperty.description || "",
+                location: singleProperty.location || "",
+                address: singleProperty.address || "",
+                price: singleProperty.price || "",
+                hasOffer: Boolean(singleProperty.hasOffer),  
+                discountPercentage: singleProperty.discountPercentage || "", 
+                bedrooms: singleProperty.rooms || "",
+                bathrooms: singleProperty.bathrooms || "",
+                area: singleProperty.area || "",          
+                propertyType: singleProperty.propertyType || "", 
+                propertyView: singleProperty.viewType || "",
+                propertyLocation: singleProperty.locationType || "",
+                buildingYear: singleProperty.buildingYear || "",
+                listingType: singleProperty.listingType || "",
+                hasParking: Boolean(singleProperty.parking),  
+                hasGarden: Boolean(singleProperty.garden),  
+                name: singleProperty.name || "",
+                phone: singleProperty.phone || "",
+            });
+        }
+    }, [singleProperty, reset]);
 
     const [createProperty, { isLoading: isLoadingCreate }] = useCreatePropertyMutation();
+    const [editProperty, { isLoading: isLoadingEdit }] = useEditPropertyMutation();
+    
+    const images = watch('images');
+    
+    const memoizedDefaultImages = useMemo(() => {
+        const imageUrls = singleProperty?.images?.$values || singleProperty?.images || [];
+        return imageUrls
+            .filter(url => typeof url === 'string')
+            .slice(0, MAX_FILE_COUNT);
+    }, [singleProperty]);
+
+    const handleFileChange = (newFiles) => {
+        const currentImages = images || [];
+        const combinedFiles = [...currentImages, ...newFiles].slice(0, MAX_FILE_COUNT);
+        setValue('images', combinedFiles, { shouldValidate: true });
+        trigger('images');
+    };
+    
+    const handleFileRemove = (index) => {
+        const updatedFiles = (images || []).filter((_, i) => i !== index);
+        setValue('images', updatedFiles, { shouldValidate: true }); 
+        trigger('images');
+    };
 
     const onSubmit = async (data) => {
+        if (!data?.images || data?.images?.length === 0) {
+            trigger('images');
+            return;
+        }
+
         try {
             const formData = new FormData();
     
-            // Append basic fields (make sure casing matches backend expectations)
             formData.append('Title', data.title || '');
             formData.append('Description', data.description || '');
             formData.append('Price', data.price || 0);
@@ -91,32 +145,47 @@ const SellForm = () => {
                 });
             }
     
-            const response = await createProperty(formData).unwrap();
-            console.log('Property created successfully:', response);            
+            let response;
+            if (singleProperty) {
+                response = await editProperty({ 
+                    propertyId: singleProperty?.id, 
+                    params: formData  
+                }).unwrap();
+            } else {
+                response = await createProperty(formData).unwrap();
+            }
             reset();
+            if(singleProperty) {refetchDetails()};
             navigate(`/property/details?id=${response?.id}`)
-            showNotification.success(response?.message || 'Property created successfully');
+            showNotification.success(response?.message || `Property ${singleProperty ? "updated" : "created"} created successfully`);
         } catch (error) {
             console.error('Error submitting form:', error);
-            showNotification.error(error?.data?.message || 'Failed to create property');
+            showNotification.error(error?.data?.message || `Failed to ${singleProperty ? "update" : "create"}  property`);
         }
     };
+
+    if(isLoadingProperty) {
+        return <Loading isoading={isLoadingProperty} />
+    }
     
     return (
         <Container size="xl" className="py-10">
             <div className="bg-white rounded-xl shadow-custom p-4 lg:p-8">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="flex flex-col justify-between gap-4 ">
-                        <UploadImages 
-                            control={control}
-                            setValue={setValue}
-                            error={errors.images}
-                            inputName="images"
-                            maxFiles={11}
-                            accepts={SUPPORTED_FILE_TYPES.join(',')}
-                            isOnlyImages={true}
-                            // defaultImages={memoizedDefaultImages}
-                        />
+                    <UploadImages 
+                        control={control}
+                        setValue={setValue}
+                        error={errors?.images} 
+                        label="Upload Images"
+                        inputName="images" 
+                        maxFiles={MAX_FILE_COUNT}
+                        accepts="image/*"
+                        defaultImages={memoizedDefaultImages}
+                        onFileChange={handleFileChange}
+                        onFileRemove={handleFileRemove}
+                        currentFileCount={images?.length || 0}
+                    />
 
                         <Divider my="md" size="md" />
 
@@ -391,16 +460,16 @@ const SellForm = () => {
                         </Grid>
                     </div>
 
-                    <div className="flex justify-end w-full">
+                    <div className="flex sm:justify-end w-full">
                         <Button
                             type="submit"
-                            className={`w-full !rounded-lg !text-base !bg-main hover:!bg-[#1e3d2f] !h-10 !mt-4
-                                ${(isLoadingCreate || !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
-                            loading={isLoadingCreate}
-                            disabled={isLoadingCreate || !isValid}
+                            className={`max-sm:!w-full !rounded-lg !text-base !bg-main hover:!bg-[#1e3d2f] !h-10 !mt-4
+                                ${(isLoadingCreate || isLoadingEdit|| !isValid) ? '!opacity-50 !cursor-not-allowed' : 'hover:!opacity-90'}`}
+                            loading={isLoadingCreate || isLoadingEdit}
+                            disabled={isLoadingCreate || isLoadingEdit || !isValid}
                             loaderProps={{ color: 'white', size: 'sm', type: 'dots' }}
                         >
-                            Post Now
+                            {singleProperty ? "Update Now" : "Post Now"}
                         </Button>
                     </div>
                 </form>
