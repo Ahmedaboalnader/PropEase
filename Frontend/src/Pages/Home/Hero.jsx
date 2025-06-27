@@ -39,6 +39,7 @@ const Hero = () => {
         handleSearch(e);
     }
     };
+    const words = ["Find", "Your", "Perfect", "Home"];
 
     return (
         <div className="relative h-[90vh] border-b-[15px] border-main overflow-hidden ">
