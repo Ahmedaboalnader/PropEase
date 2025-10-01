@@ -7,7 +7,7 @@ export const SellSchema = yup.object().shape({
 images: yup
     .array()
     .min(1, 'At least one image is required')
-    .max(11, 'Maximum 11 images allowed')
+    .max(10, 'Maximum 10 images allowed')
     .required('Images are required'),
 title: yup
     .string()

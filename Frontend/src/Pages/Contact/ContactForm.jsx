@@ -159,14 +159,18 @@ const ContactForm = () => {
                         <MdEmail size={24} className="text-[#2B5743]" />
                         <div className="flex flex-col">
                             <Text className="!font-bold !text-main !-mb-2">Our Mail</Text>
-                            <Text className="!font-semibold">ionendk@gmail.com</Text>
+                            <a href="mailto:support@propease.org">
+                                <Text className="!font-semibold hover:text-yellowCustom transition">
+                                    support@propease.org
+                                </Text>
+                            </a>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
                         <FaPhoneAlt size={20} className="text-[#2B5743]" />
                         <div className="flex flex-col">
                             <Text className="!font-bold !text-main !-mb-2">Our Phone Number</Text>
-                            <Text className="!font-semibold">011113444553</Text>
+                            <Text className="!font-semibold">01110373469</Text>
                         </div>
                     </div>
                 </div>

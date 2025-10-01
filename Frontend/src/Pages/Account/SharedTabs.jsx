@@ -40,8 +40,8 @@ return (
                     value={tab.value}
                     className={`!flex !justify-center !items-center !px-4 !py-3 !rounded-lg !transition-all !duration-300 !cursor-pointer !font-medium !text-lg !min-w-[200px] ${
                         tabValue === tab?.value
-                        ? "!bg-main !text-textSecondColor !font-bold !text-md"
-                        : "!text-textColor hover:!bg-hoverColor"
+                        ? "!bg-main !text-white !font-bold !text-md"
+                        : "!text-main hover:!bg-hover hover:!text-white"
                     }`}
                 >
                     <div className='w-full gap-2 flex justify-center items-center'>

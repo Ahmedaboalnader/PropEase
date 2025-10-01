@@ -5,16 +5,34 @@ import { motion } from "framer-motion";
 import icon1 from '../../assets/Icon1.svg';
 import icon2 from '../../assets/Icon2.svg';
 import icon3 from '../../assets/Icon3.svg';
-
-const categories = [
-    { id: 1, name: 'Modern Villa', count: 10, icon: icon1 }, 
-    { id: 2, name: 'Apartment', count: 3, icon: icon2 },
-    { id: 3, name: 'Single Family', count: 5, icon: icon3 },
-    { id: 4, name: 'Town House', count: 7, icon: icon2 },
-    { id: 5, name: 'Studio', count: 8, icon: icon3 },
-];
+import { useFeaturedCategoriesQuery } from '../../Store/Home/HomeApi';
+import Loading from '../../Components/Loading';
 
 const FeaturedCategories = () => {
+    const { data: featured, isLoading } = useFeaturedCategoriesQuery();
+    
+    // Map category names to icons
+    const getCategoryIcon = (categoryName) => {
+        switch(categoryName?.toLowerCase()) {
+            case 'commercial':
+                return icon1;
+            case 'chalets':
+                return icon2;
+            case 'land':
+                return icon3;
+            case 'studio':
+                return icon2;
+            case 'apartment':
+                return icon3;
+            default:
+                return icon1;
+        }
+    };
+
+    if(isLoading){
+        return <Loading isLoading={true} />
+    }
+
     return (
         <div className="w-full mx-auto py-10 px-4 bg-[#F9F9F9] h-[70vh] flex flex-col gap-14 justify-center items-center">
             <motion.h2
@@ -27,11 +45,10 @@ const FeaturedCategories = () => {
                 Featured Categories
             </motion.h2>
 
-            {/* Swiper Container */}
             <div className="w-full max-w-7xl relative">
                 <CustomSwiper paginationId="featured-categories-pagination">
-                    {categories?.map((category) => (
-                        <SwiperSlide key={category?.id}>
+                    {featured?.$values?.map((category) => (
+                        <SwiperSlide key={category?.$id}>
                             <Card
                                 shadow="sm"
                                 padding="lg"
@@ -40,12 +57,18 @@ const FeaturedCategories = () => {
                                     bg-white hover:bg-hover hover:text-white transition-colors duration-1000"
                             >
                                 <div className='bg-bg p-3 rounded-2xl'>
-                                    <img src={category?.icon} alt={category?.name} className="w-12 h-12 object-contain" />
+                                    <img 
+                                        src={getCategoryIcon(category?.categoryName)} 
+                                        alt={category?.categoryName} 
+                                        className="w-12 h-12 object-contain" 
+                                    />
                                 </div>
-                                <div>
-                                    <Text className="font-bold text-lg">{category?.name}</Text>
-                                    <Text className="font-medium text-base">
-                                        {category?.count} {category?.count > 1 ? 'Properties' : 'Property'}
+                                <div className='text-center'>
+                                    <Text className="!font-bold !text-lg">
+                                        {category?.categoryName}
+                                    </Text>
+                                    <Text className="!font-medium !text-base">
+                                        {category?.propertyCount} {category?.propertyCount === 1 ? 'Property' : 'Properties'}
                                     </Text>
                                 </div>
                             </Card>

@@ -31,13 +31,13 @@ function getCountryFromGoogleMapsUrl(url) {
     
     // Check if any Egyptian governorate is in the URL
     for (const governorate of egyptianGovernorates) {
-        if (url.includes(governorate)) {
+        if (url?.includes(governorate)) {
             return 'Egypt';
         }
     }
     
     // If no governorate found (shouldn't happen with this URL)
-    const coordMatch = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    const coordMatch = url?.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
     if (coordMatch) {
         const lat = parseFloat(coordMatch[1]);
         const lng = parseFloat(coordMatch[2]);

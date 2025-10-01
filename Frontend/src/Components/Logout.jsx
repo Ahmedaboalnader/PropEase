@@ -9,16 +9,17 @@ import { useNavigate } from 'react-router-dom';
 const Logout = ({tabs = false}) => {
     const [logoutApi] = useLogoutMutation();
     const dispatch = useDispatch();
-    const{navigate} = useNavigate();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
             const response = await logoutApi().unwrap();
             dispatch(logout());
             showNotification.success(response?.message || 'Logged out successfully');
-            navigate('/')
+            navigate('/login')
         } catch (error) {
             showNotification.error(error?.data?.message || 'Logout failed');
+            console.log(error);
         }
     };
 

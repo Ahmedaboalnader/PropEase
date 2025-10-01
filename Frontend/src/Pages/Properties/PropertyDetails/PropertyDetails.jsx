@@ -9,8 +9,8 @@ import Loading from '../../../Components/Loading'
 const Propertydetails = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
-    const{data: singleProperty, isLoading: isLoadingProperty} = useGetSinglePropertyQuery(id);
-    const{data: getAllProperites, isLoading: isLoadingGetAllProperites} = useGetAllProperitesQuery();
+    const{data: singleProperty, isLoading: isLoadingProperty, refetch: refetchDetails} = useGetSinglePropertyQuery(id);
+    const{data: getAllProperites, isLoading: isLoadingGetAllProperites, refetch: refetchListing} = useGetAllProperitesQuery();
 
     // Get the first 4 properties if array exists and has items
     const displayedProperties = getAllProperites?.$values?.length > 0 
@@ -27,6 +27,8 @@ const Propertydetails = () => {
             <PropertySinglePage 
                 singleProperty={singleProperty} 
                 getAllProperites={displayedProperties}
+                refetchDetails={refetchDetails}
+                refetchListing={refetchListing}
             />
             <Footer />
         </>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Card, Badge, Text, Group } from '@mantine/core';
 import { FaBath, FaBed, FaRulerCombined } from 'react-icons/fa';
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { useAddFavoriteMutation } from '../Store/Favorite/FavoriteApi';
+import { useAddFavoriteMutation, useDeleteFavoriteMutation } from '../Store/Favorite/FavoriteApi';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
 import { useNavigate } from 'react-router-dom';
@@ -10,21 +10,27 @@ import rent1 from '../assets/rent1.png';
 import { showNotification } from '../utils/notification';
 import getCountryFromGoogleMapsUrl from '../Functions/getCountryFromGoogleMapsUrl';
 
-const SharedCard = ({property, offers,refetch}) => {
+const SharedCard = ({property,refetch}) => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [addFavorite, { isLoading }] = useAddFavoriteMutation();
+    const [addFavorite, { isLoading: isLoadingAddFavorite }] = useAddFavoriteMutation();
+    const [deleteFavorite, { isLoading: isLoadingDeleteFavorite }] = useDeleteFavoriteMutation();
 
-    const handleFavoriteClick = async (id) => {        
+    const handleFavoriteClick = async (id, isFavorite) => {        
     if (!isAuthenticated) {
         setIsModalOpen(true);
         return;
     }
 
     try {
-        const response = await addFavorite(Number(id)).unwrap();
-        showNotification.success(response?.message || 'Favorite updated successfully');
+        if(!isFavorite) {
+            const response = await addFavorite(Number(id)).unwrap();
+            showNotification.success(response?.message || 'Favorite updated successfully');
+        } else{
+            const response = await deleteFavorite(Number(id)).unwrap();
+            showNotification.success(response?.message || 'Favorite updated successfully');
+        }
         refetch();
     } catch (error) {
         console.error("Error:", error);
@@ -57,18 +63,17 @@ const SharedCard = ({property, offers,refetch}) => {
                         className="!w-full !h-full !object-cover" 
                         onClick={handleCardClick}
                     />
-                    {offers ? (
+                    {property?.hasOffer && (
                         <div className="!absolute !top-2 !right-2 !flex">
                             <Badge className='!bg-red-500 !text-white !min-w-[60px] !p-2 !text-xs !rounded-md !font-medium'>
                                 {property?.discountPercentage}% Discount
                             </Badge>
                         </div>
-                    ) : (
-                        <div className="!absolute !top-2 !left-2 !flex !gap-2">
-                            <Badge className='!bg-main !text-white !min-w-[60px] !p-2 !rounded-full !font-medium'>{property?.listingType}</Badge>
-                            <Badge className='!bg-yellowCustom !text-black !min-w-[60px] !p-2 !rounded-full !font-semibold'>{property?.propertyType}</Badge>
-                        </div>
-                    )}                
+                    )}
+                    <div className="!absolute !top-2 !left-2 !flex !gap-2">
+                        <Badge className='!bg-main !text-white !min-w-[60px] !p-2 !rounded-full !font-medium'>{property?.listingType}</Badge>
+                        <Badge className='!bg-yellowCustom !text-black !min-w-[60px] !p-2 !rounded-full !font-semibold'>{property?.propertyType}</Badge>
+                    </div>
                 </div>
                 <div className="!mt-4 !space-y-2 !px-5 !pb-2">
                     <Text 
@@ -96,7 +101,7 @@ const SharedCard = ({property, offers,refetch}) => {
                             {property?.hasOffer ? (
                                 <div className='flex items-center gap-2'>
                                     <Text className='!text-gray-500 !text-base !font-medium !line-through'>{property?.price} EGP</Text>
-                                    <Text className='!text-red-400 !text-lg !font-semibold'>{property?.priceAfterDiscount}</Text>
+                                    <Text className='!text-red-400 !text-lg !font-semibold'>{property?.priceAfterDiscount} EGP</Text>
                                 </div>
                             ) : (
                                 <Text className='!text-red-400 !text-lg !font-semibold'>{property?.price} EGP</Text>
@@ -106,8 +111,8 @@ const SharedCard = ({property, offers,refetch}) => {
                             className={`!border !border-gray-300 !rounded-full !w-10 !h-10 !flex !justify-center !items-center !cursor-pointer hover:!bg-gray-100 ${
                                 property?.isFavorite ? '!border-red-500' : ''
                             }`}
-                            onClick={() => handleFavoriteClick(property?.$id)}
-                            disabled={isLoading}                        
+                            onClick={() => handleFavoriteClick(property?.id, property?.isFavorite)}
+                            disabled={isLoadingAddFavorite || isLoadingDeleteFavorite}                        
                         >
                             {property?.isFavorite ? (
                                 <IoIosHeart size={22} className="text-red-500" />

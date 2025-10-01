@@ -9,9 +9,17 @@ export const contactUsApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
+        subscribe: builder.mutation({
+            query: (params) => ({
+                url: '/contact/subscribe',
+                method: 'POST',
+                body: params,
+            }),
+        }),
     }),
 });
 
 export const {
     useContactMutation,
+    useSubscribeMutation,
 } = contactUsApi;

@@ -45,12 +45,15 @@ const ForgotPassword = () => {
     };
 
     return (
-        <AuthFormLayout>
-            <Group className="!px-0 !max-w-[48%]">
+        <AuthFormLayout
+            title="Welcome to the community" 
+            subtitle="Login to Explore"
+        >
+        <Group className="!px-4 sm:px-6 md:px-0 !w-full sm:!max-w-[85%] md:!max-w-[48%] flex flex-col items-center">
 
             <Group className="!mb-8 !w-full">
-                <Text className="!text-3xl !font-bold !mb-2">Forgot Password?</Text>
-                <Text className="!font-semibold !text-sm">Don’t worry! It happens. 
+                <Text className="!text-xl sm:!text-2xl md:!text-3xl !font-bold !mb-1 sm:!mb-8 md:!mb-10 text-center sm:text-left">Forgot Password?</Text>
+                <Text className="!font-bold !text-sm sm:!text-base text-center sm:text-left">Don’t worry! It happens. 
                         Please enter the email associated with your account.
                 </Text>
             </Group>
@@ -77,10 +80,10 @@ const ForgotPassword = () => {
             </form>
 
             <div className='flex justify-center w-full'>
-                <Group justify="center" className="!mt-1 !flex !gap-0 ">
-                    <Text className="!cursor-pointer !text-base !font-semibold">Don’t have an account?</Text>
+                <Group justify="center" className="!mt-1 !flex !gap-0 flex-col sm:flex-row items-center">
+                    <Text className="!cursor-pointer !text-sm sm:!text-base !font-semibold text-center">Don’t have an account?</Text>
                     <Link to={'/signup'}>
-                        <Text className="!cursor-pointer !text-[#769F7D] !text-base !font-bold">Sign up</Text>
+                        <Text className="!cursor-pointer !text-[#769F7D] !text-sm sm:!text-base !font-bold ml-0 sm:ml-1">Sign up</Text>
                     </Link>
                 </Group>
             </div>

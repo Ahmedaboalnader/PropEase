@@ -1,5 +1,5 @@
+import React, {useState, useEffect} from 'react';
 import { Text, Stack, Image } from '@mantine/core';
-import React, {useState} from 'react';
 import noFavorites from '../../../assets/noFav.png';
 import { useGetFavoritesQuery } from '../../../Store/Favorite/FavoriteApi';
 import { SimpleGrid, Container, Pagination, Center } from '@mantine/core';
@@ -14,6 +14,10 @@ const Favorite = () => {
     const totalPages = Math.ceil(getFavorites?.$values?.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const displayedProperties = getFavorites?.$values?.slice(startIndex, startIndex + itemsPerPage);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Smooth scroll
+    }, [currentPage]);
 
     if (!getFavorites?.$values?.length) {
         return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextInput, Button } from "@mantine/core";
 import { FiSearch } from "react-icons/fi";
 import { motion } from "framer-motion";
@@ -12,10 +12,33 @@ import Image1 from "../../assets/image4.jpg";
 import Image2 from "../../assets/imageOne.png";
 import Image3 from "../../assets/image3.jpg";
 import Image4 from "../../assets/heroo.svg";
+import { Link, useNavigate } from "react-router-dom";
 
-const propertyFilters = ["All Properties", "For Sale", "For Rent", "For Sell"];
-
+const propertyFilters = [
+    { label: "All Properties", link: "/properties" },
+    { label: "For Sale", link: "/properties?filter=ForSale" },
+    { label: "For Rent", link: "/properties?filter=ForRent" },
+    { label: "For Sell", link: "/sell" }
+];
+const words = ["Find", "Your", "Perfect", "Home"];
 const Hero = () => {
+    const [searchValue, setSearchValue] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+        navigate(`/properties?search=${encodeURIComponent(searchValue.trim())}`);
+    } else {
+        navigate('/properties');
+    }
+    };
+
+    const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+        handleSearch(e);
+    }
+    };
     const words = ["Find", "Your", "Perfect", "Home"];
 
     return (
@@ -62,14 +85,17 @@ const Hero = () => {
                 </motion.h1>
 
                 {/* Search Bar */}
-                <div className="w-full max-w-lg relative">
+                <form onSubmit={handleSearch} className="w-full max-w-lg relative">
                     <TextInput
                         placeholder="Enter keywords..."
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyPress={handleKeyPress}
                         classNames={{
                         root: "w-full !outline-none",
                         input: "!rounded-full !h-12 !pr-12 !shadow-md !w-full ",
                         }}
-                        rightSectionWidth={54} 
+                        rightSectionWidth={54}
                         rightSection={
                         <Button
                             className="!h-10 !w-10 !p-0 !rounded-full !bg-yellow-500 !absolute !right-1 !top-1/2 !transform !-translate-y-1/2"
@@ -79,24 +105,31 @@ const Hero = () => {
                         </Button>
                         }
                     />
-                </div>
+                </form>
 
                 {/* Property Filters */}
                 <div className="flex gap-3 flex-col mt-20">
                     <h2 className="text-lg md:text-xl font-semibold text-white text-center">
                         Explore all things property
                     </h2>
-                    <div className="flex gap-4">
-                        {propertyFilters?.map((filter) => (
+                    <div className="flex gap-4 flex-wrap">
+                        {propertyFilters?.map((filter) => {
+                        return (
+                            <Link 
+                                to={filter.link} 
+                                key={filter.label}
+                                className="!no-underline"
+                            >
                             <Button
-                                key={filter}
                                 variant="outline"
                                 className="!rounded-lg !border-transparent !bg-white !text-main !min-w-fit !px-3 !py-1 
-                                            hover:!text-white hover:!bg-main !transition !duration-1000 !shadow-md hover:!shadow-lg"
+                                        hover:!text-white hover:!bg-main !transition !duration-1000 !shadow-md hover:!shadow-lg"
                             >
-                                {filter}
+                                {filter.label}
                             </Button>
-                        ))}
+                            </Link>
+                        );
+                        })}
                     </div>
                 </div>
             </div>

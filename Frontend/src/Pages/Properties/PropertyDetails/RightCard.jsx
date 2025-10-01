@@ -14,10 +14,15 @@ const RightCard = ({singleProperty}) => {
                         <Text className="!text-2xl !font-bold">Address</Text>
                         <Text className="!font-semibold !flex !items-center !gap-2">{singleProperty?.address}</Text>
                     </div>
+                    <div className='mt-5'>
+                        <Text className="!text-2xl !font-bold">Owner</Text>
+                        <Text className="!font-semibold !flex !items-center !gap-2">{singleProperty?.name}</Text>
+                    </div>
                     <Button 
                         className="!w-full !bg-[#EA3934] !rounded-lg !text-white !mb-4 !mt-4"
                         size="lg"
                         leftSection={<FaPhoneAlt />}
+                        onClick={() => window.location.href = `tel:${singleProperty?.phone}`}
                     >
                         Call Now!
                     </Button>
